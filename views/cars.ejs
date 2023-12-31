@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/cars.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <h3 class="title">Select Car</h3>
+        <div class="card">
+            <div class="wrap">
+                <h3 class="wtitle">Place</h3>
+                <h6 class="wsub" id="location"><%= location %></h6>
+            </div>
+            <div class="wrap">
+                <h3 class="wtitle">Pickup Date</h3>
+                <h6 class="wsub" id="pdate"><%= date %></h6>
+            </div>
+            <div class="wrap">
+                <h3 class="wtitle">Pickup Date</h3>
+                <h6 class="wsub" id="ddate"><%= ddate %></h6>
+            </div>
+            <div class="wrap">
+                <h3 class="wtitle">Pickup Time</h3>
+                <h6 class="wsub" id="time"><%= time %></h6>
+            </div>
+        </div>
+        <div class="slider">
+           
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementsByClassName("slider")[0];
+        const container = document.getElementsByClassName("container")[0];
+
+        fetch("/admin/allCars").then(res => res.json().then(data => {
+            data.cars.forEach((car, i) => {
+                const newCar = document.createElement("div");
+                newCar.classList.add("carcard");
+                let carData = ` <img src="${car.image}" alt="" class="img">
+                <div class="twrap">
+                    <div class="row">
+                        <h3 class="title">${car.brand}</h3>
+                        <h2 class="price">${car.amount}/day</h2>
+                    </div>
+                    <h4 class="ssub">${car.desc}</h4>
+                    <button class="bbtn ${car._id}" onclick = "showPopup(${i})">View more</button>
+                </div>`
+                newCar.innerHTML = carData;
+                slider.appendChild(newCar)
+            })
+        }))
+        const closePopup = () => {
+            const popup = document.getElementsByClassName("popup")[0];
+            console.log(popup)
+            container.removeChild(popup);
+        }
+        const showPopup = (id) => {
+            const car_id = document.getElementsByClassName("bbtn")[id].classList[1];
+            fetch(`/admin/getCar/${car_id}`).then(res => res.json().then((data) => {
+                const popup = document.createElement("div");
+                popup.classList.add("popup");
+                const pdata = `<div class="inner">
+                <div class="title" onclick="closePopup()" id="tit">
+                    <ion-icon name="chevron-back-outline"></ion-icon>
+                    Car Details</div>
+                <div style="display: flex; gap: 20px;">
+                    <img src="${data.image}" alt="" class="img">
+                    <div class="wrap">
+                        <div class="title">${data.brand}</div>
+                        <div class="grid">
+                            <div class="subwrap">
+                                <div class="tit">gear type</div>
+                                <p class="sub">${data.geartype}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">fuel capacity</div>
+                                <p class="sub">${data.fuelcap}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">seating capacity</div>
+                                <p class="sub">${data.seating}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">luggage capacity</div>
+                                <p class="sub">${data.luggage}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">milage</div>
+                                <p class="sub">${data.mileage}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">Amount</div>
+                                <p class="sub">${data.amount}/-</p>
+                            </div>
+                        </div>
+                        <button class="bbtn idbtn ${car_id}" onclick="bookHandler()">Book Now</button>
+                    </div>
+                </div>
+            </div>`
+            popup.innerHTML = pdata;
+            container.appendChild(popup);
+            }))
+        }
+
+        const bookHandler = async() => {
+            const id = document.getElementsByClassName("idbtn")[0].classList[2]
+            const token = localStorage.getItem("token");
+            const subs = document.querySelectorAll(".wsub");
+            const data = [];
+            subs.forEach((s) => data.push(s.textContent));
+            console.log(data, token, id);
+            let d = {data, carid: id}
+            fetch("/booking/confirmBooking", {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'token': token,
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d)
+            }).then(res => res.json().then(data => {
+                window.location.href = `/booking/book?id=${data.msg}`
+            }))
+        }
+    </script>
+</body>
+</html>

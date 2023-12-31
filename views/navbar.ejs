@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Chelo Ride</div>
+        <div class="links">
+            <a href="/" class="link">Home</a>
+            <a href="/" class="link">About</a>
+            <a href="/" class="link">Bullitens</a>
+            <a href="/booking" class="link bookings">Booking</a>
+        </div>
+        <div class="links">
+            <a class="link ln">Login</a>
+        </div>
+    </div>
+
+    <div class="navbar mb">
+        <div class="logo">Chelo Ride</div>
+        <ion-icon name="menu-outline" style="color: white; font-size: 20px; cursor: pointer;" id="ico"></ion-icon>
+        <div class="sidemenu">
+            <div class="logo">
+                <p>Chelo Ride</p>
+                <ion-icon name="close-outline" id="close"></ion-icon>
+            </div>
+            <div class="links">
+                <a href="/" class="link">Home</a>
+                <a href="/" class="link">About</a>
+                <a href="/" class="link">Bullitens</a>
+                <a href="/booking" class="link bookings">Booking</a>
+            </div>
+            <div class="links lg">
+                <a class="link ln">Login</a>
+                <a href="/auth/register" class="link">SignUp</a>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        const lns = document.querySelectorAll(".ln");
+        const bookings = document.querySelectorAll(".bookings");
+        const open = document.getElementById("ico");
+        const close = document.getElementById("close");
+        const menu = document.getElementsByClassName("sidemenu")[0];
+
+        const token = window.localStorage.getItem("token");
+        if(token == null || token == undefined){
+            lns.forEach(ln => {
+                ln.textContent = "Login";
+                ln.setAttribute("href", "/auth/login")
+            });
+            bookings.forEach((booking, i) => {
+                booking.style.display = "none"
+            })
+        }else{
+            lns.forEach(ln => {
+                ln.textContent = "Logout";
+                ln.onclick = () => {
+                    window.localStorage.clear()
+                    window.location.href ="/auth/login"
+                };
+            })
+        }
+        open.onclick = () => {
+            menu.style.left = 0;
+        }
+        close.onclick = () => {
+            menu.style.left = "-100%";
+        }
+
+    </script>
+</body>
+</html>

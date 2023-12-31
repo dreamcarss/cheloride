@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap');
+
+@font-face {
+    font-family: "integral";
+    src: url("../fonts/integral.ttf");
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 100%;
+    height: max-content;
+    background: black;
+}
+
+
+.formContainer{
+    width: 100%;
+    height: 100vh;
+    background: url("../assets/4.jpg") center no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: Poppins;
+    color: white;
+}
+
+.form{
+    width: max-content;
+    height: max-content;
+    background-color: rgb(224, 224, 224);
+    position: relative;
+    z-index: 3;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    color: rgb(45, 45, 45);
+}
+.opacityMask{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.741);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.formContainer .sbt{
+    width: 140px;
+    margin-top: 20px;
+    padding: 10px 0;
+    z-index: 3;
+    text-decoration: none;
+    font-size: 11px;
+    background-color: rgb(128, 185, 15);
+    color: rgb(245, 245, 245);
+    font-family: "integral";
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.form .wrap{
+    width: max-content;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+}
+
+.form .wrap .menu{
+    width: max-content;
+    height: max-content;
+    padding: 10px 0;
+    background: rgb(39, 39, 39);
+    border-radius: 10px;
+    color: white;
+    position: absolute;
+    top: 60px;
+    display: none;
+    font-family: "Poppins";
+    font-size: 12px;
+    z-index: 2;
+}
+
+.form .wrap #location:hover ~ .menu, .form .wrap .menu:hover{
+    display: block;
+}
+
+.form .wrap .menu .lelm{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 15px;
+    border-radius: 5px;
+}
+
+.form .wrap .menu .lelm:hover{
+    background: rgb(66, 66, 66);
+    cursor: pointer;
+}
+
+.lab{
+    font-size: 12px;
+}
+
+.wrap input{
+    width: 140px;
+    height: 35px;
+    border-radius: 9px;
+    padding: 5px;
+    border: 1px solid rgba(56, 56, 56, 0.215);
+}
+
+.formContainer .title, .formContainer .sub{
+    z-index: 3;
+}
+
+.formContainer .title{
+    font-family: "Integral";
+    font-size: 80px;
+}
+
+.formContainer .sub{
+    width: 40%;
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.icons{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(23, 23, 23);
+    background: rgb(107, 255, 193);
+    padding: 50px 30px;
+    text-align: center;
+}
+
+.icons .wrap .wtitle{
+    font-family: "Integral";
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.icons .wrap{
+    width: 300px;
+}
+
+.icons .wrap .wsub{
+    font-family: "Poppins";
+    font-size: 10px;
+    font-weight: 300;
+}
+.section{
+    width: 100%;
+    height: max-content;
+    padding: 30px;
+    background-color: black;
+}
+.section .stitle{
+    font-family: "Integral";
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.section .flx{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    gap: 40px;
+}
+
+.section .flx .img{
+    width: 50%;
+    height: auto;
+}
+
+.flx .wrap{
+    width: 50%;
+    color: white;
+    font-family: Poppins;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px 0;
+}
+
+
+@media only screen and (max-width: 600px){
+    .formContainer .title{
+        font-size: 30px;
+    }
+    .formContainer .sub{
+        width: 84%;
+        margin-bottom: 10px;
+        font-size: 9px;
+    }
+    .form div{
+        flex-direction: column; 
+    }
+    .form{
+        width: 80%;
+    }
+    .form .wrap,
+    .wrap input{
+        width:100%;
+    }
+    .icons{
+        flex-direction: column;
+        gap: 30px;
+    }
+    .section .flx{
+        flex-direction: column;
+    }
+    .section .flx .img,
+    .flx .wrap {
+        width: 100%;
+    }
+
+    .flx .wrap{
+        padding: 0;
+    }
+}

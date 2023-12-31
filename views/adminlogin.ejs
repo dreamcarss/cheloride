@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container" style="background-image: url('../static/assets/7.jpg');">
+        <div class="opWrap"></div>
+        <h3 class="title">CHELORIDE - Admin</h3>
+        <form id="formElm" class="form">
+            <div class="wrap">
+                <label for="">Email</label>
+                <input type="text" class="inp" name="email">
+            </div>
+            <div class="wrap">
+                <label for="">Password</label>
+                <input type="text" class="inp" name="password">
+            </div>
+            <button class="btn" type="submit">Submit</button>
+            <a href="/auth/register" class="link">Not having an account? Register</a>
+        </form>
+    </div>
+    <script>
+
+        const tokenStatus = localStorage.getItem("token");
+        // if(tokenStatus != ""){
+        //     window.location.href = "/admin"
+        // }
+
+        const formElm = document.getElementById("formElm");
+        const container = document.getElementsByClassName("container")[0];
+        formElm.onsubmit = async(e) => {
+            e.preventDefault();
+            const email = formElm["email"].value;
+            const password = formElm["password"].value;
+
+            const data = {email, password}
+            fetch("/auth/login", {
+                 method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((res) => {
+                res.json().then((d) => {
+                    const mcont = document.createElement("div");
+                    mcont.classList.add("msg");
+                    mcont.textContent = d.msg;
+                    container.appendChild(mcont);
+                    if(d?.token != null){
+                        localStorage.setItem("token", d.token)
+                    }
+                })
+            })
+        }
+    </script>
+
+    
+</body>
+</html>

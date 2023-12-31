@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap');
+
+@font-face {
+    font-family: "integral";
+    src: url("../fonts/integral.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    height: max-content;
+    min-height: 100vh;
+    background: black;
+    padding: 30px;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container .title{
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-family: "Integral";
+}
+
+.container .card{
+    width: 35%;
+    height: max-content;
+    padding: 10px 20px;
+    margin-top: 40px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    font-family: "poppins";
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.container .card .wrap .wtitle{
+    font-size: 12px;
+    color: rgba(236, 255, 65, 0.744);
+    font-weight: 300;
+}
+
+.container .card .wrap .wsub{
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+.slider{
+    width: 35%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.slider .carcard{
+    width: 100%;
+    padding: 20px;
+    height: max-content;
+    display: flex;
+    gap: 30px;
+    border-radius: 10px;
+    color: white;
+}
+
+.slider .carcard .img{
+    width: 200px;
+    border: 1px solid rgb(178, 178, 178);
+    height: max-content;
+    border-radius: 10px;
+}
+
+.slider .carcard .twrap .title{
+    font-size: 14px;
+}
+
+.slider .carcard .twrap .ssub{
+    font-family: "Poppins";
+    font-size: 12px;
+    margin: 10px 0;
+    font-weight: 300;
+}
+
+.slider .carcard .twrap .bbtn{
+    width: max-content;
+    height: max-content;
+    padding: 4px 10px;
+    background: yellowgreen;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Poppins";
+    font-size: 11px;
+}
+
+.popup{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 4;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(20, 20, 20, 0.674);
+}
+
+.twrap .row{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.price{
+    font-family: "Poppins";
+    font-size: 11px;
+    width: max-content;
+    height: max-content;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: lighter;
+    background: rgb(48, 48, 48);
+}
+
+.popup .inner{
+    width: 50%;
+    height: max-content;
+    background-color: rgb(29, 29, 29);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.popup .inner .title{
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.popup .inner .img{
+    width: 350px;
+    height: auto;
+    border-radius: 10px;
+    height: max-content;
+}
+
+.popup .inner .wrap .title{
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.popup .inner .wrap .sub{
+    font-family: "Poppins";
+    font-size: 11px;
+}
+
+.popup .inner .wrap .subwrap{
+    width: max-content;
+    height: max-content;
+    font-family: Poppins;
+}
+
+.popup .inner .wrap .subwrap .tit{
+    font-size: 11px;
+    color: rgb(206, 206, 206);
+}
+
+.popup .inner .wrap .bbtn{
+    border: none;
+    background-color: yellowgreen;
+    color: white;
+    font-family: "integral";
+    font-size: 12px;
+    padding: 7px 15px;
+    margin-top: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.grid{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .container .card{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .slider{
+        width: 100%;
+    }
+    .slider .carcard{
+        flex-direction: column;
+    }
+    .inner div{
+        flex-direction: column;
+    }
+    .popup .inner .img,
+    .popup .inner{
+        width: 100%;
+    }
+    .popup{
+        height: max-content;
+    }
+    .inner div .wrap .grid{
+        flex-direction: row;
+    }
+}

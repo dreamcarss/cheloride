@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/book.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        
+    </div>
+    <script>
+        const container = document.getElementsByClassName("container")[0]
+        fetch("/booking/get", {
+            headers: {
+                token: window.localStorage.getItem("token")
+            }
+        }).then(res => res.json().then(data => {
+            console.log(data)
+            let elem = `
+            <h2 class="title">Your Booking</h2>
+            <h3 class="sub">You can only cancel your ticket before 4hrs from booking.</h3>
+            <div class="ticket">
+                <div class="sec1">
+                    <div class="division">
+                        <div class="dates">
+                            <p class="dt">${data.booking.startDate}</p>
+                            <div class="line"></div>
+                            <p class="dt">${data.booking.dropDate}</p>
+                        </div>
+                        <div class="subSec">
+                            <img src="${data.car.image}" alt="" class="img">
+                            <div class="wrap">
+                                <div class="brand">${data.car.brand}</div>
+                                <div class="tags">
+                                    <div class="tag">${data.car.geartype}</div>
+                                    <div class="tag">${data.car.location}</div>
+                                    <div class="tag">Seats: ${data.car.seating}</div>
+                                    <div class="tag">${data.car.mileage}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d2">
+                        <div class="uname">${data.booking.userId}</div>
+                        <div class="wrap">
+                            <p class="cname">Time of booking</p>
+                            <div class="line"></div>
+                            <p class="val">${data.booking.time}</p>
+                        </div>
+                        <div class="wrap">
+                            <p class="cname">Payment status</p>
+                            <div class="line"></div>
+                            <p class="val">${data.booking.paymentStatus}</p>
+                        </div>
+                        <div class="wrap">
+                            <p class="cname">Total Cost</p>
+                            <div class="line"></div>
+                            <p class="val">${data.booking.price}/-</p>
+                        </div>
+                    </div>  
+                </div>
+                <div class="sec2">
+                    <div class="inner">
+                        Booked
+                    </div>
+                </div>
+            </div>
+            <div class="btns">
+                ${
+                    data.booking.paymentStatus != "paid" ? `<a href="/booking/payment" class="btn">Pay Balance</a>` : ""
+                }
+                <button class="btn del">Cancel Booking</button>
+            </div>
+            `;
+            container.innerHTML = elem;
+        }))
+    </script>
+</body>
+</html>

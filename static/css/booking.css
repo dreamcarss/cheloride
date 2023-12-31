@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap');
+
+@font-face {
+    font-family: "integral";
+    src: url("../fonts/integral.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    height: max-content;
+    min-height: 100vh;
+    background: rgb(11, 11, 11);
+    padding: 30px;
+    overflow-x:hidden;
+    padding-top: 60px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container .title{
+    margin-bottom: 5px;
+    font-size: 30px;
+    margin-top: 20px;
+    font-family: "Integral";
+    color: white;
+}
+
+.container .sub{
+    font-family: "Poppins";
+    font-size: 12px;
+    font-weight: 300;
+    color: rgb(176, 176, 176);
+}
+
+.details{
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.details .bx1{
+    width:30%;
+    padding: 20px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #121212;
+    box-shadow: 0 0 10px #0003;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.details .bx1 .stit{
+    font-family: "poppins";
+    font-size: 12px;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+.details .bx1 .data{
+    font-family: "Poppins";
+    font-size: 12px;
+    /* text-align: center; */
+}
+
+.details .bx1 .data span{
+    display: block;
+    font-size: 12px;
+    font-family: "poppins";
+    color: rgb(151, 151, 151);
+}
+
+
+.flx{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flx .line{
+    flex: 1;
+    height: 1px;
+    margin-top: 10px;
+    border-bottom: 5px dotted rgb(228, 255, 92);
+    /* background-color: blueviolet; */
+}
+
+.flx .data.bg{
+    font-size: 25px;
+    font-family: "Montserrat";
+}
+
+
+.row{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+    font-family: "poppins";
+    align-items: center;
+    font-size: 12px;
+}
+
+.bx1.w2 .row{
+    margin-top:0px;
+    gap: 10px;
+    margin: 5px;
+}
+
+.bx1.w2 .row .span{
+    color: rgb(185, 185, 185);
+}
+
+.bx1.w2 .row .amt{
+    font-weight: bolder;
+    font-family: "Montserrat";
+    font-size: 14px
+}
+
+
+.gt{
+    width: 30%;
+    padding: 20px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #121212;
+    box-shadow: 0 0 10px #0003;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Poppins"
+}
+
+.gt .cnt1 .stit{
+    font-family: "poppins";
+    font-size: 12px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.gt .cnt1 .amt{
+    font-size: 20px;
+    font-family: "Montserrat";
+}
+.gt .btn{
+    width: max-content;
+    height: max-content;
+    border: none;
+    background-color: yellowgreen;
+    color: white;
+    font-family: "Integral";
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 13px 18px;
+    cursor: pointer;
+}
+
+.msg{
+    width:100%;
+    height: 100vh;
+    padding: 5px 10px;
+    font-size: 16px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    z-index: 1;
+    background-color: rgba(13, 13, 13, 0.705);
+    display: flex;
+    font-family: "Integral";
+    backdrop-filter: blur(10px);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fade 3s ease forwards;
+}
+
+@keyframes fade {
+    0%{
+        display: flex;
+    }100%{
+        display: none;
+    }
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .details .bx1{
+        width: 100%;
+    }
+    .flx .data.bg{
+        font-size: 14px;
+    }
+    .gt{
+        width: 100%;
+    }
+    .gt .btn{
+        font-size: 10px;
+    }
+    
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../static/css/booking.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <p id="id" hidden><%= id %></p>
+        <h2 class="title">Confirm Your Booking</h2>
+        <h5 class="sub">Please make sure to check all your details, terms and conditions before payment.</h5>
+        <div class="details">
+            <div class="bx1">
+                <h2 class="stit"><%=data.brand %></h2>
+                <div class="flx">
+                    <p class="data bg"><span class="span">Booking Date:</span> <%=data.date %></p>
+                    <div class="line"></div>
+                    <p class="data bg"><span class="span">Drop Date:</span> <%=data.ddate %></p>
+                </div>
+                <div class="row">
+                    <p class="data"><span class="span">Booking Time:</span> <%=data.time %></p>
+                    <p class="data"><span class="span">Booking By:</span> <%=data.email %></p>
+                    <p class="data"><span class="span">Location:</span> <%=data.location %></p>
+                </div>
+            </div>
+            <div class="bx1 w2">
+                <h2 class="stit">Billing</h2>
+                <div class="row">
+                    <p class="span">Initial Amount (per day)</p>
+                    <p class="amt"><%=data.price %></p>
+                </div>
+                <div class="row">
+                    <p class="span">GST</p>
+                    <p class="amt">18%</p>
+                </div>
+            </div>
+            <div class="gt">
+                <div class="cnt1">
+                    <h2 class="stit">Grand Total</h2>
+                    <p class="amt"><%=data.amount %>/-</p>
+                </div>
+                <button class="btn" onclick="bookingHandler()">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const id = document.getElementById("id").textContent;
+        const details = document.getElementsByClassName("details")[0];
+        const bookingHandler = () => {
+            let data = {id: id}
+            fetch("/booking/book", {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'token': localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((res => res.json().then(data => {
+                console.log(data)
+                const msg = document.createElement("div");
+                msg.classList.add("msg");
+                msg.textContent = data.msg;
+                document.getElementsByTagName("body")[0].appendChild(msg);
+                setTimeout(() => {
+                    const msg = document.getElementsByClassName("msg")[0];
+                    document.getElementsByTagName("body")[0].removeChild(msg);
+                    window.location.href = "/booking"
+                }, 1500)
+            })))
+        }
+    </script>
+</body>
+</html>

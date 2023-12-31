@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap');
+
+@font-face {
+    font-family: "integral";
+    src: url("../fonts/integral.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    background: rgb(11, 11, 11);
+    padding: 30px;
+    padding-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: url("../assets/6.jpg") center;
+    background-size: cover;
+    position: relative;
+}
+
+.opWrap{
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.364);
+    backdrop-filter: blur(10px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.title{
+    margin-bottom: 10px;
+    font-family: "Montserrat";
+    color: white;
+    font-size: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.form{
+    width: 25%;
+    height: max-content;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+    border-radius: 10px;
+    background-color: rgb(39, 39, 39);
+}
+
+.form .wrap{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    color: rgb(230, 230, 230);
+    font-family: "Poppins";
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+
+.lab{
+    margin-right: 10px;
+}
+
+.wrap .inp{
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: rgb(233, 233, 233);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 4px;
+}
+
+
+
+.form .btn{
+    width: 100%;
+    height: 35px;
+    background-color: yellowgreen;
+    margin-top: 10px;
+    font-family: "integral";
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+
+}
+
+.msg{
+    width: max-content;
+    height: max-content;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    font-family: "Poppins";
+    z-index: 2;
+    font-size: 12px;
+    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.link{
+    margin-top: 15px;
+    display: block;
+    font-family: "Poppins";
+    color: rgb(108, 216, 0);
+    text-decoration: none;
+    font-size: 11px;
+}
+
+@media only screen and (max-width: 600px) {
+    .form{
+        width: 100%;
+    }
+}

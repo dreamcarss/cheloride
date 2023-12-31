@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Chelo Ride</div>
+        <div class="links">
+            <a href="/adminpanel/" class="link">Cars</a>
+            <a href="/adminpanel/bookings" class="link">Bookings</a>
+        </div>
+        <div class="links">
+            <a href="" class="link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title">Analytics</div>
+        <div class="cardsWrap">
+            <div class="card">
+                <p class="title" id="tbook">340</p>
+                <p class="sub">Total Bookings</p>
+            </div>
+        </div>
+        <div class="title">
+            <p>Bookings</p>
+            <!-- <button class="add" id="add">Add Car</button> -->
+        </div>
+        <table class="tab">
+            <tr class="row">
+                <th class="th">Sno</th>
+                <th class="th">CarId</th>
+                <th class="th" style="width: 200px;">Booked by</th>
+                <th class="th">Pickup Date</th>
+                <th class="th">Drop Date</th>
+                <th class="th">Pickup Time</th>
+                <th class="th">Amount</th>
+                <th class="th">Payment Status</th>
+                <th class="th">Action</th>
+            </tr>
+        </table>
+    </div>
+    <script>
+        const form = document.getElementById("form");
+        const btn = document.getElementById("sbt");
+        const add = document.getElementById("add");
+        const close = document.getElementsByClassName("cls")[0];
+        const popup = document.getElementsByClassName("popup")[0];
+        const table = document.getElementsByClassName("tab")[0];
+
+        const update = (i) => {
+            const id = document.getElementsByClassName("upd")[i].classList[2];
+            console.log(id)
+            const row = document.getElementsByClassName("row")[i+1];
+            const inp = row.querySelectorAll(".inp");
+            let body = {
+                "bookingId": id,
+                "carId": inp[0].textContent, 
+                "userId": inp[1].textContent, 
+                "startDate": inp[2].value, 
+                "dropDate": inp[3].value, 
+                "time": inp[4].value, 
+                "paymentStatus": inp[6].value, 
+            }
+            fetch("/booking/updateStatus", {
+                method: 'PATCH',
+                headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => res.json().then((data) => {
+                const msg = document.createElement("div");
+                const body = document.getElementsByTagName("body")[0];
+                msg.classList.add("msg");
+                msg.textContent = data.msg;
+                body.appendChild(msg);
+                setTimeout(() => {
+                    body.removeChild(msg)
+                }, 2500);
+            }))
+        }
+
+        const del = (i) => {
+            const id = document.getElementsByClassName("d")[i].classList[2];
+            console.log(id)
+        }
+
+        fetch("/booking/bookings", {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        }).then(res => res.json().then(data => {
+            console.log(data)
+            document.getElementById("tbook").textContent = data.length;
+            data.forEach((booking, i) => {
+                const row = document.createElement("tr");
+                row.classList.add("row");
+                let elem = `<td class="td">${i+1}</td>
+                                <td class="td inp">${booking.carId}</td>
+                                <td class="td inp">${booking.userId}</td>
+                                <td class="td"><input class="inp" value="${booking.startDate}" type="date" /></td>
+                                <td class="td"><input class="inp" value="${booking.dropDate}" type="date" /></td>
+                                <td class="td"><input class="inp" value="${booking.time}" type="time" /></td>
+                                <td class="td inp">${booking.price}</td>
+                                <td class="td">
+                                    <select id="status" class="inp">
+                                        ${
+                                            booking.paymentStatus == "paid" ? '<option value="unpaid">Unpaid</option> <option value="paid" selected="selected">Paid</option>' : '<option value="unpaid" selected="selected">Unpaid</option> <option value="paid">Paid</option>'
+                                            
+                                        }
+                                    </select>    
+                                </td>
+                                <td class="td">
+                                    <button class="del upd ${booking._id}" onclick="update(${i})">Update</button>
+                                    <button class="del d ${booking._id}" onclick="del(${i})">Delete</button>
+                                </td>`;
+                row.innerHTML = elem;
+                table.appendChild(row);
+            })
+        }))
+
+        function fileCatch(img) {
+                const file = img["files"][0];
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                });
+            }
+
+        btn.addEventListener("click", async(e) => {
+            e.preventDefault();
+            const brand = form["brand"].value;
+            const desc = form["desc"].value;
+            const upload = form["upload"];
+            const gear = form["gear"].value;
+            const fuel = form["fuel"].value;
+            const luggage = form["luggage"].value;
+            const seating = form["seating"].value;
+            const mileage = form["mileage"].value;
+            const location = form["location"].value;
+            let data = {
+                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating
+            }
+            const resp = await fetch('/admin/uploadCar', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const content = await resp.json();
+            console.log(content);
+        })
+
+        close.addEventListener("click", () => {
+            popup.style.display = "none";
+        })
+    </script>
+</body>
+</html>

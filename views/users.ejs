@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Chelo Ride</div>
+        <div class="links">
+            <a href="/adminpanel/" class="link">Cars</a>
+            <a href="/adminpanel/bookings" class="link">Bookings</a>
+        </div>
+        <div class="links">
+            <a href="" class="link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title">User Details</div>
+        <div class="cardsWrap">
+            <div class="card">
+                <p class="title" id="tbook">2</p>
+                <p class="sub">Total users</p>
+            </div>
+        </div>
+        <div class="title">
+            <p>Bookings</p>
+            <button class="add" id="add">Add Users</button>
+        </div>
+        <table class="tab">
+            <tr class="row">
+                <th class="th">Sno</th>
+                <th class="th">Name</th>
+                <th class="th" style="width: 200px;">Email</th>
+                <th class="th">Phone</th>
+                <th class="th">Role</th>
+                <th class="th">Aadhaar</th>
+                <th class="th">UserType</th>
+                <th class="th">Proof</th>
+                <th class="th">License</th>
+                <th class="th">Action</th>
+            </tr>
+            <% console.log(users, "hi") %>
+            <% for(var i=0; i<users.length; i++) { %>
+            <tr class="row">
+                <td class="td"><%= i+1 %></td>
+                <td class="td"><%= users[i].username %></td>
+                <td class="td" style="width: 200px;"><%= users[i].email %></td>
+                <td class="td"><%= users[i].phone %></td>
+                <td class="td"><%= users[i].role %></td>
+                <td class="td">
+                    <a href="<%= users[i].aadhaar %>" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                <td class="td"><%= users[i].idproof.userType %></td>
+                <td class="td">
+                    <a href="<%= users[i].idproof.proof %>" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                <td class="td">
+                    <a href="<%= users[i].license %>" class="link" target="_blank" rel="noopener noreferrer">Show</a>
+                </td>
+                <td class="td">
+                    <button class="del">Delete</button>
+                </td>
+            </tr>
+            <% } %>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <div class="opWrap"></div>
+        <h3 class="title">CHELORIDE - REGISTER</h3>
+        <form id="formElm" class="form">
+            <div class="wrap">
+                <label for="">Name</label>
+                <input type="text" class="inp" name="name">
+            </div>
+            <div class="wrap">
+                <label for="">Email</label>
+                <input type="text" class="inp" name="email">
+            </div>
+            <div class="wrap">
+                <label for="">Phone</label>
+                <input type="text" class="inp" name="phone">
+            </div>
+            <div class="wrap">
+                <label for="">Password</label>
+                <input type="text" class="inp" name="password">
+            </div>
+            <div class="wrap">
+                <label for="">Aadhaar</label>
+                <input type="file" class="inp" accept="image/*" name="aadhaar">
+            </div>
+            <div class="wrap">
+                <label for="">License</label>
+                <input type="file" id="image" accept="image/*" class="inp" name="image">
+            </div>
+            <div class="wrap">
+                <label for="">Id Proof</label>
+                <div class="row">
+                    <input type="radio" placeholder="student" name="role" value="student" id="st">
+                    <label for="st" class="lab">Student</label>
+                    <input type="radio" placeholder="bussiness" name="role" value="bussiness" id="bs">
+                    <label for="bs" class="lab">Bussiness</label>
+                    <input type="radio" placeholder="job" name="role" value="job" id="jb">
+                    <label for="jb" class="lab">Job</label>
+                </div>
+                <input type="file" class="inp" accept="image/*" name="idProof">
+            </div>
+            <button class="btn" type="submit">Submit</button>
+            <a href="/auth/login" class="link">Already having account? Login</a>
+        </form>
+    </div>
+    <script>
+
+        const tokenStatus = localStorage.getItem("token") != null;
+        console.log(tokenStatus)
+
+        const formElm = document.getElementById("formElm");
+        const container = document.getElementsByClassName("container")[0];
+        formElm.onsubmit = async(e) => {
+            e.preventDefault();
+            const name = formElm["name"].value;
+            const email = formElm["email"].value;
+            const phone = formElm["phone"].value;
+            const password = formElm["password"].value;
+            const role = formElm["role"].value;
+
+            function fileCatch(img) {
+                const file = img["files"][0];
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                });
+            }
+
+            let licence = await fileCatch(formElm["image"])
+            let aadhaar = await fileCatch(formElm["aadhaar"])
+            let id = await fileCatch(formElm["idProof"])
+            const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
+            fetch("/auth/register", {
+                 method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((res) => {
+                res.json().then((d) => {
+                    const mcont = document.createElement("div");
+                    mcont.classList.add("msg");
+                    mcont.textContent = d.msg;
+                    container.appendChild(mcont);
+                    if(d?.token != null){
+                        localStorage.setItem("token", d.token)
+                    }
+                })
+            })
+        }
+    </script>
+
+    
+</body>
+</html>

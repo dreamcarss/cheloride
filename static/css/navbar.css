@@ -1,0 +1,96 @@
+.navbar {
+    width: 100%;
+    height: 50px;
+    background: rgb(18, 18, 18);
+    display: flex;
+    z-index: 4;
+    color: white;
+    display: flex;
+    padding: 0 30px;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "poppins";
+    font-size: 12px;
+    position: fixed;
+    top: 0;
+}
+
+.navbar .links {
+    width: max-content;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar .links .link {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar.mb{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .navbar{
+        display: none;
+    }
+
+    .navbar.mb{
+        display: flex;
+    }
+
+    .navbar.mb .sidemenu{
+        width: 100%;
+        height: 100vh;
+        background-color: rgb(18, 18, 18);
+        position: absolute;
+        top: 0;
+        left: -100%;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+    .navbar.mb .sidemenu .logo{
+        font-size: 17px;
+        font-weight: bolder;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .navbar.mb .sidemenu .links{
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 14px;
+        font-size: 14px;
+        margin-top:30px;
+    }
+
+    .navbar.mb .sidemenu .links.lg{
+        width: 100%;
+        height: max-content;
+        display: flex;
+        gap: 15px;
+        flex-direction: row;
+    }
+
+    #close{
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .navbar.mb .sidemenu .links.lg .link{
+        border-radius: 20px;
+        background-color: rgb(128, 185, 15);
+        color: white;
+        text-align: center;
+        padding: 6px 20px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .navbar.mb .sidemenu .links.lg .link:nth-child(even){
+        border: 2px solid rgb(128, 185, 15);
+        background-color: transparent;
+    }
+}
