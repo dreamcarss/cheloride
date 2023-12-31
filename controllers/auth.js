@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken")
 const fs = require("fs")
 
-const SALT = "AJSDBFJBHAD3@$SDJNF243Rsdcf$#tesfs";
+const SALT = process.env.SALT;
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
