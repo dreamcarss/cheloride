@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const SALT = "AJSDBFJBHAD3@$SDJNF243Rsdcf$#tesfs";
+const SALT = process.env.SALT;
 
 const adminAuth = async(req, res, next) => {
     try {
