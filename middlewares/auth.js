@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
-const SALT = "AJSDBFJBHAD3@$SDJNF243Rsdcf$#tesfs";
+const SALT = process.env.SALT;
 
 const authMiddleware = async(req, res, next) => {
   try {
