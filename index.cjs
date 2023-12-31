@@ -11,14 +11,14 @@ const carModel = require("./models/carModel.js");
 const adminAuth = require("./middlewares/adminauth");
 
 const PORT = process.env.PORT || 4000;
-const DB_URI = "mongodb+srv://sidhardhchandra141:uXlCffmNCyc0y1zR@cluster0.wu7g6uh.mongodb.net/?retryWrites=true&w=majority";
+const DB_URI = process.env.DB;
 const app = express();
 
 //oiQXsUlU6TV4agCR
 cloudinary.config({
-  cloud_name: "teamlit",
-  api_key: "751835773367251",
-  api_secret: "VE8RH3h4J9TaB6hPdEZA06ODLv4",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
 });
 
 app.use(cors())
