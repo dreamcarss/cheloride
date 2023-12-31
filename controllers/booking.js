@@ -166,7 +166,7 @@ const bookCar = async(req, res) => {
                           }</p> 
                           </div>
                           `;
-                      let executiveMail = "sidhardhchandra141@gmail.com";
+                      let executiveMail = process.env.MAIL;
                       await mail("New Booking", html, executiveMail).catch();
                       await mail(
                         "Booking placed",
