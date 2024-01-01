@@ -34,7 +34,8 @@
             },
         }).then(res => res.json().then(data => {
             id.textContent = data?.price+"/-";
-            const uri = `upi://pay?pa=8688718549@paytm&pn=%20&tr=%20&am=${parseInt(data.price)}&cu=INR`;
+            var merchant = "<%- escape(merchant) %>";
+            const uri = `upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(data.price)}&cu=INR`;
             link.setAttribute("href", uri)
         }))
     </script>

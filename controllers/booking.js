@@ -217,7 +217,7 @@ const updatePayment = async(req, res) => {
 const payment = async(req, res) => {
   try {
     if(req.method == "GET"){
-      res.render("bill.ejs");
+      res.render("bill.ejs", {merchant: process.env.MERCHANT});
     }else if(req.method == "POST"){
       console.log(req.body)
       await bookingModel.findOne({userId: req.body.email}).then(booking => {

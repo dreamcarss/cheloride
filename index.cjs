@@ -9,6 +9,7 @@ const bookingRouter = require("./routes/booking");
 const adminRoutes = require("./routes/admin");
 const carModel = require("./models/carModel.js");
 const adminAuth = require("./middlewares/adminauth");
+require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.DB;
