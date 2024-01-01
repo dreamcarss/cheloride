@@ -1,5 +1,6 @@
 const carModel = require("../models/carModel.js");
-const cloudinary = require("cloudinary")
+const cloudinary = require("cloudinary");
+const bookingModel = require("../models/booking.js");
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -35,17 +36,42 @@ const createCars = async(req, res) => {
 
 const getALlCars = async(req, res) => {
     try {
-        await carModel.find({carStatus: false}).then((cars) => {
-            if(cars.length>0){
-                res.status(200).json({"cars":cars})
-            }else{
-                res.json({"msg":"No cars found"})
+      let sDate = new Date(req.headers.startdate);
+      let dDate = new Date(req.headers.enddate);
+      let carsList = [];
+      await carModel.find().then(async(cars) => {
+        let promises = cars.map(async (car) => {
+          await bookingModel.findOne({ carId: car._id }).then((booking) => {
+            if (booking != null) {
+              let startDate = new Date(booking.startDate);
+              let endDate = new Date(booking.dropDate);
+              if (
+                (sDate > startDate && sDate < endDate) ||
+                (dDate > startDate && dDate < endDate)
+              ) {
+                null;
+              } else {
+                carsList.push(car);
+              }
+            } else {
+              carsList.push(car);
             }
+          });
+        });
+        Promise.all(promises).then(() => {
+          if(carsList.length > 0){
+            console.log(carsList)
+            res.status(200).json({"cars": carsList})
+          }else{
+            res.status(404).json({"msg": "no cars available"})
+          }
         })
+      })
     } catch (error) {
         console.log(error)
     }
 }
+
 
 const getALlCarsAdmin = async (req, res) => {
   try {

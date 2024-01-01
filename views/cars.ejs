@@ -37,9 +37,16 @@
     <script>
         const slider = document.getElementsByClassName("slider")[0];
         const container = document.getElementsByClassName("container")[0];
-
-        fetch("/admin/allCars").then(res => res.json().then(data => {
-            data.cars.forEach((car, i) => {
+        let start = '<%- date %>'
+        let end = '<%- ddate %>'
+        console.log(end)
+        fetch(`/admin/allCars`, {
+            headers:{
+                startDate: start,
+                endDate: end
+            }
+        }).then(res => res.json().then(data => {
+            data?.cars.forEach((car, i) => {
                 const newCar = document.createElement("div");
                 newCar.classList.add("carcard");
                 let carData = ` <img src="${car.image}" alt="" class="img">

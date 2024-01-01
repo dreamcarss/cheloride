@@ -1,0 +1,30 @@
+await bookingModel.find().then(async (bookings) => {
+          if (bookings.length > 0) {
+            let sDate = new Date(req.headers.startdate);
+            let dDate = new Date(req.headers.enddate);
+            let carsList = []
+            if(bookings.length > 0){
+              for (let booking of bookings) {
+                let startDate = new Date(booking.startDate);
+                let endDate = new Date(booking.dropDate);
+                if (
+                  (sDate > startDate && sDate < endDate) ||
+                  (dDate > startDate && dDate < endDate)
+                ) {
+                  null;
+                } else {
+                  await carModel.findById(booking.carId).then((car) => {
+                    carsList.push(car);
+                  });
+                }
+              }
+            }else{
+              await carModel.find().then((car) => carList.push(car))
+            }
+            if (carsList.length > 0) {
+              res.status(200).json({ cars: carsList });
+            } else {
+              res.json({ msg: "No cars found" });
+            }
+          }
+        });

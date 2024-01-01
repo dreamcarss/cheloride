@@ -167,14 +167,14 @@ const bookCar = async(req, res) => {
                           </div>
                           `;
                       let executiveMail = process.env.MAIL;
-                      await mail("New Booking", html, executiveMail).catch();
-                      await mail(
-                        "Booking placed",
-                        `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                          diff * car.amount
-                        }</p>`,
-                        body.email
-                      ).catch();
+                      // await mail("New Booking", html, executiveMail).catch();
+                      // await mail(
+                      //   "Booking placed",
+                      //   `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                      //     diff * car.amount
+                      //   }</p>`,
+                      //   body.email
+                      // ).catch();
                       res.status(200).json({ msg: "car booked" });
                     });
                   });
@@ -185,7 +185,7 @@ const bookCar = async(req, res) => {
             }
           })
         } catch (error) {
-          console.log(error);
+          console.log(error, "error");
         }
     }
 }

@@ -51,7 +51,6 @@ app.get("/", async(req, res) => {
 app.post("/cars", (req, res) => {
   try {
     const data = req.body;
-    console.log(data)
     res.render("cars.ejs", {location:data.location, date:data.date, time:data.time, ddate: data.ddate});
   } catch (error) {
     console.log(error)

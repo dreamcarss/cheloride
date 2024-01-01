@@ -95,8 +95,11 @@
                     mcont.classList.add("msg");
                     mcont.textContent = d.msg;
                     container.appendChild(mcont);
-                    if(d?.token != null){
-                        localStorage.setItem("token", d.token)
+                    if(res.status === 200){
+                        if(d?.token != null){
+                            localStorage.setItem("token", d.token)
+                        }
+                        window.location.href="/"
                     }
                 })
             })
