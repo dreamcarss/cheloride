@@ -218,7 +218,7 @@
         width: 80%;
     }
     .form .wrap,
-    .wrap input{
+    .wrap input, select{
         width:100%;
     }
     .icons{
