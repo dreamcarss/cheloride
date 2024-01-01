@@ -22,9 +22,13 @@ const getBookings = async (req, res) => {
   try {
     const email = req.body.email;
     await bookingModel.findOne({userId: email}).then(async(booking) => {
-      await carModel.findById(booking.carId).then(async(car) => {
-        res.status(200).json({"booking": booking, "car": car})
-      })
+      if(booking != null){
+        await carModel.findById(booking.carId).then(async (car) => {
+          res.status(200).json({ booking: booking, car: car });
+        });
+      }else{
+        res.status(400).json({msg: "No Bookings Available"})
+      }
     })
   } catch (error) {
     console.log(error);

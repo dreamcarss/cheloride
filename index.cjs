@@ -62,6 +62,10 @@ app.get("/adminlogin", (req, res) => {
 })
 
 
+app.use((req, res, next) => {
+  res.render("400.ejs", {t:404, sub: "Not Found"})
+})
+
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
     app.listen(PORT, () => {

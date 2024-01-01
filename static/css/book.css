@@ -211,6 +211,21 @@
     background-color: yellowgreen;
 }
 
+.rdt {
+    width: max-content;
+    height: max-content;
+    font-family: "Integral";
+    font-size: 12px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+    background-color: yellowgreen;
+}
+
 .btns .btn.del{
     border: 2px solid red;
     color: red;
