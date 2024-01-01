@@ -19,12 +19,11 @@
                 <div style="display: flex; gap: 20px;">
                     <div class="wrap">
                         <label for="" class="lab">Location</label>
-                        <input type="text" name="location" id="location" placeholder="Select location">
-                        <div class="menu">
-                                <% locations?.forEach(function(loc, i, entries){ %>
-                                    <div class="lelm"><%= loc %></div>
-                                <% }) %>
-                        </div>
+                        <select type="text" name="location" id="location" placeholder="Select location">
+                            <% locations?.forEach(function(loc, i, entries){ %>
+                                <option class="lelm"><%= loc %></option>
+                            <% }) %>
+                        </select>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Pickup Date</label>
@@ -83,6 +82,7 @@
         const btn = document.getElementsByClassName("subt")[0];
         const form = document.getElementsByClassName("form")[0];
         const list = document.querySelectorAll(".lelm");
+        const menuCont = document.getElementsByClassName("menu")[0];
         const loc = document.getElementById("location");
         const pdate = document.getElementById("pdate");
         const ddate = document.getElementById("ddate");
@@ -96,6 +96,7 @@
         list?.forEach((l) => {
             l.onclick = () => {
                 loc.value = l.textContent;
+                menuCont.style.display = "none"
             }
         });
 

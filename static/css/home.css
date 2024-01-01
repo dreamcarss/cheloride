@@ -114,7 +114,7 @@
     font-size: 12px;
 }
 
-.wrap input{
+.wrap input, select{
     width: 140px;
     height: 35px;
     border-radius: 9px;
