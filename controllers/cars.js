@@ -51,10 +51,10 @@ const getALlCars = async(req, res) => {
               ) {
                 null;
               } else {
-                carsList.push(car.brand);
+                carsList.push(car);
               }
             } else {
-              carsList.push(car.brand);
+              carsList.push(car);
             }
           });
         });
