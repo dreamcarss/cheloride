@@ -1,4 +1,4 @@
-const { bookCar, confirmBook, getTempData, getAllBookings, payment, getBookings, updatePayment } = require("../controllers/booking");
+const { bookCar, confirmBook, getTempData, getAllBookings, payment, getBookings, updatePayment, deleteBooking } = require("../controllers/booking");
 const authMiddleware = require("../middlewares/auth");
 
 const bookingRouter = require("express").Router();
@@ -8,7 +8,7 @@ bookingRouter.get("/bookings", authMiddleware, getAllBookings);
 bookingRouter.post("/confirmBooking", authMiddleware, confirmBook);
 bookingRouter.get("/getTempData/:id", authMiddleware, getTempData);
 bookingRouter.post("/book", authMiddleware, bookCar);
-
+bookingRouter.delete("delete/:id", authMiddleware, deleteBooking);
 
 bookingRouter.get("/payment", payment);
 bookingRouter.post("/payment", authMiddleware, payment);

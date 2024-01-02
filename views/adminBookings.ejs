@@ -19,6 +19,13 @@
             <a href="" class="link">Logout</a>
         </div>
     </div>
+    <div class="modal">
+        <div class="subCont">
+            <div class="title">Delete Record</div>
+            <div class="sub">Are you sure, to delete booking record?</div>
+            <button class="btn">Delete</button>
+        </div>
+    </div>
     <div class="container">
         <div class="title">Analytics</div>
         <div class="cardsWrap">
@@ -41,6 +48,7 @@
                 <th class="th">Pickup Time</th>
                 <th class="th">Amount</th>
                 <th class="th">Payment Status</th>
+                <th class="th">Booking Status</th>
                 <th class="th">Action</th>
             </tr>
         </table>
@@ -55,7 +63,6 @@
 
         const update = (i) => {
             const id = document.getElementsByClassName("upd")[i].classList[2];
-            console.log(id)
             const row = document.getElementsByClassName("row")[i+1];
             const inp = row.querySelectorAll(".inp");
             let body = {
@@ -66,6 +73,7 @@
                 "dropDate": inp[3].value, 
                 "time": inp[4].value, 
                 "paymentStatus": inp[6].value, 
+                "bookingStatus": inp[7].value, 
             }
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
@@ -113,6 +121,14 @@
                                     <select id="status" class="inp">
                                         ${
                                             booking.paymentStatus == "paid" ? '<option value="unpaid">Unpaid</option> <option value="paid" selected="selected">Paid</option>' : '<option value="unpaid" selected="selected">Unpaid</option> <option value="paid">Paid</option>'
+                                            
+                                        }
+                                    </select>    
+                                </td>
+                                <td class="td">
+                                    <select id="bookingStatus" class="inp">
+                                        ${
+                                            booking.bookingStatus == true ? '<option value="false">Expired</option> <option value="true" selected="selected">Running</option>' : '<option value="false" selected="selected">Expired</option> <option value="true">Running</option>'
                                             
                                         }
                                     </select>    

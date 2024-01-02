@@ -9,6 +9,7 @@ const bookingSchema = mongoose.Schema({
   paymentStatus: { type: String, default: "unpaid" },
   startDate: { type: String, require: true },
   dropDate: { type: String, require: true },
+  bookingStatus: { type: Boolean, default: true },
 });
 
 

@@ -9,6 +9,7 @@ const bookingRouter = require("./routes/booking");
 const adminRoutes = require("./routes/admin");
 const carModel = require("./models/carModel.js");
 const adminAuth = require("./middlewares/adminauth");
+const { autoDelete } = require("./controllers/booking");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
@@ -38,6 +39,7 @@ app.get("/", async(req, res) => {
     await carModel.find().then(cars => {
       if(cars.length > 0){
         let locations = cars.map((car) => {return car.location})
+        locations.push("Any")
         res.render("index.ejs", {locations:locations});
       }else{
         res.render("index.ejs", {locations: "pm palem"});
@@ -65,6 +67,9 @@ app.get("/adminlogin", (req, res) => {
 app.use((req, res, next) => {
   res.render("400.ejs", {t:404, sub: "Not Found"})
 })
+
+//run daily funcs
+autoDelete();
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")

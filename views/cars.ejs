@@ -38,12 +38,13 @@
         const slider = document.getElementsByClassName("slider")[0];
         const container = document.getElementsByClassName("container")[0];
         let start = '<%- date %>'
-        let end = '<%- ddate %>'
-        console.log(end)
+        let end = '<%- ddate %>';
+        let loc = "<%- location %>"
         fetch(`/admin/allCars`, {
             headers:{
                 startDate: start,
-                endDate: end
+                endDate: end,
+                loc: loc
             }
         }).then(res => res.json().then(data => {
             data?.cars.forEach((car, i) => {
@@ -54,6 +55,7 @@
                     <div class="row">
                         <h3 class="title">${car.brand}</h3>
                         <h2 class="price">${car.amount}/day</h2>
+                        <h2 class="price">${Math.ceil(car.amount / 24)}/hr</h2>
                     </div>
                     <h4 class="ssub">${car.desc}</h4>
                     <button class="bbtn ${car._id}" onclick = "showPopup(${i})">View more</button>

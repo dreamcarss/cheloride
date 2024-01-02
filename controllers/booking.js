@@ -3,7 +3,6 @@ const carModel = require("../models/carModel");
 const tempBooking = require("../models/tempbooking");
 const userModel = require("../models/userModel");
 const mail = require("../utils/mailer");
-let id;
 const getAllBookings = async(req, res) => {
     try {
         await bookingModel.find().then(bookings => {
@@ -21,7 +20,7 @@ const getAllBookings = async(req, res) => {
 const getBookings = async (req, res) => {
   try {
     const email = req.body.email;
-    await bookingModel.findOne({userId: email}).then(async(booking) => {
+    await bookingModel.findOne({userId: email, bookingStatus: true}).then(async(booking) => {
       if(booking != null){
         await carModel.findById(booking.carId).then(async (car) => {
           res.status(200).json({ booking: booking, car: car });
@@ -106,85 +105,62 @@ const bookCar = async(req, res) => {
         try {
           const body = req.body;
           await tempBooking.findOne({userId: body.email}).then(async(booking) => {
-            console.log(booking)
             if(booking !=  null){
-              await carModel.findById(booking.carId).then((car) => {
-                console.log(car);
-                if (car.carStatus != true) {
-                  car.carStatus = true;
-                  const stDt = new Date(booking.data[1]);
-                  const edDt = new Date(booking.data[2]);
-                  let Difference_In_Time = edDt.getTime() - stDt.getTime();
-                  let diff = Math.round(
-                    Difference_In_Time / (1000 * 3600 * 24)
-                  );
-                  car.save().then(async () => {
-                    const newBooking = new bookingModel({
-                      time: booking.data[3],
-                      userId: body.email,
-                      carId: car._id,
-                      price: diff * car.amount,
-                      startDate: booking.data[1],
-                      dropDate: booking.data[2],
-                    });
-                    await tempBooking.findOneAndDelete({ carId: car._id });
-                    await newBooking.save().then(async () => {
-                      let html = `
-                        <div><b style="display: inline-block;">Booking By:</b> <p>${
-                          body.email
-                        }</p></div> 
-                        </br>
-                        <div>
-                          <b style="display: inline-block;">User phone:</b> <p>${
-                            body.phone
-                          }</p>
-                        </div> 
-                        </br> 
-                          <div>
-                            <b style="display: inline-block;">Booking date:</b> <p>${
-                              booking.data[1]
-                            }</p> 
-                          </div>
-                        </br>
-                          <div>
-                            <b style="display: inline-block;">Drop date:</b> <p>${
-                              booking.data[2]
-                            }</p>
-                          </div>
-                        </br> 
-                          <div>
-                            <b style="display: inline-block;">Booking time:</b> <p>${
-                              booking.data[3]
-                            }</p> 
-                          </div>
-                        </br> 
-                          <div>
-                            <b style="display: inline-block;">Car brand:</b> <p>${
-                              car.brand
-                            }</p> 
-                          </div>
-                        </br> 
-                          <div>
-                          <b style="display: inline-block;">Total Amount:</b> <p>${
-                            diff * car.amount
-                          }</p> 
-                          </div>
-                          `;
-                      let executiveMail = process.env.MAIL;
-                      // await mail("New Booking", html, executiveMail).catch();
-                      // await mail(
-                      //   "Booking placed",
-                      //   `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                      //     diff * car.amount
-                      //   }</p>`,
-                      //   body.email
-                      // ).catch();
-                      res.status(200).json({ msg: "car booked" });
-                    });
-                  });
-                } else {
-                  res.status(400).json({ msg: "car already booked" });
-                }
+              await carModel.findById(booking.carId).then(async(car) => {
+                const stDt = new Date(booking.data[1]);
+                const edDt = new Date(booking.data[2]);
+                let Difference_In_Time = edDt.getTime() - stDt.getTime();
+                let diff = Math.round(
+                  Difference_In_Time / (1000 * 3600 * 24)
+                );
+                const newBooking = new bookingModel({
+                  time: booking.data[3],
+                  userId: body.email,
+                  carId: car._id,
+                  price: diff * car.amount,
+                  startDate: booking.data[1],
+                  dropDate: booking.data[2],
+                });
+                await tempBooking.findOneAndDelete({ carId: car._id });
+                await newBooking.save().then(async () => {
+                  let html = `
+                    <div><b style="display: inline-block;">Booking By:</b> <p>${body.email}</p></div> 
+                    </br>
+                    <div>
+                      <b style="display: inline-block;">User phone:</b> <p>${body.phone}</p>
+                    </div> 
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Booking date:</b> <p>${booking.data[1]}</p> 
+                      </div>
+                    </br>
+                      <div>
+                        <b style="display: inline-block;">Drop date:</b> <p>${booking.data[2]}</p>
+                      </div>
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Booking time:</b> <p>${booking.data[3]}</p> 
+                      </div>
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Car brand:</b> <p>${car.brand}</p> 
+                      </div>
+                    </br> 
+                      <div>
+                      <b style="display: inline-block;">Total Amount:</b> <p>${newBooking.price}</p> 
+                      </div>
+                      `;
+                  let executiveMail = process.env.MAIL;
+                  // await mail("New Booking", html, executiveMail).catch();
+                  // await mail(
+                  //   "Booking placed",
+                  //   `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                  //     diff * car.amount
+                  //   }</p>`,
+                  //   body.email
+                  // ).catch();
+                  res.status(200).json({ msg: "car booked" });
+                });
               });
             }
           })
@@ -203,6 +179,7 @@ const updatePayment = async(req, res) => {
             if(bill != null){
               bill.time = body.time;
               bill.paymentStatus = body.paymentStatus;
+              bill.bookingStatus = body.bookingStatus;
               bill.startDate = body.startDate;
               bill.dropDate = body.dropDate;
               bill.save().then(() => {
@@ -236,6 +213,35 @@ const payment = async(req, res) => {
   }
 }
 
+const autoDelete = async(req, res) => {
+  try {
+    let date = new Date().toISOString().split("T")[0];
+    await bookingModel.find({dropDate: date, bookingStatus: true}).then(async(bookings) => {
+      if(bookings.length > 0){
+        bookings.forEach(async (booking) => {
+          booking.bookingStatus = false;
+          await booking.save().then(() => {
+            console.log("bookings marked")
+          });
+        })
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const deleteBooking = async(req, res) => {
+  try {
+    let id = req.params.id;
+    await bookingModel.findByIdAndDelete(id).then(async() => {
+      res.status(200).json({"msg": "Booking deleted"})
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   bookCar,
   confirmBook,
@@ -244,4 +250,6 @@ module.exports = {
   payment,
   getBookings,
   updatePayment,
+  autoDelete,
+  deleteBooking,
 };
