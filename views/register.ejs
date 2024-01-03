@@ -91,6 +91,7 @@
                 body: JSON.stringify(data)
             }).then((res) => {
                 res.json().then((d) => {
+                    console.log(d)
                     const mcont = document.createElement("div");
                     mcont.classList.add("msg");
                     mcont.textContent = d.msg;

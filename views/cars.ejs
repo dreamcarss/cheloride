@@ -32,10 +32,14 @@
         <div class="slider">
            
         </div>
+        <div class="slider slider2">
+           <p class="title" style="text-align: center; margin-top:30px">Other Locations</p>
+        </div>
     </div>
 
     <script>
         const slider = document.getElementsByClassName("slider")[0];
+        const slider2 = document.getElementsByClassName("slider2")[0];
         const container = document.getElementsByClassName("container")[0];
         let start = '<%- date %>'
         let end = '<%- ddate %>';
@@ -54,14 +58,21 @@
                 <div class="twrap">
                     <div class="row">
                         <h3 class="title">${car.brand}</h3>
-                        <h2 class="price">${car.amount}/day</h2>
-                        <h2 class="price">${Math.ceil(car.amount / 24)}/hr</h2>
+                        <div>
+                            <h2 class="price">${car.amount}/day</h2>
+                            <h2 class="price">${Math.ceil(car.amount / 24)}/hr</h2>
+                            <h2 class="price">${car.location}</h2>
+                        </div>
                     </div>
                     <h4 class="ssub">${car.desc}</h4>
-                    <button class="bbtn ${car._id}" onclick = "showPopup(${i})">View more</button>
+                    <button class="bbtn ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>
                 </div>`
                 newCar.innerHTML = carData;
-                slider.appendChild(newCar)
+                if(loc == car.location){
+                    slider.appendChild(newCar)
+                }else{
+                    slider2.appendChild(newCar)
+                }
             })
         }))
         const closePopup = () => {
@@ -70,7 +81,7 @@
             container.removeChild(popup);
         }
         const showPopup = (id) => {
-            const car_id = document.getElementsByClassName("bbtn")[id].classList[1];
+            const car_id = document.getElementsByClassName(id)[0].classList[1];
             fetch(`/admin/getCar/${car_id}`).then(res => res.json().then((data) => {
                 const popup = document.createElement("div");
                 popup.classList.add("popup");

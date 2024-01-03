@@ -26,6 +26,16 @@
     flex-direction: column;
 }
 
+.container .wrapCards{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
 .container .title {
     margin-bottom: 5px;
     font-size: 30px;

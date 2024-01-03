@@ -10,7 +10,7 @@ bookingRouter.get("/getTempData/:id", authMiddleware, getTempData);
 bookingRouter.post("/book", authMiddleware, bookCar);
 bookingRouter.delete("delete/:id", authMiddleware, deleteBooking);
 
-bookingRouter.get("/payment", payment);
+bookingRouter.get("/payment/:id", payment);
 bookingRouter.post("/payment", authMiddleware, payment);
 bookingRouter.patch("/updateStatus", authMiddleware, updatePayment);
 

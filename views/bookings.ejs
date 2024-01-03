@@ -10,77 +10,83 @@
 <body>
     <%- include('./navbar.ejs') %>
     <div class="container">
-        
+        <h2 class="title">Your Bookings</h2>
+        <div class="wrapCards">
+
+        </div>
     </div>
     <script>
-        const container = document.getElementsByClassName("container")[0]
+        const container = document.getElementsByClassName("wrapCards")[0]
         fetch("/booking/get", {
             headers: {
                 token: window.localStorage.getItem("token")
             }
         }).then(res => res.json().then(data => {
             if(res.status == 200){
-                let elem = `
-                    <h2 class="title">Your Booking</h2>
-                    <h3 class="sub">You can only cancel your ticket before 4hrs from booking.</h3>
-                    <div class="ticket">
-                        <div class="sec1">
-                            <div class="division">
-                                <div class="dates">
-                                    <p class="dt">${data.booking.startDate}</p>
-                                    <div class="line"></div>
-                                    <p class="dt">${data.booking.dropDate}</p>
-                                </div>
-                                <div class="subSec">
-                                    <img src="${data.car.image}" alt="" class="img">
-                                    <div class="wrap">
-                                        <div class="brand">${data.car.brand}</div>
-                                        <div class="tags">
-                                            <div class="tag">${data.car.geartype}</div>
-                                            <div class="tag">${data.car.location}</div>
-                                            <div class="tag">Seats: ${data.car.seating}</div>
-                                            <div class="tag">${data.car.mileage}</div>
+                data.data.map((recipt) => {
+                    let card = document.createElement("div");
+                    let elem = `
+                            <div class="ticket">
+                                <div class="sec1">
+                                    <div class="division">
+                                        <div class="dates">
+                                            <p class="dt">${recipt.booking.startDate}</p>
+                                            <div class="line"></div>
+                                            <p class="dt">${recipt.booking.dropDate}</p>
                                         </div>
+                                        <div class="subSec">
+                                            <img src="${recipt.car.image}" alt="" class="img">
+                                            <div class="wrap" style="width:max-content">
+                                                <div class="brand">${recipt.car.brand}</div>
+                                                <div class="tags">
+                                                    <div class="tag">${recipt.car.geartype}</div>
+                                                    <div class="tag">${recipt.car.location}</div>
+                                                    <div class="tag">Seats: ${recipt.car.seating}</div>
+                                                    <div class="tag">${recipt.car.mileage}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d2">
+                                        <div class="uname">${recipt.booking.userId}</div>
+                                        <div class="wrap">
+                                            <p class="cname">Time of booking</p>
+                                            <div class="line"></div>
+                                            <p class="val">${recipt.booking.time}</p>
+                                        </div>
+                                        <div class="wrap">
+                                            <p class="cname">Payment status</p>
+                                            <div class="line"></div>
+                                            <p class="val">${recipt.booking.paymentStatus}</p>
+                                        </div>
+                                        <div class="wrap">
+                                            <p class="cname">Total Cost</p>
+                                            <div class="line"></div>
+                                            <p class="val">${recipt.booking.price}/-</p>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="sec2">
+                                    <div class="inner">
+                                        Booked
                                     </div>
                                 </div>
                             </div>
-                            <div class="d2">
-                                <div class="uname">${data.booking.userId}</div>
-                                <div class="wrap">
-                                    <p class="cname">Time of booking</p>
-                                    <div class="line"></div>
-                                    <p class="val">${data.booking.time}</p>
-                                </div>
-                                <div class="wrap">
-                                    <p class="cname">Payment status</p>
-                                    <div class="line"></div>
-                                    <p class="val">${data.booking.paymentStatus}</p>
-                                </div>
-                                <div class="wrap">
-                                    <p class="cname">Total Cost</p>
-                                    <div class="line"></div>
-                                    <p class="val">${data.booking.price}/-</p>
-                                </div>
-                            </div>  
-                        </div>
-                        <div class="sec2">
-                            <div class="inner">
-                                Booked
+                            <div class="btns">
+                                ${
+                                    recipt.booking.paymentStatus != "paid" ? `<a href="/booking/payment/${recipt.booking._id}" class="btn">Pay Balance</a>` : ""
+                                }
+                                <button class="btn del">Cancel Booking</button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="btns">
-                        ${
-                            data.booking.paymentStatus != "paid" ? `<a href="/booking/payment" class="btn">Pay Balance</a>` : ""
-                        }
-                        <button class="btn del">Cancel Booking</button>
-                    </div>
-                    `;
-                container.innerHTML = elem;
+                        `;
+                    card.innerHTML = elem
+                    container.appendChild(card)
+                })
             }else{
-                let elem = `<h2 class="title" style="text-align:center">${data.msg}</h2>
+                let elem = `<div style="display:flex; justify-content:center; align-items:center; flex-direction:column">
+                    <h2 class="title" style="text-align:center">${data.msg}</h2>
                     <h3 class="sub">Book a car and Start your journey</h3>
-                    <a href="/" class="rdt">Book Car</a>`
+                    <a href="/" class="rdt">Book Car</a></div>`
                 container.innerHTML = elem;
             }
         }))

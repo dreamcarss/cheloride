@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 const SALT = process.env.SALT;
 
 const adminAuth = async(req, res, next) => {

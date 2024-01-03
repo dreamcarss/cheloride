@@ -3,6 +3,7 @@ const bcryptjs = require("bcryptjs");
 const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken")
 const fs = require("fs")
+require("dotenv").config()
 
 const SALT = process.env.SALT;
 
@@ -41,7 +42,7 @@ const register = async(req, res) => {
                         res.json({"msg": "user saved", "token": token})
                     })
                 }else{
-                    res.status(400).json({"msg": "user exists"})
+                    res.status(400).json({"msg": "User Already Exists"})
                 }
             })
 

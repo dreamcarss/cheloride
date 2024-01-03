@@ -122,8 +122,15 @@
 .twrap .row{
     width: 100%;
     display: flex;
+    flex-direction: column;
     gap: 20px;
-    align-items: center;
+}
+
+.twrap .row div{
+    width: max-content; 
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .price{

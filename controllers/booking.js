@@ -3,6 +3,8 @@ const carModel = require("../models/carModel");
 const tempBooking = require("../models/tempbooking");
 const userModel = require("../models/userModel");
 const mail = require("../utils/mailer");
+require("dotenv").config();
+
 const getAllBookings = async(req, res) => {
     try {
         await bookingModel.find().then(bookings => {
@@ -20,11 +22,17 @@ const getAllBookings = async(req, res) => {
 const getBookings = async (req, res) => {
   try {
     const email = req.body.email;
-    await bookingModel.findOne({userId: email, bookingStatus: true}).then(async(booking) => {
-      if(booking != null){
-        await carModel.findById(booking.carId).then(async (car) => {
-          res.status(200).json({ booking: booking, car: car });
-        });
+    await bookingModel.find({userId: email, bookingStatus: true}).then(async(bookings) => {
+      if(bookings.length > 0){
+        let data = []
+        let promise = bookings.map(async(booking) => {
+          await carModel.findById(booking.carId).then(async (car) => {
+            data.push({booking, car})
+          });
+        })
+        Promise.all(promise).then(() => {
+          res.status(200).json({"data": data})
+        })
       }else{
         res.status(400).json({msg: "No Bookings Available"})
       }
@@ -88,7 +96,7 @@ const bookCar = async(req, res) => {
               );
               let data = {};
               data.brand = car.brand;
-              data.location = booking.data[0];
+              data.location = car.location;
               data.date = booking.data[1];
               data.ddate = booking.data[2];
               data.time = booking.data[3];
@@ -198,7 +206,12 @@ const updatePayment = async(req, res) => {
 const payment = async(req, res) => {
   try {
     if(req.method == "GET"){
-      res.render("bill.ejs", {merchant: process.env.MERCHANT});
+      let id = req.params.id;
+      await bookingModel.findById(id).then((booking) => {
+        if(booking != null){
+          res.render("bill.ejs", { merchant: process.env.MERCHANT, price: booking.price });
+        }
+      })
     }else if(req.method == "POST"){
       console.log(req.body)
       await bookingModel.findOne({userId: req.body.email}).then(booking => {

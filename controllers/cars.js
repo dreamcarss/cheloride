@@ -41,12 +41,7 @@ const getALlCars = async(req, res) => {
       let carsList = [];
       let loc = req.headers.loc;
       console.log(req.headers.loc)
-      let cars;
-      if(loc == "Any"){
-        cars = await carModel.find()
-      }else{
-        cars = await carModel.find({ location: req.headers.loc });
-      }
+      let cars = await carModel.find()
       let promises = cars.map(async (car) => {
         await bookingModel.findOne({ carId: car._id, bookingStatus:true}).then((booking) => {
           if (booking != null) {

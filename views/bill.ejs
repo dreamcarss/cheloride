@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="../static/css/booking.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/booking.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CheloRide</title>
 </head>
@@ -16,9 +16,9 @@
             <div class="gt">
                 <div class="cnt1">
                     <h2 class="stit">Grand Total</h2>
-                    <p class="amt" id="price">/-</p>
+                    <p class="amt" id="price"><%= price %>/-</p>
                 </div>
-                <a href="" id="link" style="text-decoration: none;" class="btn">pay using upi</a>
+                <a href="upi://pay?pa=<%= merchant %>@paytm&pn=%20&tr=%20&am=<%= price %>&cu=INR" id="link" style="text-decoration: none;" class="btn">pay using upi</a>
             </div>
         </div>
     </div>
@@ -33,9 +33,9 @@
             'token':window.localStorage.getItem("token")
             },
         }).then(res => res.json().then(data => {
-            id.textContent = data?.price+"/-";
+            // id.textContent = data?.price+"/-";
             var merchant = "<%- escape(merchant) %>";
-            const uri = `upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(data.price)}&cu=INR`;
+            const uri = ;
             link.setAttribute("href", uri)
         }))
     </script>
