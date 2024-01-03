@@ -159,14 +159,14 @@ const bookCar = async(req, res) => {
                       </div>
                       `;
                   let executiveMail = process.env.MAIL;
-                  // await mail("New Booking", html, executiveMail).catch();
-                  // await mail(
-                  //   "Booking placed",
-                  //   `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                  //     diff * car.amount
-                  //   }</p>`,
-                  //   body.email
-                  // ).catch();
+                  await mail("New Booking", html, executiveMail).catch();
+                  await mail(
+                    "Booking placed",
+                    `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                      diff * car.amount
+                    }</p>`,
+                    body.email
+                  ).catch();
                   res.status(200).json({ msg: "car booked" });
                 });
               });
@@ -203,28 +203,22 @@ const updatePayment = async(req, res) => {
 }
 
 
-const payment = async(req, res) => {
-  try {
-    if(req.method == "GET"){
-      let id = req.params.id;
-      await bookingModel.findById(id).then((booking) => {
-        if(booking != null){
-          res.render("bill.ejs", { merchant: process.env.MERCHANT, price: booking.price });
-        }
-      })
-    }else if(req.method == "POST"){
-      console.log(req.body)
-      await bookingModel.findOne({userId: req.body.email}).then(booking => {
-        console.log(booking)
-        if(booking != null){
-          res.status(200).json({"price": booking.price})
-        }
-      })
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const payment = async(req, res) => {
+//   try {
+//     let id = req.params.id
+//     if(req.method == "GET"){
+//         res.render("bill.ejs", { merchant: process.env.MERCHANT,  id: id });
+//     }else if(req.method == "POST"){
+//       await bookingModel.findById(id).then(booking => {
+//         if(booking != null){
+//           res.status(200).json({"price": booking.price})
+//         }
+//       })
+//     }
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 const autoDelete = async(req, res) => {
   try {
@@ -260,7 +254,7 @@ module.exports = {
   confirmBook,
   getTempData,
   getAllBookings,
-  payment,
+  // payment,
   getBookings,
   updatePayment,
   autoDelete,

@@ -16,6 +16,7 @@
         </div>
     </div>
     <script>
+        let merchant = "<%- merchant %>"
         const container = document.getElementsByClassName("wrapCards")[0]
         fetch("/booking/get", {
             headers: {
@@ -74,7 +75,7 @@
                             </div>
                             <div class="btns">
                                 ${
-                                    recipt.booking.paymentStatus != "paid" ? `<a href="/booking/payment/${recipt.booking._id}" class="btn">Pay Balance</a>` : ""
+                                    recipt.booking.paymentStatus != "paid" ? `<a href="upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(recipt.booking.price)}&cu=INR" class="btn">Pay using UPI</a>` : ""
                                 }
                                 <button class="btn del">Cancel Booking</button>
                             </div>
