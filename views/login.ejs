@@ -15,7 +15,8 @@
         <form id="formElm" class="form">
             <div class="wrap">
                 <label for="">Email</label>
-                <input type="text" class="inp" name="email">
+                <input type="text" class="inp" name="email" id="email">
+                <p class="msg" id="msg"></p>
             </div>
             <div class="wrap">
                 <label for="">Password</label>
@@ -31,7 +32,8 @@
         // if(tokenStatus != ""){
         //     window.location.href = "/"
         // }
-
+        const msg = document.getElementById("msg")
+        const emailElem = document.getElementById("email")
         const formElm = document.getElementById("formElm");
         const container = document.getElementsByClassName("container")[0];
         formElm.onsubmit = async(e) => {
@@ -49,10 +51,8 @@
                 body: JSON.stringify(data)
             }).then((res) => {
                 res.json().then((d) => {
-                    const mcont = document.createElement("div");
-                    mcont.classList.add("msg");
-                    mcont.textContent = d.msg;
-                    container.appendChild(mcont);
+                    msg.textContent = d.msg;
+                    emailElem.classList.add("warn")
                     if(res.status === 200){
                         if(d?.token != null){
                             localStorage.setItem("token", d.token)
