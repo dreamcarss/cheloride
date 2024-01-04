@@ -96,7 +96,9 @@
     border-radius: 5px;
     font-size: 12px;
     cursor: pointer;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .msg{
@@ -120,6 +122,35 @@
     color: rgb(108, 216, 0);
     text-decoration: none;
     font-size: 11px;
+}
+
+.circle{
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    position: relative;
+    background: conic-gradient(white 0deg, white 270deg, transparent 270deg, transparent 360deg);
+    animation: loading 0.3s ease infinite;
+}
+
+@keyframes loading {
+    from{
+        transform: rotate(0deg);
+    }to{
+        transform: rotate(360deg);
+    }
+}
+
+.circle::before{
+    content: "";
+    width: 18px;
+    height: 18px;
+    background-color: yellowgreen;
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @media only screen and (max-width: 600px) {

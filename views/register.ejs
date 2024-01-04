@@ -50,60 +50,71 @@
                 </div>
                 <input type="file" class="inp" accept="image/*" name="idProof">
             </div>
-            <button class="btn" type="submit">Submit</button>
+            <button class="btn" type="submit">
+                Submit
+            </button>
             <a href="/auth/login" class="link">Already having account? Login</a>
         </form>
     </div>
     <script>
 
         const tokenStatus = localStorage.getItem("token") != null;
-        console.log(tokenStatus)
+        const btn = document.getElementsByClassName("btn")[0]
 
         const formElm = document.getElementById("formElm");
         const msg = document.getElementById("msg")
         const emailElem = document.getElementById("email")
         const container = document.getElementsByClassName("container")[0];
         formElm.onsubmit = async(e) => {
-            e.preventDefault();
-            const name = formElm["name"].value;
-            const email = formElm["email"].value;
-            const phone = formElm["phone"].value;
-            const password = formElm["password"].value;
-            const role = formElm["role"].value;
+            try {
+                e.preventDefault();
+                btn.innerHTML = '<div class="circle"></div>';
+                msg.textContent = ""
+                const name = formElm["name"].value;
+                const email = formElm["email"].value;
+                const phone = formElm["phone"].value;
+                const password = formElm["password"].value;
+                const role = formElm["role"].value;
 
-            function fileCatch(img) {
-                const file = img["files"][0];
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
-                });
-            }
+                function fileCatch(img) {
+                    const file = img["files"][0];
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                    });
+                }
 
-            let licence = await fileCatch(formElm["image"])
-            let aadhaar = await fileCatch(formElm["aadhaar"])
-            let id = await fileCatch(formElm["idProof"])
-            const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
-            fetch("/auth/register", {
-                 method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then((res) => {
-                res.json().then((d) => {
-                    msg.textContent = d.msg;
-                    emailElem.classList.add("warn")
-                    if(res.status === 200){
-                        if(d?.token != null){
-                            localStorage.setItem("token", d.token)
+                let licence = await fileCatch(formElm["image"])
+                let aadhaar = await fileCatch(formElm["aadhaar"])
+                let id = await fileCatch(formElm["idProof"])
+                const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
+                fetch("/auth/register", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then((res) => {
+                    res.json().then((d) => {
+                        msg.textContent = d.msg;
+                        btn.innerHTML = "Submit"
+                        if(res.status === 200){
+                            if(d?.token != null){
+                                localStorage.setItem("token", d.token)
+                            }
+                            window.location.href="/"
+                        }else{
+                            emailElem.classList.add("warn");
                         }
-                        window.location.href="/"
-                    }
+                    })
                 })
-            })
+            } catch (error) {
+                msg.textContent = "*Please fill details";
+                btn.innerHTML = "Submit"
+            }
         }
     </script>
 

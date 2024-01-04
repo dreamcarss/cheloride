@@ -27,40 +27,49 @@
         </form>
     </div>
     <script>
-
-        // const tokenStatus = localStorage.getItem("token");
-        // if(tokenStatus != ""){
-        //     window.location.href = "/"
-        // }
+        const btn = document.getElementsByClassName("btn")[0]
         const msg = document.getElementById("msg")
         const emailElem = document.getElementById("email")
         const formElm = document.getElementById("formElm");
         const container = document.getElementsByClassName("container")[0];
         formElm.onsubmit = async(e) => {
-            e.preventDefault();
-            const email = formElm["email"].value;
-            const password = formElm["password"].value;
-
-            const data = {email, password}
-            fetch("/auth/login", {
-                 method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then((res) => {
-                res.json().then((d) => {
-                    msg.textContent = d.msg;
-                    emailElem.classList.add("warn")
-                    if(res.status === 200){
-                        if(d?.token != null){
-                            localStorage.setItem("token", d.token)
-                        }
-                        window.location.href="/"
-                    }
-                })
-            })
+            try {
+                e.preventDefault();
+                btn.innerHTML = '<div class="circle"></div>';
+                msg.textContent = ""
+                const email = formElm["email"].value;
+                const password = formElm["password"].value;
+                if(email == "" || password == ""){
+                     btn.innerHTML = "Submit"
+                    msg.textContent = "*Please fill details";
+                }else{
+                    const data = {email, password}
+                    fetch("/auth/login", {
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then((res) => {
+                        res.json().then((d) => {
+                            msg.textContent = d.msg;
+                            btn.innerHTML = "Submit"
+                            if(res.status === 200){
+                                if(d?.token != null){
+                                    localStorage.setItem("token", d.token)
+                                }
+                                window.location.href="/"
+                            }else{
+                                emailElem.classList.add("warn");
+                            }
+                        })
+                    })
+                }
+            } catch (error) {
+                msg.textContent = "Invalid Credintials";
+                btn.innerHTML = "Submit"
+            }
         }
     </script>
 
