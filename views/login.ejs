@@ -57,6 +57,7 @@
                             msg.textContent = d.msg;
                             btn.innerHTML = "Submit"
                             if(res.status === 200){
+                                msg.style.color = "#111"
                                 if(d?.token != null){
                                     localStorage.setItem("token", d.token)
                                 }
