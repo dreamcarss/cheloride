@@ -32,11 +32,13 @@
             </div>
             <div class="wrap">
                 <label for="">Aadhaar</label>
-                <input type="file" class="inp" accept="image/*" name="aadhaar">
+                <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
+                <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;" />
             </div>
             <div class="wrap">
                 <label for="">License</label>
-                <input type="file" id="image" accept="image/*" class="inp" name="image">
+                <input type="file" id="img" accept="image/*" class="inp none file" name="image">
+                <label for="img" type="text" class="inp second" id="image" style="color: black;" />
             </div>
             <div class="wrap">
                 <label for="">Id Proof</label>
@@ -48,7 +50,8 @@
                     <input type="radio" placeholder="job" name="role" value="job" id="jb">
                     <label for="jb" class="lab">Job</label>
                 </div>
-                <input type="file" class="inp" accept="image/*" name="idProof">
+                <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
+                <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;" />
             </div>
             <button class="btn" type="submit">
                 Submit
@@ -60,11 +63,20 @@
 
         const tokenStatus = localStorage.getItem("token") != null;
         const btn = document.getElementsByClassName("btn")[0]
-
+        const files = document.querySelectorAll(".file");
         const formElm = document.getElementById("formElm");
         const msg = document.getElementById("msg")
         const emailElem = document.getElementById("email")
         const container = document.getElementsByClassName("container")[0];
+
+        files.forEach((file) => {
+            file.addEventListener("input", () => {
+                let fileName = file["files"][0].name;
+                console.log(fileName, file)
+                document.getElementById(file.name).textContent = fileName;
+            })
+        })
+
         formElm.onsubmit = async(e) => {
             try {
                 e.preventDefault();
@@ -86,8 +98,8 @@
                     });
                 }
 
-                let licence = await fileCatch(formElm["image"])
                 let aadhaar = await fileCatch(formElm["aadhaar"])
+                let licence = await fileCatch(formElm["image"])
                 let id = await fileCatch(formElm["idProof"])
                 const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
                 fetch("/auth/register", {
