@@ -10,7 +10,7 @@
 <body>
     <div class="navbar">
         <div class="logo">Chelo Ride</div>
-        <div class="links">
+        <div class="links lcont">
             <a href="/" class="link">Home</a>
             <a href="/" class="link">About</a>
             <a href="/" class="link">Bullitens</a>
@@ -29,7 +29,7 @@
                 <p>Chelo Ride</p>
                 <ion-icon name="close-outline" id="close"></ion-icon>
             </div>
-            <div class="links">
+            <div class="links lcont">
                 <a href="/" class="link">Home</a>
                 <a href="/" class="link">About</a>
                 <a href="/" class="link">Bullitens</a>
@@ -66,7 +66,22 @@
                     window.localStorage.clear()
                     window.location.href ="/auth/login"
                 };
-            })
+            });
+            fetch("/adminpanel/checkAdmin", {
+                headers: {
+                    token: token
+                }
+            }).then((res) => res.json().then((data) => {
+                if(res.status == 200){
+                    document.querySelectorAll(".lcont").forEach((link) => {
+                        let a = document.createElement("a")
+                        a.setAttribute("href", data.url);
+                        a.innerText = "Adminpanel";
+                        a.classList.add("link");
+                        link.appendChild(a);
+                    })
+                }
+            }))
         }
         open.onclick = () => {
             menu.style.left = 0;

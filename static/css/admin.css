@@ -18,6 +18,69 @@ body{
     overflow-x: hidden;
 }
 
+
+.modal{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.281);
+}
+
+.modal .mcard{
+    width: 250px;
+    height: max-content;
+    word-wrap: break-word;
+    background-color: rgb(70, 70, 70);
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+
+.modal .mcard .title{
+    font-family: "Montserrat";
+    font-size: 20px;
+    color: white;
+}
+
+.modal .mcard .wrap{
+    width: 100%;
+    height: max-content;
+    margin-top: 10px;
+}
+
+.modal .mcard .wrap .btn{
+    width: max-content;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 2px solid rgb(46, 46, 46);
+    border-radius: 5px;
+    background-color: grey;
+    position: relative;
+    font-family: "poppins";
+    color: white;
+}
+
+.modal .mcard .wrap .btn.del{
+    border: none;
+    background-color: red;
+    border:2px solid red;
+    color: white;
+}
+
+.modal .mcard .wrap .btn.grn {
+    background-color: #346dff;
+    border: 2px solid #346dff;
+}
+
+
 .container {
     width: 100%;
     min-height: 100vh;
@@ -34,6 +97,7 @@ body{
     height: max-content;
     display: flex;
     gap: 40px;
+    margin-top: 20px;
 }
 
 .container .cardsWrap .card{
@@ -243,6 +307,71 @@ td {
     }100%{
         right: 20px;
     }
+}
+
+.tcard{
+    width: max-content;
+    height: max-content;
+    background-color: rgba(1, 235, 173, 0.762);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 15px;
+    font-family: "Poppins";
+}
+
+.circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    position: relative;
+    background: conic-gradient(white 0deg, white 270deg, transparent 270deg, transparent 360deg);
+    animation: loading 0.3s ease infinite;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.circle::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background-color:#346dff;
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.tcard .title{
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+}
+
+.tcard .sub{
+    font-size: 12px;
+}
+
+
+.tcard .btn{
+    width: max-content;
+    height: max-content;
+    font-family: Poppins;
+    font-size: 12px;
+    border: none;
+    background-color: #346dff;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
 }
 
 .userCont{

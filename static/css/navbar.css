@@ -15,6 +15,12 @@
     top: 0;
 }
 
+.navbar .logo{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
 .navbar .links {
     width: max-content;
     display: flex;

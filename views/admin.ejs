@@ -5,20 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/admin.css">
-    <link rel="stylesheet" href="../static/css/navbar.css">
     <title>CheloRide</title>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">Chelo Ride</div>
-        <div class="links">
-            <a href="/adminpanel/" class="link">Cars</a>
-            <a href="/adminpanel/bookings" class="link">Bookings</a>
-        </div>
-        <div class="links">
-            <a href="" class="link">Logout</a>
-        </div>
-    </div>
+    <%- include('./adminNavbar.ejs') %>
+    
     <div class="container">
         <div class="title">Analytics</div>
         <div class="cardsWrap">
@@ -42,7 +33,7 @@
                 <th class="th">Luggage Capacity</th>
                 <th class="th">Mileage</th>
                 <th class="th">Location</th>
-                <th class="th">Booking Status</th>
+                <th class="th">Fuel Type</th>
                 <th class="th">Price</th>
                 <th class="th">Action</th>
             </tr>
@@ -61,6 +52,7 @@
             <input type="text" class="inp" name="luggage" placeholder="Luggage Capacity">
             <input type="text" class="inp" name="mileage" placeholder="Mileage">
             <input type="text" class="inp" name="location" placeholder="Location">
+            <input type="text" class="inp" name="fueltype" placeholder="Fuel Type">
             <input type="text" class="inp" name="price" placeholder="Amount">
             <button class="sbt" id="sbt">Submit</button>
         </form>
@@ -95,16 +87,15 @@
                                 <td class="td">${car.luggage}</td>
                                 <td class="td">${car.mileage}</td>
                                 <td class="td">${car.location}</td>
-                                <td class="td">${car.carStatus ? "booked": "Not Booked"}</td>
+                                <td class="td">${car.fueltype}</td>
                                 <td class="td">${car.amount}</td>
                                 <td class="td">
-                                    <button class="del ${car._id}" onclick="deleteHandler(${i})">Delete</button>
+                                    <button class="del ${car._id}" onclick="showModal(${i})">Delete</button>
                                 </td>`;
                 row.innerHTML = elem;
                 table.appendChild(row);
             })
         })).catch(e => {
-            console.log(e)
         })
 
         function fileCatch(img) {
@@ -129,6 +120,7 @@
             const mileage = form["mileage"].value;
             const amount = form["price"].value;
             const location = form["location"].value;
+            const fueltype = form["fueltype"].value;
             let data = {
                 brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount
             }
@@ -136,7 +128,8 @@
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token':window.localStorage.getItem("token")
                 },
                 body: JSON.stringify(data)
             }).then((res) => {
@@ -154,10 +147,26 @@
             popup.style.display = "none";
         })
 
+        const showModal = (i) => {
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            modal.innerHTML = `<div class="mcard">
+                    <h2 class="title">Are you sure to delete the record?</h2>
+                    <div class="wrap">
+                        <button class="btn" onclick="(() => {document.getElementsByClassName('modal')[0].style.display = 'none'})()">Cancel</button>
+                        <button class="btn del" onclick="deleteHandler(${i})">Move to Trash</button>
+                    </div>
+                </div>`
+            document.getElementsByTagName("body")[0].appendChild(modal);
+        }
+
         const deleteHandler = (i) => {
             const id = document.getElementsByClassName("del")[i].classList[1];
             fetch(`/admin/delete/${id}`, {
-                method: "delete"
+                method: "delete",
+                headers:{
+                    'token': window.localStorage.getItem("token")
+                }
             }).then(res => res.json().then(data => {
                 window.location.href = "/adminpanel"
             }))

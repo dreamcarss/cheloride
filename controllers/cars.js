@@ -1,4 +1,5 @@
 const carModel = require("../models/carModel.js");
+const trashModel = require("../models/trashbin");
 const cloudinary = require("cloudinary");
 const bookingModel = require("../models/booking.js");
 
@@ -18,6 +19,7 @@ const createCars = async(req, res) => {
           desc: body.desc,
           geartype: body.gear,
           fuelcap: body.fuel,
+          fueltype: body.fueltype,
           seating: body.seating,
           location: body.location,
           luggage: body.luggage,
@@ -107,9 +109,18 @@ const deleteCar = async(req, res) => {
   try {
     const id = req.params.id;
     console.log(id)
-    await carModel.findByIdAndDelete(id).then(() => {
-      res.status(200).json({"msg": "Car Deleted"})
-    })
+    await carModel.findById(id).then((car) => {
+      if (car != null) {
+        let trash = new trashModel({
+          trash: car,
+        });
+        trash.save().then(async() => {
+          await carModel.findByIdAndDelete(id).then(() => {
+            res.status(200).json({ msg: "Car Deleted Successfully" });
+          })
+        });
+      }
+    });
   } catch (error) {
     console.log(error)
   }

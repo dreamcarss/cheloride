@@ -131,22 +131,27 @@
         const bookHandler = async() => {
             const id = document.getElementsByClassName("idbtn")[0].classList[2]
             const token = localStorage.getItem("token");
-            const subs = document.querySelectorAll(".wsub");
-            const data = [];
-            subs.forEach((s) => data.push(s.textContent));
-            console.log(data, token, id);
-            let d = {data, carid: id}
-            fetch("/booking/confirmBooking", {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'token': token,
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d)
-            }).then(res => res.json().then(data => {
-                window.location.href = `/booking/book?id=${data.msg}`
-            }))
+            if(token != null){
+                    const subs = document.querySelectorAll(".wsub");
+                    const data = [];
+                    subs.forEach((s) => data.push(s.textContent));
+                    console.log(data, token, id);
+                    let d = {data, carid: id}
+                    fetch("/booking/confirmBooking", {
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'token': token,
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(d)
+                    }).then(res => res.json().then(data => {
+                        window.location.href = `/booking/book?id=${data.msg}`
+                }))
+            }else{
+                window.location.href = "/auth/login"
+            }
+            
         }
     </script>
 </body>

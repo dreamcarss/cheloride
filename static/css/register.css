@@ -107,6 +107,9 @@
     color: rgb(255, 96, 96);
     font-family: "Poppins";
     z-index: 6;
+    width: 100%;
+    word-wrap: break-word;
+    margin-top: 10px;
     font-size: 12px;
 }
 .wrap .inp.warn{

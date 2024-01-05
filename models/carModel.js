@@ -11,7 +11,7 @@ const carSchema = mongoose.Schema({
   location: { type: String, required: true },
   luggage: { type: String, required: true },
   mileage: { type: String, required: true },
-  carStatus: { type: Boolean, default: false },
+  fueltype: { type: String, default: false },
 });
 
 const carModel = mongoose.model("cars", carSchema)

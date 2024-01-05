@@ -19,23 +19,23 @@
                 <div style="display: flex; gap: 20px;">
                     <div class="wrap">
                         <label for="" class="lab">Location</label>
-                        <select type="text" name="location" id="location" placeholder="Select location">
+                        <select type="text" name="location" id="location" placeholder="Select location" required>
                             <% locations?.forEach(function(loc, i, entries){ %>
-                                <option class="lelm"><%= loc %></option>
+                                <option class="lelm"><%= loc.toUpperCase() %></option>
                             <% }) %>
                         </select>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Pickup Date</label>
-                        <input type="date" name="date" id="pdate"/>
+                        <input type="date" name="date" id="pdate" required/>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Pickup Time</label>
-                        <input type="time" name="time" id="" min="09:00 am" max="22:00" placeholder="10:10 am">
+                        <input type="time" name="time" id="" min="09:00 am" max="22:00" placeholder="10:10 am" required>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Drop Date</label>
-                        <input type="date" name="ddate" id="ddate">
+                        <input type="date" name="ddate" id="ddate" required>
                     </div>
                 </div>
                 <button type="submit" class="subt" style="display: none;"></button>
@@ -44,19 +44,19 @@
         </div>
         <div class="icons">
             <div class="wrap">
-                <h3 class="wtitle">25,000+ Happy Customers</h3>
+                <h3 class="wtitle">25,000<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Happy Customers</h3>
                 <h6 class="wsub">Our dedicated team is proud to have served over 25,000 happy customers, providing top-notch service and satisfaction.</h6>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">150+ Cars</h3>
+                <h3 class="wtitle">150<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Cars</h3>
                 <h6 class="wsub">With a fleet of over 150 cars, we offer a diverse range to meet your transportation needs, ensuring comfort and style.</h6>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">10+ Years Experience</h3>
+                <h3 class="wtitle">10<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Years Experience</h3>
                 <h6 class="wsub">Bringing more than a decade of experience, we take pride in our expertise, providing reliable services since our establishment.</h6>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">300+ Drivers</h3>
+                <h3 class="wtitle">300<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Drivers</h3>
                 <h6 class="wsub">Our team comprises over 300 skilled and licensed drivers, ensuring your safety and a smooth journey every time.</h6>
             </div>
         </div>
@@ -86,13 +86,7 @@
         const loc = document.getElementById("location");
         const pdate = document.getElementById("pdate");
         const ddate = document.getElementById("ddate");
-        const subHandler = () => {
-                if(token != null){
-                    btn.click()
-                }else{
-                    window.location.href = "/auth/login"
-                }
-        }
+        const subHandler = () => btn.click()
         list?.forEach((l) => {
             l.onclick = () => {
                 loc.value = l.textContent;

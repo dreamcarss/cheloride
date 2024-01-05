@@ -34,13 +34,17 @@ app.use("/adminpanel", adminRoutes);
 app.use("/booking", bookingRouter)
 
 
+function remDups(arr) {
+  return arr.filter((item, index) => arr.indexOf(item) === index);
+} 
+
 app.get("/", async(req, res) => {
   try {
     await carModel.find().then(cars => {
       if(cars.length > 0){
-        let locations = cars.map((car) => {return car.location})
+        let locations = cars.map((car) => {return car.location.toLowerCase()})
         locations.push("Any")
-        res.render("index.ejs", {locations:locations});
+        res.render("index.ejs", { locations: remDups(locations)});
       }else{
         res.render("index.ejs", {locations: "pm palem"});
       }
@@ -69,10 +73,10 @@ app.use((req, res, next) => {
 })
 
 //run daily funcs
-autoDelete();
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
+    autoDelete();
     app.listen(PORT, () => {
       console.log("server started");
       console.log(`http://localhost:${PORT}/`)

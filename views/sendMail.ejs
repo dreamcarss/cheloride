@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>CheloRide</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <div class="opWrap"></div>
+        <h3 class="title">CHELORIDE - Password Reset</h3>
+        <div id="formElm" class="form">
+            <div class="wrap">
+                <label for="">Email</label>
+                <input type="text" class="inp" name="email" id="email" placeholder="Email associated with your account">
+            </div>
+            <button class="btn" type="button">Send</button>
+            <p class="msg" id="msg" style="color: white;"></p>
+        </div>
+    </div>
+    <script>
+        const btn = document.getElementsByClassName("btn")[0]
+        btn.addEventListener("click", () => {
+            btn.innerHTML = '<div class="circle"></div>';
+            const email = document.getElementById("email").value;
+            let data = {email};
+            fetch("/auth/checkMail", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((res) => res.json().then((data) => {
+                btn.innerHTML = "Send"
+                document.getElementById("msg").textContent = data.msg;
+            }))
+        })
+        
+        
+    </script>
+
+    
+</body>
+</html>
