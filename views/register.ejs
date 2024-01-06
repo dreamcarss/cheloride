@@ -102,6 +102,7 @@
                 let licence = await fileCatch(formElm["image"])
                 let id = await fileCatch(formElm["idProof"])
                 const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
+                console.log(data)
                 fetch("/auth/register", {
                     method: 'POST',
                     headers: {

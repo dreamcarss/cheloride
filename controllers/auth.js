@@ -23,31 +23,29 @@ const register = async(req, res) => {
             res.render("register.ejs");
         }else if(request.method === "POST"){
             const body = request?.body;
-            userModel.findOne({email: body.email}).then(async(user) => {
-                if(user == null){
-                    const hash = await bcryptjs.hash(body.password, 10);
-                    let newUser = new userModel({
-                      username: body.name,
-                      email: body.email,
-                      phone: parseInt(body.phone),
-                      password: hash,
-                      role: "user",
-                      aadhaar: await handleUpload(body.aadhaar),
-                      idproof: {
-                        userType: "student",
-                        proof: await handleUpload(body.id),
-                      },
-                      license: await handleUpload(body.license),
-                    });
-                    await newUser.save().then(() => {
-                        let token = jwt.sign(body.email, SALT)
-                        res.json({"msg": "user saved", "token": token})
-                    })
-                }else{
-                    res.status(400).json({"msg": "User Already Exists"})
-                }
-            })
-
+            const user = userModel.findOne({email: body.email})
+            if (user == null) {
+              const hash = await bcryptjs.hash(body.password, 10);
+              let newUser = new userModel({
+                username: body.name,
+                email: body.email,
+                phone: parseInt(body.phone),
+                password: hash,
+                role: "user",
+                aadhaar: await handleUpload(body.aadhaar),
+                idproof: {
+                  userType: "student",
+                  proof: await handleUpload(body.id),
+                },
+                license: await handleUpload(body.license),
+              });
+              await newUser.save().then(() => {
+                let token = jwt.sign(body.email, SALT);
+                res.json({ msg: "user saved", token: token });
+              });
+            } else {
+              res.status(400).json({ msg: "User Already Exists" });
+            }
         }
         
     } catch (error) {
