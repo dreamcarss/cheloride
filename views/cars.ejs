@@ -59,7 +59,7 @@
                     <div class="row">
                         <h3 class="title">${car.brand}</h3>
                         <div>
-                            <h2 class="price">${car.amount}/day</h2>
+                            <h2 class="price">${car.fueltype}</h2>
                             <h2 class="price">${Math.ceil(car.amount / 24)}/hr</h2>
                             <h2 class="price">${car.location}</h2>
                         </div>
@@ -113,6 +113,10 @@
                             <div class="subwrap">
                                 <div class="tit">milage</div>
                                 <p class="sub">${data.mileage}</p>
+                            </div>
+                            <div class="subwrap">
+                                <div class="tit">Fuel Type</div>
+                                <p class="sub">${data.fueltype}</p>
                             </div>
                             <div class="subwrap">
                                 <div class="tit">Amount</div>
