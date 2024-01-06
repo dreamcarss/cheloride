@@ -35,7 +35,7 @@ const register = async(req, res) => {
                 role: "user",
                 aadhaar: await handleUpload(body.aadhaar),
                 idproof: {
-                  userType: "student",
+                  userType: body.role,
                   proof: await handleUpload(body.id),
                 },
                 license: await handleUpload(body.license),
