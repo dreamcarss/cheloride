@@ -86,6 +86,7 @@ const bookCar = async(req, res) => {
     if(req.method == "GET"){
         const id = req._parsedUrl.query.split("=")[1];
         await tempBooking.findById(id).then(async(booking) => {
+          console.log(booking)
           if(booking != null){
             await carModel.findById(booking.carId).then((car) => {
               const stDt = new Date(booking.data[1]);
@@ -102,7 +103,10 @@ const bookCar = async(req, res) => {
               data.time = booking.data[3];
               data.email = booking.userId;
               data.price = parseInt(car.amount);
-              data.amount = diff * parseInt(car.amount);
+              data.amount =
+                diff == 0
+                  ? diff + 1 * parseInt(car.amount)
+                  : diff * parseInt(car.amount);
               res.render("confirmBook.ejs", { id, data});
             });
           }else{
@@ -125,7 +129,9 @@ const bookCar = async(req, res) => {
                   time: booking.data[3],
                   userId: body.email,
                   carId: car._id,
-                  price: diff * car.amount,
+                  price: diff == 0
+                  ? diff + 1 * parseInt(car.amount)
+                  : diff * parseInt(car.amount),
                   startDate: booking.data[1],
                   dropDate: booking.data[2],
                 });
