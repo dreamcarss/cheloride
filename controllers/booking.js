@@ -69,10 +69,11 @@ const getTempData = async(req, res) => {
                   email: req.body.email,
                   brand: car.brand,
                   price: car.amount,
-                  time: data.data[3],
+                  time: data.data[2],
+                  dtime: data.data[4],
                   location: data.data[0],
                   date: data.data[1],
-                  ddate: data.data[2]
+                  ddate: data.data[3],
                 };
                 res.status(200).json(resp);
             })
@@ -89,27 +90,30 @@ const bookCar = async(req, res) => {
           console.log(booking)
           if(booking != null){
             await carModel.findById(booking.carId).then((car) => {
-              const stDt = new Date(booking.data[1]);
-              const edDt = new Date(booking.data[2]);
-              let Difference_In_Time = edDt.getTime() - stDt.getTime();
-              let diff = Math.round(
-                Difference_In_Time / (1000 * 3600 * 24)
+              const stDt = new Date(booking.data[1] + "T" + booking.data[2]+"Z");
+              const edDt = new Date(
+                booking.data[3] + "T" + booking.data[4] + "Z"
               );
+              let diff = Math.abs(edDt - stDt)
               let data = {};
-              let gst = parseFloat(process.env.GST) * parseInt(car.amount)
-              let amount =
-                diff == 0
-                  ? diff + 1 * parseInt(car.amount) + gst
-                  : diff * parseInt(car.amount) + gst;
+              let hrs = diff / 3.6e+6;
+              let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
+              let totalAmount = hrlyCharges * hrs;
+              let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+              console.log(totalAmount, car.amount, gst)
+              
               data.brand = car.brand;
               data.location = car.location;
               data.date = booking.data[1];
-              data.ddate = booking.data[2];
-              data.time = booking.data[3];
+              data.ddate = booking.data[3];
+              data.time = booking.data[2];
+              data.dtime = booking.data[4];
               data.email = booking.userId;
               data.price = parseInt(car.amount);
               data.gst = gst;
-              data.amount = amount;
+              data.days = Math.ceil(hrs / 24);
+              data.tamount = totalAmount;
+              data.amount = totalAmount + gst;
               res.render("confirmBook.ejs", { id, data});
             });
           }else{
@@ -124,21 +128,22 @@ const bookCar = async(req, res) => {
             if (booking != null) {
               await carModel.findById(booking.carId).then(async (car) => {
                 const stDt = new Date(booking.data[1]);
-                const edDt = new Date(booking.data[2]);
+                const edDt = new Date(booking.data[3]);
                 let Difference_In_Time = edDt.getTime() - stDt.getTime();
                 let diff = Math.round(Difference_In_Time / (1000 * 3600 * 24));
                 let gst = parseFloat(process.env.GST) * parseInt(car.amount);
                 let amount =
                   diff == 0
-                    ? diff + 1 * parseInt(car.amount) + gst
-                    : diff * parseInt(car.amount) + gst;
+                    ? diff + 1 * parseInt(car.amount)
+                    : diff * parseInt(car.amount);
                 const newBooking = new bookingModel({
-                  time: booking.data[3],
+                  time: booking.data[2],
+                  dtime: booking.data[4],
                   userId: body.email,
                   carId: car._id,
-                  price: amount,
+                  price: amount + gst,
                   startDate: booking.data[1],
-                  dropDate: booking.data[2],
+                  dropDate: booking.data[3],
                 });
                 await tempBooking.findOneAndDelete({ carId: car._id });
                 await newBooking.save().then(async () => {

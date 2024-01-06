@@ -36,10 +36,10 @@
                         <label for="" class="lab">Drop Date</label>
                         <input type="date" name="ddate" id="ddate" required>
                     </div>
-                    <!-- <div class="wrap">
+                    <div class="wrap">
                         <label for="" class="lab">Drop Time</label>
                         <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required>
-                    </div> -->
+                    </div>
                 </div>
                 <button type="submit" class="subt" style="display: none;"></button>
             </form>
@@ -103,20 +103,18 @@
             }
         })
 
-        // form['ddate'].addEventListener("focusout", () => {
-        //     let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
-        //     let dropDateTime = new Date(form['ddate'].value);
-        //     let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
-        //     console.log(diff)
-        //     if(diff <= 1.0){
-        //         form['dtime'].value = form['time'].value;
-        //         form['dtime'].setAttribute("disabled", true)
-        //     }else{
-        //         form['dtime'].removeAttribute("disabled", true)
-        //     }
-        // })
-
-        const subHandler = () => btn.click()
+        const subHandler = () =>{
+            let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
+            let dropDateTime = new Date(form['ddate'].value);
+            let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
+            console.log(diff)
+            if(diff <= 1.0){
+                form['dtime'].value = form['time'].value;
+                form['dtime'].setAttribute("disabled", true)
+            }else{
+                form['dtime'].removeAttribute("disabled", true)
+            };
+            btn.click()}
         list?.forEach((l) => {
             l.onclick = () => {
                 loc.value = l.textContent;
@@ -127,7 +125,7 @@
         pdate.min = new Date().toISOString().split("T")[0];
         ddate.onfocus = () => {
             let dates = pdate.value.split("-");
-            let nextDate = parseInt(dates[2])+2;
+            let nextDate = parseInt(dates) <= 8 ? parseInt(dates[2])+2: parseInt(dates[2])+1;
             dates.pop(2); dates.push(nextDate)
             ddate.min = new Date(dates.join("-")).toISOString().split("T")[0];
         }

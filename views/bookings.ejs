@@ -75,7 +75,7 @@
                             </div>
                             <div class="btns">
                                 ${
-                                    recipt.booking.paymentStatus != "paid" ? `<a href="upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(recipt.booking.price)}&cu=INR" class="btn">Pay using UPI</a>` : ""
+                                    recipt.booking.paymentStatus != "paid" ? `<button class="btn">Pay using UPI</button>` : ""
                                 }
                                 <button class="btn del">Cancel Booking</button>
                             </div>
@@ -91,6 +91,9 @@
                 container.innerHTML = elem;
             }
         }))
+
+        // <a href="upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(recipt.booking.price)}&cu=INR" class="btn">Pay using UPI</a>
+
     </script>
 </body>
 </html>

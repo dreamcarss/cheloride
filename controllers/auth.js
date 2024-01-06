@@ -96,7 +96,7 @@ const checkMail = async(req, res) => {
                 await mail(
                   "Password reset link",
                   `<a
-                  href="http://localhost:4000/auth/forgetPassword?token=${token}&id=${id}">localhost:4000/auth/forgetPassword?token=${token}&id=${id}</a>`,
+                  href="https://${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}"${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}</a>`,
                   email
                 ).then(() => {
                   res.status(200).json({

@@ -57,7 +57,14 @@ app.get("/", async(req, res) => {
 app.post("/cars", (req, res) => {
   try {
     const data = req.body;
-    res.render("cars.ejs", {location:data.location, date:data.date, time:data.time, ddate: data.ddate});
+    console.log(data.dtime);
+    res.render("cars.ejs", {
+      location: data.location,
+      date: data.date,
+      time: data.time,
+      ddate: data.ddate,
+      dtime: data.dtime,
+    });
   } catch (error) {
     console.log(error)
   }

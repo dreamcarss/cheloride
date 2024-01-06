@@ -21,19 +21,23 @@
                 <h6 class="wsub" id="pdate"><%= date %></h6>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Pickup Date</h3>
+                <h3 class="wtitle">Pickup Time</h3>
+                <h6 class="wsub" id="time"><%= time %></h6>
+            </div>
+            <div class="wrap">
+                <h3 class="wtitle">Drop Date</h3>
                 <h6 class="wsub" id="ddate"><%= ddate %></h6>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Pickup Time</h3>
-                <h6 class="wsub" id="time"><%= time %></h6>
+                <h3 class="wtitle">Drop Time</h3>
+                <h6 class="wsub" id="time"><%= dtime %></h6>
             </div>
         </div>
         <div class="slider">
            
         </div>
         <div class="slider slider2">
-           <p class="title" style="text-align: center; margin-top:30px">Other Locations</p>
+            <p class="title otitle" style="text-align: center; margin-top:30px; display:none">Other Locations</p>
         </div>
     </div>
 
@@ -72,7 +76,8 @@
                 if(loc.toLowerCase() == car.location.toLowerCase()){
                     slider.appendChild(newCar)
                 }else{
-                    slider2.appendChild(newCar)
+                    slider2.appendChild(newCar);
+                    document.getElementsByClassName("otitle")[0].style.display = "block"
                 }
             })
         }))
