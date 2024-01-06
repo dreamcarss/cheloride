@@ -104,7 +104,7 @@
             }
         })
 
-        const subHandler = () =>{
+        ddate.addEventListener("focusout", () => {
             let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
             let dropDateTime = new Date(form['ddate'].value);
             let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
@@ -115,6 +115,9 @@
             }else{
                 form['dtime'].removeAttribute("disabled", true)
             };
+        })
+
+        const subHandler = () =>{
             btn.click()}
         list?.forEach((l) => {
             l.onclick = () => {
@@ -129,7 +132,6 @@
             let dateObj = new Date(dates[0], dates[1] - 1, dates[2]); // months are 0-indexed in JS
             dateObj.setDate(dateObj.getDate() + 1);
             let newDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-            console.log(newDate)
             ddate.min = newDate;
         }
         
