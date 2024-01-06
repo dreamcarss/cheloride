@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const authMiddleware = require("../middlewares/auth");
 const { getTrash, restoreTrashCar } = require("../controllers/trash");
 const adminAuth = require("../middlewares/adminauth");
+const { getUsers } = require("../controllers/admin");
 require("dotenv").config();
 
 const adminRoutes = require("express").Router()
@@ -16,17 +17,8 @@ adminRoutes.get("/bookings", (req, res) => {
   res.render("adminBookings.ejs");
 });
 
-// adminRoutes.get("/users", async(req, res) => {
-//   try {
-//     await userModel.find().then((users) => {
-//       if(users.length > 0){
-//         res.render("users.ejs", {users: users});
-//       }
-//     })
-//   } catch (error) {
-//     console.log(error)
-//   }
-// });
+adminRoutes.get("/users", getUsers);
+adminRoutes.get("/getUsers", authMiddleware, adminAuth, getUsers);
 
 adminRoutes.get("/checkAdmin", authMiddleware, async(req, res) => {
   try {

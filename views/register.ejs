@@ -100,7 +100,7 @@
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onload = () => resolve(reader.result);
-                        reader.onerror = reject;
+                        reader.onerror = (reject, error) => {console.log(error)};
                     });
                 }
 
@@ -128,6 +128,7 @@
                             window.location.href="/"
                         }else{
                             emailElem.classList.add("warn");
+                            msg.textContent = d.msg;
                         }
                     })
                 })

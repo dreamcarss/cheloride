@@ -9,16 +9,7 @@
     <title>CheloRide</title>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">Chelo Ride</div>
-        <div class="links">
-            <a href="/adminpanel/" class="link">Cars</a>
-            <a href="/adminpanel/bookings" class="link">Bookings</a>
-        </div>
-        <div class="links">
-            <a href="" class="link">Logout</a>
-        </div>
-    </div>
+
     <div class="container">
         <div class="title">User Details</div>
         <div class="cardsWrap">
@@ -44,29 +35,35 @@
                 <th class="th">License</th>
                 <th class="th">Action</th>
             </tr>
-            <% console.log(users, "hi") %>
-            <% for(var i=0; i<users.length; i++) { %>
             <tr class="row">
-                <td class="td"><%= i+1 %></td>
-                <td class="td"><%= users[i].username %></td>
-                <td class="td" style="width: 200px;"><%= users[i].email %></td>
-                <td class="td"><%= users[i].phone %></td>
-                <td class="td"><%= users[i].role %></td>
+                <td class="td"></td>
+                <td class="td"></td>
+                <td class="td" style="width: 200px;"></td>
+                <td class="td"></td>
+                <td class="td"></td>
                 <td class="td">
-                    <a href="<%= users[i].aadhaar %>" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
-                <td class="td"><%= users[i].idproof.userType %></td>
+                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                <td class="td"></td>
                 <td class="td">
-                    <a href="<%= users[i].idproof.proof %>" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
                 <td class="td">
-                    <a href="<%= users[i].license %>" class="link" target="_blank" rel="noopener noreferrer">Show</a>
+                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a>
                 </td>
                 <td class="td">
                     <button class="del">Delete</button>
                 </td>
             </tr>
-            <% } %>
         </table>
     </div>
-
+    <script>
+        const tab = document.getElementsByClassName("tab")[0];
+        fetch("/adminpanel/getUsers", {
+            headers:{
+                token: window.localStorage.getItem("token")
+            }
+        }).then((res) =>{console.log(res); res.json().then((data) => {
+            console.log(data)
+        })})
+    </script>
 </body>
 </html>

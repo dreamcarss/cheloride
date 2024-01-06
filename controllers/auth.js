@@ -24,31 +24,28 @@ const register = async(req, res) => {
         }else if(request.method == "POST"){
             const body = request?.body;
             const user = await userModel.findOne({email: body.email})
-            console.log(user)
-            if (user == null) {
-              const hash = await bcryptjs.hash(body.password, 10);
-              let newUser = new userModel({
-                username: body.name,
-                email: body.email,
-                phone: parseInt(body.phone),
-                password: hash,
-                role: "user",
-                aadhaar: await handleUpload(body.aadhaar),
-                idproof: {
-                  userType: body.role,
-                  proof: await handleUpload(body.id),
-                },
-                license: await handleUpload(body.license),
-              });
-              await newUser.save().then(() => {
-                let token = jwt.sign(body.email, SALT);
-                res.status(200).json({ msg: "user saved", token: token });
-              });
-            } else {
-              res.status(400).json({ msg: "User Already Exists" });
+            
+            if(user){
+              return res.status(400).json({ msg: "User Already Exists" });
             }
+
+            let newUser = new userModel({
+              username: body.name,
+              email: body.email,
+              phone: parseInt(body.phone),
+              password: body.password,
+              role: "user",
+              aadhaar: await handleUpload(body.aadhaar),
+              idproof: {
+                userType: body.role,
+                proof: await handleUpload(body.id),
+              },
+              license: await handleUpload(body.license),
+            });
+            await newUser.save()
+            const token = newUser.genToken();
+            res.status(200).json({ msg: "Account Registered", token: token });
         }
-        
     } catch (error) {
         console.log(error)
     }
