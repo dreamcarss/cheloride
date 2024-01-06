@@ -21,9 +21,10 @@ const register = async(req, res) => {
         const request = req;
         if(request.method === "GET"){
             res.render("register.ejs");
-        }else{
+        }else if(request.method == "POST"){
             const body = request?.body;
             const user = await userModel.findOne({email: body.email})
+            console.log(user)
             if (user == null) {
               const hash = await bcryptjs.hash(body.password, 10);
               let newUser = new userModel({

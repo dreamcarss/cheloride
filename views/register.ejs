@@ -33,12 +33,16 @@
             <div class="wrap">
                 <label for="">Aadhaar</label>
                 <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
-                <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;" />
+                <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
+                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                </label>
             </div>
             <div class="wrap">
                 <label for="">License</label>
                 <input type="file" id="img" accept="image/*" class="inp none file" name="image">
-                <label for="img" type="text" class="inp second" id="image" style="color: black;" />
+                <label for="img" type="text" class="inp second" id="image" style="color: black;">
+                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                </label>
             </div>
             <div class="wrap">
                 <label for="">Id Proof</label>
@@ -51,7 +55,9 @@
                     <label for="jb" class="lab">Job</label>
                 </div>
                 <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
-                <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;" />
+                <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;">
+                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                </label>
             </div>
             <button class="btn" type="submit">
                 Submit
@@ -114,7 +120,7 @@
                     res.json().then((d) => {
                         msg.textContent = d.msg;
                         btn.innerHTML = "Submit"
-                        if(res.status === 200){
+                        if(res.status === 200 || res.status === 300){
                             msg.style.color = "white"
                             if(d?.token != null){
                                 localStorage.setItem("token", d.token)
