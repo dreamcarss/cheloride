@@ -98,7 +98,7 @@ const bookCar = async(req, res) => {
               let data = {};
               let hrs = diff / 3.6e+6;
               let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
-              let totalAmount = hrlyCharges * hrs;
+              let totalAmount = Math.ceil(hrlyCharges * hrs);
               let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
               data.brand = car.brand;
               data.location = car.location;
@@ -135,7 +135,7 @@ const bookCar = async(req, res) => {
                 let data = {};
                 let hrs = diff / 3.6e6;
                 let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
-                let totalAmount = hrlyCharges * hrs;
+                let totalAmount = Math.ceil(hrlyCharges * hrs);
                 let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
                 const newBooking = new bookingModel({
                   time: booking.data[2],
