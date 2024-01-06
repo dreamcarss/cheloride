@@ -126,9 +126,11 @@
         pdate.min = new Date().toISOString().split("T")[0];
         ddate.onfocus = () => {
             let dates = pdate.value.split("-");
-            let nextDate = parseInt(dates) <= 8 ? parseInt(dates[2])+2: parseInt(dates[2])+1;
-            dates.pop(2); dates.push(nextDate)
-            ddate.min = new Date(dates.join("-")).toISOString().split("T")[0];
+            let dateObj = new Date(dates[0], dates[1] - 1, dates[2]); // months are 0-indexed in JS
+            dateObj.setDate(dateObj.getDate() + 1);
+            let newDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+            console.log(newDate)
+            ddate.min = newDate;
         }
         
     </script>
