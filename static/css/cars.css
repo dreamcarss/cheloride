@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap');
 
 @font-face {
     font-family: "integral";
     src: url("../fonts/integral.ttf");
 }
+
 
 * {
     margin: 0;
@@ -31,209 +32,297 @@
 }
 
 .container .card{
-    width: 35%;
+    width: 50%;
+    margin: 20px 0;
     height: max-content;
-    padding: 10px 20px;
-    margin-top: 40px;
-    color: white;
     display: flex;
-    justify-content: space-between;
-    font-family: "poppins";
-    border: 1px solid white;
+    justify-content: space-around;
     border-radius: 10px;
+    color: rgba(192, 192, 192, 0.727);
+    font-family: "Montserrat";
+    padding: 20px 0;
+    background-color: #121212;
 }
 
-.container .card .wrap .wtitle{
-    font-size: 12px;
-    color: rgba(236, 255, 65, 0.744);
-    font-weight: 300;
+.container .card .wrap{
+    width: max-content;
+    padding: 0 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.114);
 }
 
-.container .card .wrap .wsub{
-    font-size: 15px;
+.container .card .wrap:last-child{
+    border: none;
+}
+
+
+.container .card .wtitle{
+    font-family: "Poppins";
+    font-size: 11px;
+}
+
+.container .card .wsub{
+    font-size: 20px;
+    color: white;
+    font-weight: lighter;
     margin-top: 5px;
 }
 
-.slider{
-    width: 35%;
+.container .slider{
+    width: 50%;
     height: max-content;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
+    gap: 20px;
 }
 
-.slider .carcard{
+.container .slider .carcard{
     width: 100%;
+    height: auto;
     padding: 20px;
+    display: flex;
+    background-color: #121212;
+    border-radius: 5px;
+}
+
+.container .slider .carcard .twrap{
+    width: 100%;
     height: max-content;
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
+}
+
+.container .slider .carcard .twrap .col{
+    width: 70%;
+    height: max-content;
+    color: white;
+    font-family: "Poppins";
+    font-weight: 300;
+    padding: 0 15px;
+}
+
+.container .slider .carcard .twrap .col .row{
+    width: max-content;
+    height: max-content;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 11px;
+}
+
+.container .slider .carcard .twrap .col .row .price{
+    width: max-content;
+    height: max-content;
+    background-color: rgb(53, 53, 53);
+    border-radius: 20px;
+    padding: 5px 10px;
+    border: 2px solid rgb(95, 95, 95);
+}
+
+.container .slider .carcard .twrap .col .title{
+    font-size: 20px;
+}
+
+.container .slider .carcard .twrap .col .ssub{
+    font-size: 11px;
+    margin-top: 5px;
+    color: rgb(190, 190, 190);
+}
+
+.container .slider .carcard .img{
+    /* width: auto;
+    height: 120px; */
+    width: 180px;
+    height: max-content;
     border-radius: 10px;
+}
+
+.container .slider .carcard .twrap .price{
+    width: max-content;
+    height: 100%;
+    color: white;
+    font-family: "Poppins";
+}
+
+.container .slider .carcard .twrap .price .label{
+    font-size: 10px;
+    margin-bottom: 10px;
+    color: rgb(104, 104, 104);
+}
+
+.container .slider .carcard .twrap .price .cost{
+    font-family: "Montserrat";
+    font-size: 30px;
     color: white;
 }
 
-.slider .carcard .img{
-    width: 200px;
-    border: 1px solid rgb(178, 178, 178);
-    height: max-content;
-    border-radius: 10px;
-}
-
-.slider .carcard .twrap .title{
-    font-size: 14px;
-}
-
-.slider .carcard .twrap .ssub{
-    font-family: "Poppins";
-    font-size: 12px;
-    margin: 10px 0;
-    font-weight: 300;
-}
-
-.slider .carcard .twrap .bbtn{
-    width: max-content;
-    height: max-content;
-    padding: 4px 10px;
-    background: yellowgreen;
-    color: rgb(0, 0, 0);
+.container .slider .carcard .twrap .price .bbtn{
+    width: 100%;
+    height: 40px;
     border: none;
-    border-radius: 5px;
+    font-family: "Montserrat";
+    color: white;
     cursor: pointer;
-    font-family: "Poppins";
-    font-size: 11px;
+    font-size: 10px;
+    text-transform: uppercase;
+    background-color: yellowgreen;
+    border-radius: 5px;
 }
 
 .popup{
     width: 100%;
     height: 100vh;
     position: fixed;
-    top: 50%;
+    top: 0;
     left: 0;
-    transform: translateY(-50%);
-    z-index: 4;
-    color: white;
+    background-color: rgba(0, 0, 0, 0.348);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(20, 20, 20, 0.674);
-}
-
-.twrap .row{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.twrap .row div{
-    width: max-content; 
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.price{
-    font-family: "Poppins";
-    font-size: 11px;
-    width: max-content;
-    height: max-content;
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-weight: lighter;
-    background: rgb(48, 48, 48);
-}
-
-.price.bold{
-    font-weight: bolder;
-    background: greenyellow;
-    color: black;
 }
 
 .popup .inner{
-    width: 50%;
+    width: 350px;
     height: max-content;
-    background-color: rgb(29, 29, 29);
-    border-radius: 10px;
     padding: 20px;
-}
-
-.popup .inner .title{
-    font-size: 30px;
-    margin-bottom: 20px;
+    border-radius: 10px;
+    color: white;
+    font-family: "Poppins";
+    background: rgb(24, 24, 24);
 }
 
 .popup .inner .img{
-    width: 350px;
-    height: auto;
+    margin-top: 15px;
+    width: 100%;
     border-radius: 10px;
     height: max-content;
 }
 
-.popup .inner .wrap .title{
-    font-size: 15px;
-    margin-bottom: 5px;
+.popup .inner .title{
+    font-size: 20px;
 }
 
-.popup .inner .wrap .sub{
-    font-family: "Poppins";
-    font-size: 11px;
-}
-
-.popup .inner .wrap .subwrap{
-    width: max-content;
+.popup .inner div .wrap .grid{
+    width: 100%;
     height: max-content;
-    font-family: Poppins;
+    display: grid;
+    margin-top: 10px;
+    /* row-gap: 15px; */
+    border-radius: 10px;
+    overflow: hidden;
+    grid-template-columns: repeat(3, 1fr);
 }
 
-.popup .inner .wrap .subwrap .tit{
-    font-size: 11px;
-    color: rgb(206, 206, 206);
+.popup .inner div .wrap .grid .subwrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px 5px;
+    background-color: rgb(36, 36, 36);
+    border-right: 1px solid rgb(31, 31, 31);
 }
 
-.popup .inner .wrap .bbtn{
+.popup .inner div .wrap .grid .subwrap.nob{
     border: none;
-    background-color: yellowgreen;
-    color: white;
-    font-family: "integral";
-    font-size: 12px;
-    padding: 7px 15px;
-    margin-top: 20px;
-    border-radius: 10px;
-    cursor: pointer;
 }
 
-.grid{
+.popup .inner div .wrap .grid .subwrap .tit{
+    font-size: 9px;
+    color: rgb(131, 131, 131);
+    text-transform: capitalize;
+}
+.popup .inner div .wrap .grid .subwrap .sub{
+    font-family: "Montserrat";
+    margin-top: 5px;
+}
+
+.popup .inner div .wrap .btnWrap{
     width: 100%;
     height: max-content;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
     gap: 20px;
+}
+
+.popup .inner div .wrap .btnWrap .bbtn{
+    width: max-content;
+    height: 35px;
+    border: 2px solid rgb(63, 63, 63);
+    padding:0 25px;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-size: 12px;
+    color: rgb(227, 227, 227);
+    cursor: pointer;
+    background-color: rgb(44, 44, 44);
+}
+
+.popup .inner div .wrap .btnWrap .bbtn.idbtn{
+    background: yellowgreen;
+    border: 2px solid yellowgreen;
+    color: white;
 }
 
 @media only screen and (max-width: 600px) {
     .container .card{
         width: 100%;
         display: grid;
+        row-gap: 20px;
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
     }
-    .slider{
+
+    .container .slider .carcard{
+        flex-direction: column;
         width: 100%;
     }
-    .slider .carcard{
+
+    .container .slider .carcard .img{
+        width: 100%;
+        height: max-content;
+    }
+
+    .container .slider .carcard .twrap{
         flex-direction: column;
     }
-    .inner div{
-        flex-direction: column;
+
+    .container .slider .carcard .twrap .col{
+        width: 100%;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .container .slider .carcard .twrap .price.pmb{
+        width: 100%;
+        height: max-content;
+    }
+
+    .container .slider .carcard .twrap .price.pmb div{
+        width: 100%;
+        height: max-content;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-direction: row-reverse;
+    }
+
+    .container .slider .carcard .twrap .price.pmb div .cost{
+        font-size: 15px;
+    }
+
+    .container .card .wrap{
+        border: none;
+    }
+
+    .container .slider{
+        width: 100%;
     }
     .popup .inner .img,
     .popup .inner{
         width: 100%;
-    }
-    .popup{
-        height: max-content;
+        margin-top: 50px
     }
     .inner div .wrap .grid{
         flex-direction: row;

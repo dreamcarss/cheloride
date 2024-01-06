@@ -10,6 +10,9 @@
 <body>
     <%- include('./navbar.ejs') %>
     <div class="container">
+        <div class="modal">
+            
+        </div>
         <h2 class="title">Your Bookings</h2>
         <div class="wrapCards">
 
@@ -39,6 +42,7 @@
                                             <img src="${recipt.car.image}" alt="" class="img">
                                             <div class="wrap" style="width:max-content">
                                                 <div class="brand">${recipt.car.brand}</div>
+                                                <p class="cname" style="font-size:9px; font-family:poppins">id: ${recipt.booking._id}</p>
                                                 <div class="tags">
                                                     <div class="tag">${recipt.car.geartype}</div>
                                                     <div class="tag">${recipt.car.location}</div>
@@ -73,12 +77,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="btns">
-                                ${
-                                    recipt.booking.paymentStatus != "paid" ? `<button class="btn">Pay using UPI</button>` : ""
-                                }
-                                <button class="btn del">Cancel Booking</button>
-                            </div>
+                            
                         `;
                     card.innerHTML = elem
                     container.appendChild(card)
@@ -91,9 +90,14 @@
                 container.innerHTML = elem;
             }
         }))
-
-        // <a href="upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(recipt.booking.price)}&cu=INR" class="btn">Pay using UPI</a>
-
-    </script>
+        </script>
 </body>
 </html>
+
+<!-- <a href="upi://pay?pa=${merchant}@paytm&pn=%20&tr=%20&am=${parseInt(recipt.booking.price)}&cu=INR" class="btn">Pay using UPI</a> -->
+<!-- <div class="btns">
+    ${
+        recipt.booking.paymentStatus != "paid" ? `<button class="btn">Pay using UPI</button>` : ""
+    }
+    <button class="btn del">Cancel Booking</button>
+</div> -->

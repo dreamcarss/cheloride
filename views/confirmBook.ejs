@@ -11,7 +11,7 @@
     <%- include('./navbar.ejs') %>
     <div class="container">
         <p id="id" hidden><%= id %></p>
-        <h2 class="title">Confirm Your Booking</h2>
+        <h2 class="title">Checkout</h2>
         <h5 class="sub">Please make sure to check all your details, terms and conditions before payment.</h5>
         <div class="details">
             <div class="bx1">
@@ -51,14 +51,16 @@
                     <h2 class="stit">Grand Total</h2>
                     <p class="amt"><%=data.amount %>/-</p>
                 </div>
-                <button class="btn" onclick="bookingHandler()">Confirm Booking</button>
+                <button class="btn" onclick="bookingHandler()">Checkout</button>
             </div>
         </div>
     </div>
     <script>
         const id = document.getElementById("id").textContent;
         const details = document.getElementsByClassName("details")[0];
+        const btn = document.getElementsByClassName("btn")[0];
         const bookingHandler = () => {
+            btn.innerHTML = "<div class='circle'></div>"
             let data = {tempid: id}
             fetch("/booking/book", {
                 method: 'POST',
@@ -69,8 +71,8 @@
                 },
                 body: JSON.stringify(data)
             }).then((res => res.json().then(data => {
-                console.log(data)
                 const msg = document.createElement("div");
+                btn.innerHTML = "Checkout"
                 msg.classList.add("msg");
                 msg.textContent = data.msg;
                 document.getElementsByTagName("body")[0].appendChild(msg);

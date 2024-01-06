@@ -13,28 +13,28 @@
         <h3 class="title">Select Car</h3>
         <div class="card">
             <div class="wrap">
-                <h3 class="wtitle">Place</h3>
-                <h6 class="wsub" id="location"><%= location %></h6>
+                <h6 class="wtitle">Place</h6>
+                <h3 class="wsub" id="location"><%= location %></h3>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Pickup Date</h3>
-                <h6 class="wsub" id="pdate"><%= date %></h6>
+                <h6 class="wtitle">Pickup Date</h6>
+                <h3 class="wsub" id="pdate"><%= date %></h3>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Pickup Time</h3>
-                <h6 class="wsub" id="time"><%= time %></h6>
+                <h6 class="wtitle">Pickup Time</h6>
+                <h3 class="wsub" id="time"><%= time %></h3>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Drop Date</h3>
-                <h6 class="wsub" id="ddate"><%= ddate %></h6>
+                <h6 class="wtitle">Drop Date</h6>
+                <h3 class="wsub" id="ddate"><%= ddate %></h3>
             </div>
             <div class="wrap">
-                <h3 class="wtitle">Drop Time</h3>
-                <h6 class="wsub" id="time"><%= dtime %></h6>
+                <h6 class="wtitle">Drop Time</h6>
+                <h3 class="wsub" id="time"><%= dtime %></h3>
             </div>
         </div>
+        
         <div class="slider">
-           
         </div>
         <div class="slider slider2">
             <p class="title otitle" style="text-align: center; margin-top:30px; display:none">Other Locations</p>
@@ -55,22 +55,30 @@
                 loc: loc
             }
         }).then(res => res.json().then(data => {
+            let diff = data?.diff;
+            console.log(diff)
             data?.cars.forEach((car, i) => {
                 const newCar = document.createElement("div");
                 newCar.classList.add("carcard");
                 newCar.onclick = () => showPopup(i)
                 let carData = ` <img src="${car.image}" alt="" class="img">
-                <div class="twrap">
-                    <div class="row">
-                        <h3 class="title">${car.brand}</h3>
-                        <div>
-                            <h2 class="price bold">${Math.ceil(car.amount / 24)}/hr</h2>
-                            <h2 class="price">${car.fueltype}</h2>
-                            <h2 class="price">${car.location}</h2>
+                    <div class="twrap">
+                        <div class="col">
+                            <h3 class="title">${car.brand}</h3>
+                            <p class="ssub">${car.desc}</p>
+                            <div class="row">
+                                <p class="price bold">${Math.ceil(car.amount / 24)}/hr</p>
+                                <p class="price">${car.fueltype}</p>
+                                <p class="price">${car.location}</p>
+                            </div>
                         </div>
-                    </div>
-                    <h4 class="ssub">${car.desc}</h4>
-                    <button class="bbtn ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>
+                        <div class="price pmb">
+                            <div>
+                                <p class="cost">${car.amount * diff}/-</p>
+                                <p class="label">Total Estimated <br />Amount</p>
+                            </div>
+                            <button class="bbtn ${car._id} ${i}" onclick = "showPopup()">View more</button>
+                        </div>
                 </div>`
                 newCar.innerHTML = carData;
                 if(loc.toLowerCase() == car.location.toLowerCase()){
@@ -91,45 +99,43 @@
             fetch(`/admin/getCar/${car_id}`).then(res => res.json().then((data) => {
                 const popup = document.createElement("div");
                 popup.classList.add("popup");
-                const pdata = `<div class="inner">
-                <div class="title" onclick="closePopup()" id="tit">
-                    <ion-icon name="chevron-back-outline"></ion-icon>
-                    Car Details</div>
-                <div style="display: flex; gap: 20px;">
+                popup.onclick = () => closePopup()
+                const pdata = `
+            <div class="inner">
+                <div class="title">${data.brand}</div>
+                <div style="display: flex; gap: 20px; flex-direction: column;">
                     <img src="${data.image}" alt="" class="img">
                     <div class="wrap">
-                        <div class="title">${data.brand}</div>
                         <div class="grid">
                             <div class="subwrap">
-                                <div class="tit">gear type</div>
                                 <p class="sub">${data.geartype}</p>
+                                <div class="tit">gear type</div>
                             </div>
                             <div class="subwrap">
-                                <div class="tit">fuel capacity</div>
                                 <p class="sub">${data.fuelcap}</p>
+                                <div class="tit">fuel capacity</div>
                             </div>
-                            <div class="subwrap">
-                                <div class="tit">seating capacity</div>
+                            <div class="subwrap nob">
                                 <p class="sub">${data.seating}</p>
+                                <div class="tit">seating capacity</div>
                             </div>
                             <div class="subwrap">
-                                <div class="tit">luggage capacity</div>
                                 <p class="sub">${data.luggage}</p>
+                                <div class="tit">luggage</div>
                             </div>
                             <div class="subwrap">
-                                <div class="tit">milage</div>
                                 <p class="sub">${data.mileage}</p>
+                                <div class="tit">milage</div>
                             </div>
-                            <div class="subwrap">
-                                <div class="tit">Fuel Type</div>
+                            <div class="subwrap nob">
                                 <p class="sub">${data.fueltype}</p>
-                            </div>
-                            <div class="subwrap">
-                                <div class="tit">Amount</div>
-                                <p class="sub">${data.amount}/-</p>
+                                <div class="tit">Fuel Type</div>
                             </div>
                         </div>
-                        <button class="bbtn idbtn ${car_id}" onclick="bookHandler()">Book Now</button>
+                        <div class="btnWrap">
+                            <button class="bbtn cbtn" onclick="closePopup()">Cancel</button>
+                            <button class="bbtn idbtn ${car_id}" onclick="bookHandler()">Book Now</button>
+                        </div>
                     </div>
                 </div>
             </div>`

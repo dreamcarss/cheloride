@@ -100,8 +100,6 @@ const bookCar = async(req, res) => {
               let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
               let totalAmount = hrlyCharges * hrs;
               let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
-              console.log(totalAmount, car.amount, gst)
-              
               data.brand = car.brand;
               data.location = car.location;
               data.date = booking.data[1];
@@ -111,7 +109,7 @@ const bookCar = async(req, res) => {
               data.email = booking.userId;
               data.price = parseInt(car.amount);
               data.gst = gst;
-              data.days = Math.ceil(hrs / 24);
+              data.days = Math.round((hrs / 24).toFixed(2));
               data.tamount = totalAmount;
               data.amount = totalAmount + gst;
               res.render("confirmBook.ejs", { id, data});
@@ -127,21 +125,24 @@ const bookCar = async(req, res) => {
           await tempBooking.findById(body.tempid).then(async (booking) => {
             if (booking != null) {
               await carModel.findById(booking.carId).then(async (car) => {
-                const stDt = new Date(booking.data[1]);
-                const edDt = new Date(booking.data[3]);
-                let Difference_In_Time = edDt.getTime() - stDt.getTime();
-                let diff = Math.round(Difference_In_Time / (1000 * 3600 * 24));
-                let gst = parseFloat(process.env.GST) * parseInt(car.amount);
-                let amount =
-                  diff == 0
-                    ? diff + 1 * parseInt(car.amount)
-                    : diff * parseInt(car.amount);
+                const stDt = new Date(
+                  booking.data[1] + "T" + booking.data[2] + "Z"
+                );
+                const edDt = new Date(
+                  booking.data[3] + "T" + booking.data[4] + "Z"
+                );
+                let diff = Math.abs(edDt - stDt);
+                let data = {};
+                let hrs = diff / 3.6e6;
+                let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
+                let totalAmount = hrlyCharges * hrs;
+                let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
                 const newBooking = new bookingModel({
                   time: booking.data[2],
                   dtime: booking.data[4],
                   userId: body.email,
                   carId: car._id,
-                  price: amount + gst,
+                  price: totalAmount + gst,
                   startDate: booking.data[1],
                   dropDate: booking.data[3],
                 });

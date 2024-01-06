@@ -44,11 +44,14 @@ const getALlCars = async(req, res) => {
       let loc = req.headers.loc;
       console.log(req.headers.loc)
       let cars = await carModel.find()
+      let diff;
       let promises = cars.map(async (car) => {
         await bookingModel.findOne({ carId: car._id, bookingStatus:true}).then((booking) => {
+          let startDate = new Date(sDate);
+          let endDate = new Date(dDate);
+          diff = Math.abs(endDate - startDate) / 8.64e+7;
+          console.log(startDate, endDate, diff)
           if (booking != null) {
-            let startDate = new Date(booking.startDate);
-            let endDate = new Date(booking.dropDate);
             if (
               (sDate >= startDate && sDate < endDate) ||
               (dDate > startDate && dDate <= endDate)
@@ -64,8 +67,7 @@ const getALlCars = async(req, res) => {
       });
       Promise.all(promises).then(() => {
         if(carsList.length > 0){
-          console.log(carsList)
-          res.status(200).json({"cars": carsList})
+          res.status(200).json({"cars": carsList, "diff": diff})
         }else{
           res.status(404).json({"msg": "no cars available"})
         }
