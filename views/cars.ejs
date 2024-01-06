@@ -54,13 +54,14 @@
             data?.cars.forEach((car, i) => {
                 const newCar = document.createElement("div");
                 newCar.classList.add("carcard");
+                newCar.onclick = () => showPopup(i)
                 let carData = ` <img src="${car.image}" alt="" class="img">
                 <div class="twrap">
                     <div class="row">
                         <h3 class="title">${car.brand}</h3>
                         <div>
+                            <h2 class="price bold">${Math.ceil(car.amount / 24)}/hr</h2>
                             <h2 class="price">${car.fueltype}</h2>
-                            <h2 class="price">${Math.ceil(car.amount / 24)}/hr</h2>
                             <h2 class="price">${car.location}</h2>
                         </div>
                     </div>

@@ -144,6 +144,12 @@
     background: rgb(48, 48, 48);
 }
 
+.price.bold{
+    font-weight: bolder;
+    background: greenyellow;
+    color: black;
+}
+
 .popup .inner{
     width: 50%;
     height: max-content;
