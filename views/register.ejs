@@ -113,7 +113,7 @@
                 }).then((res) => {
                     res.json().then((d) => {
                         msg.textContent = d.msg;
-                        btn.innerHTML = "Submit"
+                        btn.innerHTML = d.msg
                         if(res.status === 200){
                             msg.style.color = "white"
                             if(d?.token != null){
