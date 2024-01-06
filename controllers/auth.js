@@ -21,9 +21,10 @@ const register = async(req, res) => {
         const request = req;
         if(request.method === "GET"){
             res.render("register.ejs");
-        }else if(request.method === "POST"){
+        }else{
             const body = request?.body;
             const user = userModel.findOne({email: body.email})
+            console.log(user, body)
             if (user == null) {
               const hash = await bcryptjs.hash(body.password, 10);
               let newUser = new userModel({
@@ -41,7 +42,7 @@ const register = async(req, res) => {
               });
               await newUser.save().then(() => {
                 let token = jwt.sign(body.email, SALT);
-                res.json({ msg: "user saved", token: token });
+                res.status(200).json({ msg: "user saved", token: token });
               });
             } else {
               res.status(400).json({ msg: "User Already Exists" });
