@@ -68,7 +68,7 @@
                     <button class="bbtn ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>
                 </div>`
                 newCar.innerHTML = carData;
-                if(loc == car.location){
+                if(loc.toLowerCase() == car.location.toLowerCase()){
                     slider.appendChild(newCar)
                 }else{
                     slider2.appendChild(newCar)
