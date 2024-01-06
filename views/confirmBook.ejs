@@ -34,8 +34,8 @@
                     <p class="amt"><%=data.price %></p>
                 </div>
                 <div class="row">
-                    <p class="span">GST</p>
-                    <p class="amt">18%</p>
+                    <p class="span">GST (18%)</p>
+                    <p class="amt"><%=data.gst %></p>
                 </div>
             </div>
             <div class="gt">
@@ -51,7 +51,7 @@
         const id = document.getElementById("id").textContent;
         const details = document.getElementsByClassName("details")[0];
         const bookingHandler = () => {
-            let data = {id: id}
+            let data = {tempid: id}
             fetch("/booking/book", {
                 method: 'POST',
                 headers: {

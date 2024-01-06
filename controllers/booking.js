@@ -96,6 +96,11 @@ const bookCar = async(req, res) => {
                 Difference_In_Time / (1000 * 3600 * 24)
               );
               let data = {};
+              let gst = parseFloat(process.env.GST) * parseInt(car.amount)
+              let amount =
+                diff == 0
+                  ? diff + 1 * parseInt(car.amount) + gst
+                  : diff * parseInt(car.amount) + gst;
               data.brand = car.brand;
               data.location = car.location;
               data.date = booking.data[1];
@@ -103,10 +108,8 @@ const bookCar = async(req, res) => {
               data.time = booking.data[3];
               data.email = booking.userId;
               data.price = parseInt(car.amount);
-              data.amount =
-                diff == 0
-                  ? diff + 1 * parseInt(car.amount)
-                  : diff * parseInt(car.amount);
+              data.gst = gst;
+              data.amount = amount;
               res.render("confirmBook.ejs", { id, data});
             });
           }else{
@@ -116,22 +119,24 @@ const bookCar = async(req, res) => {
     }else if(req.method == "POST"){
         try {
           const body = req.body;
-          await tempBooking.findOne({userId: body.email}).then(async(booking) => {
-            if(booking !=  null){
-              await carModel.findById(booking.carId).then(async(car) => {
+          console.log(body.tempid)
+          await tempBooking.findById(body.tempid).then(async (booking) => {
+            if (booking != null) {
+              await carModel.findById(booking.carId).then(async (car) => {
                 const stDt = new Date(booking.data[1]);
                 const edDt = new Date(booking.data[2]);
                 let Difference_In_Time = edDt.getTime() - stDt.getTime();
-                let diff = Math.round(
-                  Difference_In_Time / (1000 * 3600 * 24)
-                );
+                let diff = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+                let gst = parseFloat(process.env.GST) * parseInt(car.amount);
+                let amount =
+                  diff == 0
+                    ? diff + 1 * parseInt(car.amount) + gst
+                    : diff * parseInt(car.amount) + gst;
                 const newBooking = new bookingModel({
                   time: booking.data[3],
                   userId: body.email,
                   carId: car._id,
-                  price: diff == 0
-                  ? diff + 1 * parseInt(car.amount)
-                  : diff * parseInt(car.amount),
+                  price: amount,
                   startDate: booking.data[1],
                   dropDate: booking.data[2],
                 });
@@ -177,7 +182,7 @@ const bookCar = async(req, res) => {
                 });
               });
             }
-          })
+          });
         } catch (error) {
           console.log(error, "error");
         }
