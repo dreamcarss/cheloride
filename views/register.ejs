@@ -99,8 +99,29 @@
                     return new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = (reject, error) => {console.log(error)};
+                        reader.onload = () => {
+                        const img = new Image();
+                        img.src = reader.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0, img.width, img.height);
+                            canvas.toBlob((blob) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(blob);
+                            reader.onloadend = function() {
+                                const base64data = reader.result;
+                                resolve(base64data);
+                            }
+                            }, 'image/jpeg', 0.6); // Adjust quality here
+                        };
+                        };
+                        reader.onerror = (error) => {
+                        console.log(error);
+                        reject(error);
+                        };
                     });
                 }
 
@@ -117,6 +138,9 @@
                     },
                     body: JSON.stringify(data)
                 }).then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
                     res.json().then((d) => {
                         msg.textContent = d.msg;
                         btn.innerHTML = "Submit"
@@ -126,7 +150,11 @@
                                 localStorage.setItem("token", d.token)
                             }
                             window.location.href="/"
-                        }else{
+                        }
+                        else if(req.status === 413){
+                            console.log("413 error")
+                        }
+                        else{
                             emailElem.classList.add("warn");
                             msg.textContent = d.msg;
                         }
