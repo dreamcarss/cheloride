@@ -44,7 +44,7 @@ const register = async(req, res) => {
             });
             await newUser.save()
             const token = newUser.genToken();
-            res.status(200).json({ msg: "Account Registered", token: token });
+            res.status(200).json({ "msg": "Account Registered", "token": token });
         }
     } catch (error) {
         console.log(error)
