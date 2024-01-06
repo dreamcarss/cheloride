@@ -100,7 +100,6 @@ const bookCar = async(req, res) => {
               let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
               let totalAmount = Math.ceil(hrlyCharges * hrs);
               let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
-              console.log(hrs, totalAmount, hrlyCharges, gst, car.amount)
               data.brand = car.brand;
               data.location = car.location;
               data.date = booking.data[1];
