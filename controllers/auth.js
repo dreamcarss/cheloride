@@ -93,10 +93,12 @@ const checkMail = async(req, res) => {
                 })
                 let id = newToken._id.toString();
                 newToken.save()
+                console.log(process.env.DOMAIN, token, id)
                 await mail(
                   "Password reset link",
-                  `<a
-                  href="https://${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}"${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}</a>`,
+                  `<b>Use This link to reset your password</b>
+                  <a
+                  href="https://${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}">https://${process.env.DOMAIN}/auth/forgetPassword?token=${token}&id=${id}</a>`,
                   email
                 ).then(() => {
                   res.status(200).json({
