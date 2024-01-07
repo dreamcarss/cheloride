@@ -133,12 +133,11 @@ const verifyLink = async(req, res) => {
             });
         }else if(req.method == "POST"){
             let password = req.body.password;
+            console.log(password)
             let email = jwt.decode(req.headers.token, SALT).email;
             await userModel.findOne({email: email}).then(async(user) => {
                 if(user != null){
-                    let hash = await bcryptjs.hash(password, 10);
-                    user.password = hash;
-
+                    user.password = password;
                     user.save().then(() => {
                         res.status(200).json({"msg": "password updated"})
                     })
