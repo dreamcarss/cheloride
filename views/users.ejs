@@ -9,22 +9,23 @@
     <title>CheloRide</title>
 </head>
 <body>
-
+    <%- include('./adminNavbar.ejs') %>
     <div class="container">
         <div class="title">User Details</div>
         <div class="cardsWrap">
             <div class="card">
-                <p class="title" id="tbook">2</p>
+                <p class="title" id="tbook">0</p>
                 <p class="sub">Total users</p>
             </div>
         </div>
         <div class="title">
-            <p>Bookings</p>
-            <button class="add" id="add">Add Users</button>
+            <p>Users</p>
+            <a href="/auth/register" class="add" id="add">Add Users</a>
         </div>
         <table class="tab">
             <tr class="row">
                 <th class="th">Sno</th>
+                <th class="th">User Id</th>
                 <th class="th">Name</th>
                 <th class="th" style="width: 200px;">Email</th>
                 <th class="th">Phone</th>
@@ -35,35 +36,102 @@
                 <th class="th">License</th>
                 <th class="th">Action</th>
             </tr>
-            <tr class="row">
-                <td class="td"></td>
-                <td class="td"></td>
-                <td class="td" style="width: 200px;"></td>
-                <td class="td"></td>
-                <td class="td"></td>
-                <td class="td">
-                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
-                <td class="td"></td>
-                <td class="td">
-                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
-                <td class="td">
-                    <a href="" class="link" target="_blank" rel="noopener noreferrer">Show</a>
-                </td>
-                <td class="td">
-                    <button class="del">Delete</button>
-                </td>
-            </tr>
+            
         </table>
     </div>
     <script>
         const tab = document.getElementsByClassName("tab")[0];
+
+        const showModal = (i) => {
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            modal.innerHTML = `<div class="mcard">
+                    <h2 class="title">Are you sure to Update the record?</h2>
+                    <div class="wrap">
+                        <button class="btn" onclick="(() => {document.getElementsByClassName('modal')[0].style.display = 'none'})()">Cancel</button>
+                        <button class="btn grn" onclick="update(${i})">Update Record</button>
+                    </div>
+                </div>`
+            document.getElementsByTagName("body")[0].appendChild(modal);
+        }
+
+        const update = (i) => {
+            const id = document.getElementsByClassName("upd")[i].classList[2];
+            const role = document.getElementsByClassName("location")[i].value;
+            const modal = document.getElementsByClassName("modal")[0]
+            let body = { "role": role}
+            fetch(`/adminpanel/updateRole/${id}`, {
+                method: 'PATCH',
+                headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => res.json().then((data) => {
+                const msg = document.createElement("div");
+                const body = document.getElementsByTagName("body")[0];
+                document.getElementsByTagName("body")[0].removeChild(modal)
+                msg.classList.add("msg");
+                msg.textContent = data.msg;
+                body.appendChild(msg);
+                setTimeout(() => {
+                    body.removeChild(msg)
+                }, 2500);
+                window.location.href = "/adminpanel/users"
+            }))
+        }
+
         fetch("/adminpanel/getUsers", {
             headers:{
-                token: window.localStorage.getItem("token")
+                "token": window.localStorage.getItem("token")
             }
-        }).then((res) =>{console.log(res); res.json().then((data) => {
-            console.log(data)
-        })})
+        }).then((res) => {
+            console.log(res); 
+            res.json().then((data) => {
+                if(data.data.length > 0){
+                    document.getElementById("tbook").textContent = data.data.length
+                    data.data.map((user, i) => {
+                        let newRow = document.createElement("tr");
+                        newRow.classList.add("row");
+                        // All possible roles
+                        let roles = ["Executive", "Admin", "User"];
+                        let index = roles.indexOf(user.role);
+                        if (index > -1) {
+                            roles.splice(index, 1);
+                        }
+                        roles.unshift(user.role);
+                        let options = roles.map(role => `<option class="elem">${role}</option>`).join("");
+
+                        let data = `<td class="td">${i+1}</td>
+                        <td class="td">${user._id}</td>
+                        <td class="td">${user.username}</td>
+                        <td class="td" style="width: 250px;">${user.email}</td>
+                        <td class="td">${user.phone}</td>
+                        <td class="td">
+                            <select type="text" name="location" style="width:100px;" class="location" id="location" placeholder="Select location" required>
+                                ${options}
+                            </select>
+                        </td>
+                        <td class="td">
+                            <a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                        <td class="td">${user.idproof.userType}</td>
+                        <td class="td">
+                            <a href="${user.idproof.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                        <td class="td">
+                            <a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a>
+                        </td>
+                        <td class="td">
+                            <button class="del upd ${user._id}" onclick="showModal(${i})">Update</button>
+                            <button class="del">Delete</button>
+                        </td>`;
+                        newRow.innerHTML = data;
+                        tab.appendChild(newRow)
+                    })
+                }
+            })
+        })
+
     </script>
 </body>
 </html>

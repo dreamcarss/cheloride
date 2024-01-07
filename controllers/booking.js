@@ -100,22 +100,30 @@ const bookCar = async(req, res) => {
               let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
               let totalAmount = Math.ceil(hrlyCharges * hrs);
               let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
-              data.brand = car.brand;
-              data.location = car.location;
-              data.date = booking.data[1];
-              data.ddate = booking.data[3];
-              data.time = booking.data[2];
-              data.dtime = booking.data[4];
-              data.email = booking.userId;
-              data.price = parseInt(car.amount);
-              data.gst = gst;
-              data.days = Math.round((hrs / 24).toFixed(2));
-              data.tamount = totalAmount;
-              data.amount = totalAmount + gst;
-              res.render("confirmBook.ejs", { id, data});
+              if(hrs != null || hrs != undefined && gst != null || gst != undefined && totalAmount != null ||totalAmount != undefined){
+                data.brand = car.brand;
+                data.location = car.location;
+                data.date = booking.data[1];
+                data.ddate = booking.data[3];
+                data.time = booking.data[2];
+                data.dtime = booking.data[4];
+                data.email = booking.userId;
+                data.price = parseInt(car.amount);
+                data.gst = gst;
+                data.days = Math.round((hrs / 24).toFixed(2));
+                data.tamount = totalAmount;
+                data.amount = totalAmount + gst;
+                res.render("confirmBook.ejs", { id, data });
+              }else{
+                res.render("400.ejs", {t: 500, "sub": "Something Went wrong, Please try again"})
+              }
             });
           }else{
-              res.render("confirmBook.ejs", { id });
+            res.render("400.ejs", {
+              t: 500,
+              sub: "Something Went wrong, Please try again",
+            });
+
           }
         })
     }else if(req.method == "POST"){
@@ -149,30 +157,44 @@ const bookCar = async(req, res) => {
                 await tempBooking.findOneAndDelete({ carId: car._id });
                 await newBooking.save().then(async () => {
                   let html = `
-                    <div><b style="display: inline-block;">Booking By:</b> <p>${body.email}</p></div> 
+                    <div><b style="display: inline-block;">Booking By:</b> <p>${
+                      body.email
+                    }</p></div> 
                     </br>
                     <div>
-                      <b style="display: inline-block;">User phone:</b> <p>${body.phone}</p>
+                      <b style="display: inline-block;">User phone:</b> <p>${
+                        body.phone
+                      }</p>
                     </div> 
                     </br> 
                       <div>
-                        <b style="display: inline-block;">Booking date:</b> <p>${booking.data[1]}</p> 
+                        <b style="display: inline-block;">Booking date:</b> <p>${
+                          booking.data[1]
+                        }</p> 
                       </div>
                     </br>
                       <div>
-                        <b style="display: inline-block;">Drop date:</b> <p>${booking.data[2]}</p>
+                        <b style="display: inline-block;">Drop date:</b> <p>${
+                          booking.data[2]
+                        }</p>
                       </div>
                     </br> 
                       <div>
-                        <b style="display: inline-block;">Booking time:</b> <p>${booking.data[3]}</p> 
+                        <b style="display: inline-block;">Booking time:</b> <p>${
+                          booking.data[3]
+                        }</p> 
                       </div>
                     </br> 
                       <div>
-                        <b style="display: inline-block;">Car brand:</b> <p>${car.brand}</p> 
+                        <b style="display: inline-block;">Car brand:</b> <p>${
+                          car.brand
+                        }</p> 
                       </div>
                     </br> 
                       <div>
-                      <b style="display: inline-block;">Total Amount:</b> <p>${newBooking.price}</p> 
+                      <b style="display: inline-block;">Total Amount:</b> <p>${
+                        totalAmount + gst
+                      }</p> 
                       </div>
                       `;
                   let executiveMail = process.env.MAIL;
@@ -180,7 +202,7 @@ const bookCar = async(req, res) => {
                   await mail(
                     "Booking placed",
                     `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                      diff * car.amount
+                      totalAmount + gst
                     }</p>`,
                     body.email
                   ).catch();
@@ -199,7 +221,7 @@ const updatePayment = async(req, res) => {
     try {
       const body = req.body;
       await userModel.findOne({email: req.body.email}).then(async(user) => {
-        if(user.role === "admin" || user.role === "exec"){
+        if(user.role === "Admin" || user.role === "Executive"){
           await bookingModel.findById(body.bookingId).then((bill) => {
             if(bill != null){
               bill.time = body.time;

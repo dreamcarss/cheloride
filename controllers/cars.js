@@ -2,6 +2,7 @@ const carModel = require("../models/carModel.js");
 const trashModel = require("../models/trashbin");
 const cloudinary = require("cloudinary");
 const bookingModel = require("../models/booking.js");
+const userModel = require("../models/userModel.js");
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -128,4 +129,28 @@ const deleteCar = async(req, res) => {
   }
 }
 
-module.exports = { createCars, getALlCars, getCar, getALlCarsAdmin, deleteCar };
+const updateCar = async(req, res) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+    await userModel.findByIdAndUpdate(id, {
+      brand: body.brand,
+      desc: body.desc,
+      geartype: body.gear,
+      fuelcap: body.fuel,
+      fueltype: body.fueltype,
+      seating: body.seating,
+      location: body.location,
+      luggage: body.luggage,
+      amount: body.amount,
+      mileage: body.mileage,
+      location: body.location,
+    }).then(() => {
+      res.status(200).json({"msg": "Car Updated"})
+    });
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+module.exports = { createCars, getALlCars, updateCar, getCar, getALlCarsAdmin, deleteCar };

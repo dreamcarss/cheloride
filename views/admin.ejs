@@ -90,6 +90,7 @@
                                 <td class="td">${car.fueltype}</td>
                                 <td class="td">${car.amount}</td>
                                 <td class="td">
+                                    <button class="del upd ${car._id}" onclick="showModal(${i})">Update</button>
                                     <button class="del ${car._id}" onclick="showModal(${i})">Delete</button>
                                 </td>`;
                 row.innerHTML = elem;

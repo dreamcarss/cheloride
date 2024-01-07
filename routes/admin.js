@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken")
 const authMiddleware = require("../middlewares/auth");
 const { getTrash, restoreTrashCar } = require("../controllers/trash");
 const adminAuth = require("../middlewares/adminauth");
-const { getUsers } = require("../controllers/admin");
+const { getUsers, updateRole } = require("../controllers/admin");
+const execAuth = require("../middlewares/execAuth");
 require("dotenv").config();
 
 const adminRoutes = require("express").Router()
@@ -17,14 +18,15 @@ adminRoutes.get("/bookings", (req, res) => {
   res.render("adminBookings.ejs");
 });
 
-adminRoutes.get("/users", getUsers);
-adminRoutes.get("/getUsers", authMiddleware, adminAuth, getUsers);
+adminRoutes.get("/users", (req, res) => res.render("users.ejs"));
+adminRoutes.get("/getUsers", authMiddleware, execAuth, getUsers);
+adminRoutes.patch("/updateRole/:id", authMiddleware, adminAuth, updateRole);
 
 adminRoutes.get("/checkAdmin", authMiddleware, async(req, res) => {
   try {
     const email = req.body.email;
     await userModel.findOne({email:email}).then(async(user) => {
-      if(user != null && user.role === "admin"){
+      if(user != null && user.role === "Admin"){
         res.status(200).json({"url":"/adminpanel"})
       }else{
         console.log("user")
@@ -37,7 +39,7 @@ adminRoutes.get("/checkAdmin", authMiddleware, async(req, res) => {
 
 
 adminRoutes.get("/trash", (req, res) => res.render("trash.ejs"));
-adminRoutes.get("/trashData", authMiddleware, adminAuth, getTrash);
-adminRoutes.post("/restoreTrash", authMiddleware, adminAuth, restoreTrashCar);
+adminRoutes.get("/trashData", authMiddleware, execAuth, getTrash);
+adminRoutes.post("/restoreTrash", authMiddleware, execAuth, restoreTrashCar);
 
 module.exports = adminRoutes;

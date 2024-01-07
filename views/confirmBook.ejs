@@ -70,7 +70,8 @@
                 'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            }).then((res => res.json().then(data => {
+            }).then((res => {
+                res.json().then(data => {
                 const msg = document.createElement("div");
                 btn.innerHTML = "Checkout"
                 msg.classList.add("msg");
@@ -81,7 +82,7 @@
                     document.getElementsByTagName("body")[0].removeChild(msg);
                     window.location.href = "/booking"
                 }, 1500)
-            })))
+            })}))
         }
     </script>
 </body>

@@ -62,6 +62,7 @@
             <button class="btn" type="submit">
                 Submit
             </button>
+            <p class="msg" id="note"></p>
             <a href="/auth/login" class="link">Already having account? Login</a>
         </form>
     </div>
@@ -87,6 +88,7 @@
             try {
                 e.preventDefault();
                 btn.innerHTML = '<div class="circle"></div>';
+                document.getElementById("note").textContent = "*Note: Registeration might take sometime to process the images, kindly wait."
                 msg.textContent = ""
                 const name = formElm["name"].value;
                 const email = formElm["email"].value;

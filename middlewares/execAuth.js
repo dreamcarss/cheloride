@@ -4,13 +4,13 @@ require("dotenv").config();
 
 const SALT = process.env.SALT;
 
-const adminAuth = async(req, res, next) => {
+const execAuth = async(req, res, next) => {
     try {
 
         const email = jwt.decode(req.headers.token, SALT);
         await userModel.findOne({email}).then((user) => {
-            if(user != null && user?.role === "Admin"){
-                console.log(user.role)
+            if(user != null && user?.role === "Executive" || user?.role === "Admin"){
+                console.log(user.role, "hi")
                 next();
             }else{
                 res.status(403).json({ msg: "/auth/login" });
@@ -21,4 +21,4 @@ const adminAuth = async(req, res, next) => {
     }
 }
 
-module.exports = adminAuth;
+module.exports = execAuth;

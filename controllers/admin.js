@@ -2,19 +2,31 @@ const userModel = require("../models/userModel");
 
 const getUsers = async(req, res) => {
   try {
-    if(req.method == "GET"){
-      res.render("users.ejs");
-    }else{
-      await userModel.find().then((users) => {
-        if(users.length > 0){
-        console.log(users)
-          res.status(200).json({"data": users})
-        }
-      })
-    }
+    await userModel.find().then((users) => {
+      if(users.length > 0){
+        users.forEach((user) => user.password = "")
+        res.status(200).json({"data": users})
+      }
+    })
   } catch (error) {
     console.log(error)
   }
 }
 
-module.exports = {getUsers}
+const updateRole = async (req, res) => {
+  try {
+    let id = req.params.id
+    await userModel
+      .findByIdAndUpdate(id, {
+        role: req.body.role,
+      })
+      .then((user) => {
+        console.log(user)
+          res.status(200).json({ "msg": "User Updated"});
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getUsers, updateRole };

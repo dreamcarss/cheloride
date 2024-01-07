@@ -30,15 +30,15 @@
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Pickup Time</label>
-                        <input type="time" name="time" id="time"  max="22:00" placeholder="10:10 am" required>
+                        <input type="time" name="time" id="time"  max="22:00" placeholder="10:10 am" required disabled>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Drop Date</label>
-                        <input type="date" name="ddate" id="ddate" required>
+                        <input type="date" name="ddate" id="ddate" required disabled>
                     </div>
                     <div class="wrap">
                         <label for="" class="lab">Drop Time</label>
-                        <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required>
+                        <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required disabled>
                     </div>
                 </div>
                 <button type="submit" class="subt" style="display: none;"></button>
@@ -83,6 +83,7 @@
         </div>
     </div>
     <script>
+        
         const btn = document.getElementsByClassName("subt")[0];
         const form = document.getElementsByClassName("form")[0];
         const list = document.querySelectorAll(".lelm");
@@ -90,6 +91,24 @@
         const loc = document.getElementById("location");
         const pdate = document.getElementById("pdate");
         const ddate = document.getElementById("ddate");
+
+        document.onload = () => {
+            form['date'].value = ""
+            form['ddate'].value = ""
+            form['time'].value = ""
+            form['dtime'].value = ""
+        }   
+
+        form['date'].addEventListener("change", () => {
+            form['time'].disabled = false
+        })
+        form['time'].addEventListener("change", () => {
+            form['ddate'].disabled = false
+        })
+        form['ddate'].addEventListener("change", () => {
+            form['dtime'].disabled = false
+        })
+        
 
         //past time fixage
         form['time'].addEventListener("focusin", () => {
@@ -110,10 +129,9 @@
             let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
             console.log(diff)
             if(diff <= 1.0){
+                form['dtime'].min = form['time'].value
                 form['dtime'].value = form['time'].value;
-                form['dtime'].setAttribute("disabled", true)
             }else{
-                form['dtime'].removeAttribute("disabled", true)
             };
         })
 

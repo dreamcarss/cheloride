@@ -38,9 +38,9 @@
     </div>
     <script>
         const form = document.getElementById("form");
-        const btn = document.getElementById("sbt");
+        // const btn = document.getElementById("sbt");
         const add = document.getElementById("add");
-        const close = document.getElementsByClassName("cls")[0];
+        // const close = document.getElementsByClassName("cls")[0];
         const popup = document.getElementsByClassName("popup")[0];
         const table = document.getElementsByClassName("tab")[0];
         const showModal = (i) => {
@@ -69,6 +69,7 @@
                 "paymentStatus": inp[6].value, 
                 "bookingStatus": inp[7].value, 
             }
+            console.log(body)
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
                 headers: {
@@ -78,6 +79,7 @@
                 },
                 body: JSON.stringify(body)
             }).then((res) => res.json().then((data) => {
+                console.log(data)
                 const msg = document.createElement("div");
                 const body = document.getElementsByTagName("body")[0];
                 msg.classList.add("msg");
@@ -85,8 +87,8 @@
                 body.appendChild(msg);
                 setTimeout(() => {
                     body.removeChild(msg)
+                    window.location.href = "/adminpanel/bookings"
                 }, 2500);
-                window.location.href = "/adminpanel/bookings"
             }))
         }
 
@@ -145,34 +147,34 @@
                 });
             }
 
-        btn.addEventListener("click", async(e) => {
-            e.preventDefault();
-            const brand = form["brand"].value;
-            const desc = form["desc"].value;
-            const upload = form["upload"];
-            const gear = form["gear"].value;
-            const fuel = form["fuel"].value;
-            const luggage = form["luggage"].value;
-            const seating = form["seating"].value;
-            const mileage = form["mileage"].value;
-            const location = form["location"].value;
-            let data = {
-                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating
-            }
-            const resp = await fetch('/admin/uploadCar', {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            const content = await resp.json();
-        })
+        // btn.addEventListener("click", async(e) => {
+        //     e.preventDefault();
+        //     const brand = form["brand"].value;
+        //     const desc = form["desc"].value;
+        //     const upload = form["upload"];
+        //     const gear = form["gear"].value;
+        //     const fuel = form["fuel"].value;
+        //     const luggage = form["luggage"].value;
+        //     const seating = form["seating"].value;
+        //     const mileage = form["mileage"].value;
+        //     const location = form["location"].value;
+        //     let data = {
+        //         brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating
+        //     }
+        //     const resp = await fetch('/admin/uploadCar', {
+        //         method: 'POST',
+        //         headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(data)
+        //     });
+        //     const content = await resp.json();
+        // })
 
-        close.addEventListener("click", () => {
-            popup.style.display = "none";
-        })
+        // close.addEventListener("click", () => {
+        //     popup.style.display = "none";
+        // })
     </script>
 </body>
 </html>

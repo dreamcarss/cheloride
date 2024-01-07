@@ -56,14 +56,13 @@
             }
         }).then(res => res.json().then(data => {
             let diff = data?.diff;
-            console.log(diff)
             data?.cars.forEach((car, i) => {
                 const newCar = document.createElement("div");
                 newCar.classList.add("carcard");
-                newCar.onclick = () => showPopup(i)
-                let carData = ` <img src="${car.image}" alt="" class="img">
+                // newCar.onclick = () => showPopup(i)
+                let carData = ` <img onclick = "showPopup(${i})" src="${car.image}" alt="" class="img">
                     <div class="twrap">
-                        <div class="col">
+                        <div class="col" onclick = "showPopup(${i})">
                             <h3 class="title">${car.brand}</h3>
                             <p class="ssub">${car.desc}</p>
                             <div class="row">
@@ -73,11 +72,14 @@
                             </div>
                         </div>
                         <div class="price pmb">
-                            <div>
+                            <div onclick = "showPopup(${i})">
                                 <p class="cost">${car.amount * diff}/-</p>
                                 <p class="label">Total Estimated <br />Amount</p>
                             </div>
-                            <button class="bbtn ${car._id} ${i}" onclick = "showPopup()">View more</button>
+                            <div class="wrapRow">
+                                <button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
+                                <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>
+                            </div>
                         </div>
                 </div>`
                 newCar.innerHTML = carData;
@@ -91,11 +93,10 @@
         }))
         const closePopup = () => {
             const popup = document.getElementsByClassName("popup")[0];
-            console.log(popup)
             container.removeChild(popup);
         }
         const showPopup = (id) => {
-            const car_id = document.getElementsByClassName(id)[0].classList[1];
+            const car_id = document.getElementsByClassName(id)[0].classList[2];
             fetch(`/admin/getCar/${car_id}`).then(res => res.json().then((data) => {
                 const popup = document.createElement("div");
                 popup.classList.add("popup");
@@ -144,15 +145,15 @@
             }))
         }
 
-        const bookHandler = async() => {
-            const id = document.getElementsByClassName("idbtn")[0].classList[2]
+        const bookHandler = async(i) => {
+            console.log(i)
+            const id = document.getElementsByClassName("idbtn")[0] || document.getElementsByClassName(i)[0]
             const token = localStorage.getItem("token");
             if(token != null){
                     const subs = document.querySelectorAll(".wsub");
                     const data = [];
                     subs.forEach((s) => data.push(s.textContent));
-                    console.log(data, token, id);
-                    let d = {data, carid: id}
+                    let d = {data, carid: id.classList[2]}
                     fetch("/booking/confirmBooking", {
                         method: 'POST',
                         headers: {
