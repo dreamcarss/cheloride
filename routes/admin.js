@@ -28,7 +28,7 @@ adminRoutes.get("/checkAdmin", authMiddleware, async(req, res) => {
   try {
     const email = req.body.email;
     await userModel.findOne({email:email}).then(async(user) => {
-      if(user != null && user.role === "Admin"){
+      if(user != null && user.role === "Admin" || user.role === "Executive"){
         res.status(200).json({"url":"/adminpanel"})
       }else{
         console.log("user")
