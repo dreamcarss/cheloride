@@ -19,6 +19,7 @@ const updateRole = async (req, res) => {
     await userModel
       .findByIdAndUpdate(id, {
         role: req.body.role,
+        kycStatus: req.body.kycStatus || false
       })
       .then((user) => {
         console.log(user)

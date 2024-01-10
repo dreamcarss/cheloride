@@ -9,12 +9,13 @@ const userSchema = mongoose.Schema({
   phone: { type: Number, required: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  aadhaar: { type: String, required: true },
+  kycStatus: {type: Boolean, default: false},
+  aadhaar: { type: String, },
   idproof: {
-    userType: { type: String, required: true },
-    proof: { type: String, required: true },
+    userType: { type: String, },
+    proof: { type: String, },
   },
-  license: { type: String, required: true },
+  license: { type: String, },
 });
 
 userSchema.pre('save', function(next){

@@ -377,3 +377,38 @@ def register():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+<div class="wrap">
+                    <label for="">Aadhaar</label>
+                    <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
+                    <div class="wrap" style="flex-direction: row; align-items:center; gap:10px">
+                        <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
+                            <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                        </label>
+                        <button class="btn" style="height: 30px; margin-top:4px"><div class="circle"></div></button>    
+                    </div>
+                </div>
+                <div class="wrap">
+                    <label for="">License</label>
+                    <input type="file" id="img" accept="image/*" class="inp none file" name="image">
+                    <label for="img" type="text" class="inp second" id="image" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>
+                <div class="wrap">
+                    <label for="">Id Proof</label>
+                    <div class="row">
+                        <input type="radio" placeholder="student" name="role" value="student" id="st" checked>
+                        <label for="st" class="lab">Student</label>
+                        <input type="radio" placeholder="bussiness" name="role" value="bussiness" id="bs">
+                        <label for="bs" class="lab">Bussiness</label>
+                        <input type="radio" placeholder="job" name="role" value="job" id="jb">
+                        <label for="jb" class="lab">Job</label>
+                    </div>
+                    <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
+                    <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>

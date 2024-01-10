@@ -40,13 +40,7 @@ const register = async(req, res) => {
               email: body.email,
               phone: parseInt(body.phone),
               password: body.password,
-              role: "user",
-              aadhaar: body.aadhaar,
-              idproof: {
-                userType: body.role,
-                proof: body.id,
-              },
-              license: body.license,
+              role: "User",
             });
             await newUser.save()
             const token = newUser.genToken();
