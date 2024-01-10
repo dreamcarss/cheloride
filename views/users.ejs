@@ -121,7 +121,14 @@
                                 user.aadhaar != undefined ? `<a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: 
                                 `<button class="btn">Upload</button>`
                             }
-                        <td class="td">${user.idproof?.userType || "Student"}</td>
+                        <td class="td">
+                            <select id="bookingStatus" class="inp sttype">
+                                ${
+                                    user.idproof?.userType == "student" ? '<option value="job">Job</option> <option value="bussiness">Bussiness</option> <option value="student" selected="selected">Student</option>': user.idproof?.userType == "job" ? `<option value="job" selected="selected">Job</option> <option value="bussiness">Bussiness</option> <option value="student" >Student</option>` : '<option value="job">Job</option> <option value="bussiness" selected="selected">Bussiness</option> <option value="student">Student</option>'
+                                    
+                                }
+                            </select>
+                        </td>
                         <td class="td">
                             ${
                                 user.idproof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<button class="btn">Upload</button>`
