@@ -40,10 +40,11 @@
                 <div class="wrap">
                     <label for="">Aadhaar</label>
                     <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
-                    <div class="wrap">
+                    <div class="wrap" style="flex-direction: row; align-items:center; gap:10px">
                         <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
                             <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
-                        </label>    
+                        </label>
+                        <button class="btn" style="height: 30px; margin-top:4px"><div class="circle"></div></button>    
                     </div>
                 </div>
                 <div class="wrap">
@@ -130,6 +131,7 @@
                 }).then((res) => {
                     res.json().then((link) => {
                         inps[i].classList.add("sub")
+                        inps[i].setAttribute("disabled", true)
                         if(i==0){linksArr.aadhaar = link.link}
                         else if(i==1){linksArr.license = link.link}
                         else if(i==2){linksArr.id = link.link}

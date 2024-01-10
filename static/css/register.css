@@ -225,7 +225,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .form{
+    .form, .steps{
         width: 100%;
     }
 }
