@@ -34,6 +34,7 @@
                 <th class="th">UserType</th>
                 <th class="th">Proof</th>
                 <th class="th">License</th>
+                <th class="th">Kyc Status</th>
                 <th class="th">Action</th>
             </tr>
             
@@ -58,8 +59,9 @@
         const update = (i) => {
             const id = document.getElementsByClassName("upd")[i].classList[2];
             const role = document.getElementsByClassName("location")[i].value;
+            const kyc = document.getElementsByClassName("kyc")[i].value;
             const modal = document.getElementsByClassName("modal")[0]
-            let body = { "role": role}
+            let body = { "role": role , "kycStatus":kyc}
             fetch(`/adminpanel/updateRole/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -120,6 +122,14 @@
                             <a href="${user.idproof.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
                         <td class="td">
                             <a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a>
+                        </td>
+                        <td class="td">
+                            <select id="bookingStatus" class="inp kyc">
+                                ${
+                                    user.kycStatus == true ? '<option value="false">No KYC</option> <option value="true" selected="selected">KYC Done</option>' : '<option value="false" selected="selected">No KYC</option> <option value="true">KYC Done</option>'
+                                    
+                                }
+                            </select>
                         </td>
                         <td class="td">
                             <button class="del upd ${user._id}" onclick="showModal(${i})">Update</button>
