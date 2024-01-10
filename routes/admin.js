@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const authMiddleware = require("../middlewares/auth");
 const { getTrash, restoreTrashCar } = require("../controllers/trash");
 const adminAuth = require("../middlewares/adminauth");
-const { getUsers, updateRole } = require("../controllers/admin");
+const { getUsers, updateRole, deleteUser, handleUpload } = require("../controllers/admin");
 const execAuth = require("../middlewares/execAuth");
 require("dotenv").config();
 
@@ -20,7 +20,9 @@ adminRoutes.get("/bookings", (req, res) => {
 
 adminRoutes.get("/users", (req, res) => res.render("users.ejs"));
 adminRoutes.get("/getUsers", authMiddleware, execAuth, getUsers);
+adminRoutes.patch("/uploadImage/:id", authMiddleware, execAuth, handleUpload);
 adminRoutes.patch("/updateRole/:id", authMiddleware, adminAuth, updateRole);
+adminRoutes.delete("/deleteUser/:id", authMiddleware, adminAuth, deleteUser);
 
 adminRoutes.get("/checkAdmin", authMiddleware, async(req, res) => {
   try {

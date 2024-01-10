@@ -25,13 +25,14 @@ const getBookings = async (req, res) => {
     await bookingModel.find({userId: email, bookingStatus: true}).then(async(bookings) => {
       if(bookings.length > 0){
         let data = []
+        let user = await userModel.findOne({email: email});
         let promise = bookings.map(async(booking) => {
           await carModel.findById(booking.carId).then(async (car) => {
             data.push({booking, car})
           });
         })
         Promise.all(promise).then(() => {
-          res.status(200).json({"data": data})
+          res.status(200).json({"data": data, "status": user?.kycStatus})
         })
       }else{
         res.status(400).json({msg: "No Bookings Available"})
@@ -198,12 +199,28 @@ const bookCar = async(req, res) => {
                       </div>
                       `;
                   let executiveMail = process.env.MAIL;
+                  let user = await userModel.findOne({email: body.email});
                   await mail("New Booking", html, executiveMail).catch();
+                  let msg;
+                  if(user.kycStatus){
+                    msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                      totalAmount + gst
+                    }</p>`;
+                  }else{
+                    msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                      totalAmount + gst
+                    }</p>
+                    <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
+                    <ul>
+                      <li>Aadhaar Card</li>
+                      <li>License Id</li>
+                      <li>Address Proof</li>
+                    </ul>
+                    `;
+                  }
                   await mail(
                     "Booking placed",
-                    `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                      totalAmount + gst
-                    }</p>`,
+                    msg,
                     body.email
                   ).catch();
                   res.status(200).json({ msg: "car booked" });

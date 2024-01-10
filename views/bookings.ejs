@@ -10,10 +10,11 @@
 <body>
     <%- include('./navbar.ejs') %>
     <div class="container">
+        <h2 class="title">Your Bookings</h2>
+        <div id="cont"></div>
         <div class="modal">
             
         </div>
-        <h2 class="title">Your Bookings</h2>
         <div class="wrapCards">
 
         </div>
@@ -27,6 +28,16 @@
             }
         }).then(res => res.json().then(data => {
             if(res.status == 200){
+                if(!data.status){
+                    const warn = document.createElement("div");
+                    warn.classList.add("strip");
+                    warn.innerHTML = `<p class="title tstrip">
+                            <ion-icon name="warning-outline"></ion-icon>
+                            KYC Verification Pending
+                        </p>
+                        <p class="sub">Inorder to rent the car, you need to perform full kyc Verification by going to the RK beach hub and submit the details.(Only for new users)</p>`
+                    document.getElementById("cont").appendChild(warn)
+                }
                 data.data.map((recipt) => {
                     let card = document.createElement("div");
                     let elem = `

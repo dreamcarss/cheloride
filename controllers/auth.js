@@ -1,6 +1,5 @@
 const userModel = require("../models/userModel.js")
 const bcryptjs = require("bcryptjs");
-const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken")
 const fs = require("fs")
 require("dotenv").config();
@@ -9,17 +8,6 @@ const tokenModel = require("../models/tokenModel.js")
 
 const SALT = process.env.SALT;
 
-async function handleUpload(req, res) {
-  let file = req.body.file;
-  if(file != null){
-    const respImg = await cloudinary.uploader.upload(file, {
-      resource_type: "auto",
-    });
-    res.status(200).json({ link: respImg.secure_url });
-  }else{
-    res.render("400.ejs", {t: 500, "sub": "Something went wrong"})
-  }
-}
 
 const register = async(req, res) => {
     try {
@@ -150,4 +138,4 @@ const verifyLink = async(req, res) => {
 }
 
 
-module.exports = { login, register, checkMail, verifyLink, handleUpload };
+module.exports = { login, register, checkMail, verifyLink };

@@ -7,7 +7,6 @@ const authRoutes = express.Router();
 authRoutes.get("/register", authFuncs.register);
 authRoutes.post("/register", authFuncs.register);
 
-authRoutes.post("/uploadImage", authFuncs.handleUpload);
 
 
 authRoutes.get("/login", authFuncs.login);

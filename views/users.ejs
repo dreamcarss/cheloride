@@ -56,6 +56,59 @@
             document.getElementsByTagName("body")[0].appendChild(modal);
         }
 
+        const showDeleteModal = (i) => {
+            console.log(i)
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            modal.innerHTML = `<div class="mcard">
+                    <h2 class="title">Are you sure to delete the record?</h2>
+                    <div class="wrap">
+                        <button class="btn" onclick="(() => {document.getElementsByClassName('modal')[0].style.display = 'none'})()">Cancel</button>
+                        <button class="btn del" onclick="deleteHandler(${i})">Delete User</button>
+                    </div>
+                </div>`
+            document.getElementsByTagName("body")[0].appendChild(modal);
+        }
+
+        const uploadHandler = async(e, i, cname) => {
+            const id = document.getElementsByClassName("upd")[i].classList[2];
+            console.log(id, cname)
+            let file = new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(e["files"][0]);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+            let body = {
+                "file": await file,
+                "head": cname
+            }
+            fetch(`/adminpanel/uploadImage/${id}`, {
+                method: 'PATCH',
+                headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => res.json().then((data) => {
+                window.location.href = "/adminpanel/users"
+            }))
+        }
+
+        const deleteHandler = (i) => {
+            const id = document.getElementsByClassName("upd")[i].classList[2];
+            console.log(id)
+            fetch(`/adminpanel/deleteUser/${id}`, {
+                method: "delete",
+                headers:{
+                    'token': window.localStorage.getItem("token")
+                }
+            }).then(res => res.json().then(data => {
+                window.location.href = "/adminpanel/users"
+            }))
+        }
+
         const update = (i) => {
             const id = document.getElementsByClassName("upd")[i].classList[2];
             const role = document.getElementsByClassName("location")[i].value;
@@ -118,8 +171,7 @@
                         </td>
                         <td class="td">
                             ${
-                                user.aadhaar != undefined ? `<a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: 
-                                `<button class="btn">Upload</button>`
+                                user.aadhaar != undefined ? `<a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="aadhaar${i}" name="aadhaar${i}" onchange="uploadHandler(this, ${i}, 'aadhaar')" /><label for="aadhaar${i}" class="del updt">Upload</label>`
                             }
                         <td class="td">
                             <select id="bookingStatus" class="inp sttype">
@@ -131,12 +183,11 @@
                         </td>
                         <td class="td">
                             ${
-                                user.idproof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<button class="btn">Upload</button>`
+                                user.idproof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="idproof${i}" name="idproof${i}" onchange="uploadHandler(this, ${i}, 'idproof')"/><label for="idproof${i}" class="del updt">Upload</label>`
                             }
                         <td class="td">
                             ${
-                                user.license != undefined ? `<a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: 
-                                `<button class="btn">Upload</button>`
+                                user.license != undefined ? `<a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="license${i}" name="license${i}" onchange="uploadHandler(this, ${i}, 'license')" /><label for="license${i}" class="del updt">Upload</label>`
                             }
                         </td>
                         <td class="td">
@@ -149,7 +200,7 @@
                         </td>
                         <td class="td">
                             <button class="del upd ${user._id}" onclick="showModal(${i})">Update</button>
-                            <button class="del">Delete</button>
+                            <button class="del" onclick="showDeleteModal(${i})">Delete</button>
                         </td>`;
                         newRow.innerHTML = data;
                         tab.appendChild(newRow)

@@ -175,6 +175,10 @@ td {
     background: blueviolet;
 }
 
+.tab .row .td .del.updt {
+    background: blueviolet;
+ }
+
 .tab .row .td .inp{
     height: 100%;
     width: max-content;
@@ -256,6 +260,9 @@ td {
     color: white;
     background-color: rgb(38, 38, 38);
     border-radius: 5px;
+}
+.none{
+    display: none;
 }
 
 .popup .inner .location .elem{
