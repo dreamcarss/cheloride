@@ -1,30 +1,379 @@
-await bookingModel.find().then(async (bookings) => {
-          if (bookings.length > 0) {
-            let sDate = new Date(req.headers.startdate);
-            let dDate = new Date(req.headers.enddate);
-            let carsList = []
-            if(bookings.length > 0){
-              for (let booking of bookings) {
-                let startDate = new Date(booking.startDate);
-                let endDate = new Date(booking.dropDate);
-                if (
-                  (sDate > startDate && sDate < endDate) ||
-                  (dDate > startDate && dDate < endDate)
-                ) {
-                  null;
-                } else {
-                  await carModel.findById(booking.carId).then((car) => {
-                    carsList.push(car);
-                  });
-                }
-              }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>CheloRide</title>
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <div class="opWrap"></div>
+        <h3 class="title">CHELORIDE - REGISTER</h3>
+        
+        <form id="formElm" class="form">
+            <div class="step1">
+                <div class="wrap">
+                    <label for="">Name</label>
+                    <input type="text" class="inp" name="name" required>
+                </div>
+                <div class="wrap">
+                    <label for="">Email</label>
+                    <input type="text" class="inp" name="email" id="email" required>
+                </div>
+                <div class="wrap">
+                    <label for="">Phone</label>
+                    <input type="text" class="inp" name="phone" required>
+                </div>
+                <div class="wrap">
+                    <label for="">Password</label>
+                    <input type="text" class="inp" name="password" required>
+                </div>
+                <p class="msg" id="msg"></p>
+                <button class="btn" type="button" id="change">
+                    Next
+                </button>
+            </div>
+            <div class="step2 none">
+                <div class="wrap">
+                    <label for="">Aadhaar</label>
+                    <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
+                    <div class="wrap">
+                        <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
+                            <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                        </label>    
+                    </div>
+                </div>
+                <div class="wrap">
+                    <label for="">License</label>
+                    <input type="file" id="img" accept="image/*" class="inp none file" name="image">
+                    <label for="img" type="text" class="inp second" id="image" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>
+                <div class="wrap">
+                    <label for="">Id Proof</label>
+                    <div class="row">
+                        <input type="radio" placeholder="student" name="role" value="student" id="st" checked>
+                        <label for="st" class="lab">Student</label>
+                        <input type="radio" placeholder="bussiness" name="role" value="bussiness" id="bs">
+                        <label for="bs" class="lab">Bussiness</label>
+                        <input type="radio" placeholder="job" name="role" value="job" id="jb">
+                        <label for="jb" class="lab">Job</label>
+                    </div>
+                    <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
+                    <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>
+                <p class="msg" id="note">Please wait.</p>
+                <button class="btn" id="submit" disabled>
+                    Submit
+                </button>
+            </div>
+            <a href="/auth/login" class="link">Already having account? Login</a>
+        </form>
+        <div class="steps">
+            <div class="load"></div>
+            <div class="txt b1">Information</div>
+            <div class="txt">Image Upload</div>
+        </div> 
+    </div>
+    <script>
+        const formElm = document.getElementById("formElm");
+        const chng = document.getElementById("change");
+        const btn = document.getElementById("submit");
+        const st1 = document.getElementsByClassName("step1")[0];
+        const st2 = document.getElementsByClassName("step2")[0];
+        const files = document.querySelectorAll(".file");
+        const labels = document.querySelectorAll(".label");
+        const inps = document.querySelectorAll(".second");
+
+        let linksArr = {};
+        chng.onclick = (e) => {
+            e.preventDefault();
+            if(formElm["name"].value == "" || formElm["email"].value == "" || formElm["phone"].value == "" || formElm["password"].value == ""){
+                document.getElementById("msg").textContent = "*Please fill all Details"
             }else{
-              await carModel.find().then((car) => carList.push(car))
+                st1.classList.add("none");
+                linksArr.username = formElm["name"].value
+                linksArr.email = formElm["email"].value
+                linksArr.phone = formElm["phone"].value
+                linksArr.password = formElm["password"].value
+                st2.classList.remove("none");
+                document.getElementsByClassName("load")[0].style.width = "100%"
             }
-            if (carsList.length > 0) {
-              res.status(200).json({ cars: carsList });
-            } else {
-              res.json({ msg: "No cars found" });
+        };
+
+        function checkNulls (){
+            if(linksArr.username != null && linksArr.phone != null && linksArr.password != null && linksArr.email != null && linksArr?.aadhaar != null && linksArr.license !=null && linksArr.id != null){
+                return true;
+            }else{
+                return false
             }
-          }
+        }
+
+        files.forEach((file, i) => {
+            file.addEventListener("change", async(e) => {
+                let img = await fileCatch(e.target);
+                labels[i].textContent = e.target["files"][0].name
+                let data = {"file": img};
+                fetch("/auth/uploadImage", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then((res) => {
+                    res.json().then((link) => {
+                        inps[i].classList.add("sub")
+                        if(i==0){linksArr.aadhaar = link.link}
+                        else if(i==1){linksArr.license = link.link}
+                        else if(i==2){linksArr.id = link.link}
+                        let status = checkNulls();
+                        console.log(status)
+                        if(status){
+                            btn.removeAttribute("disabled")
+                        }
+                    })
+                })
+            })
         });
+
+        function fileCatch(img) {
+            const file = img["files"][0];
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    canvas.toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = function() {
+                        const base64data = reader.result;
+                        resolve(base64data);
+                    }
+                    }, 'image/jpeg', 0.4); 
+                };
+                };
+                reader.onerror = (error) => {
+                    console.log(error);
+                    reject(error);
+                };
+            });
+        }
+
+        formElm.onsubmit = (e) => {
+            e.preventDefault();
+            linksArr.role = formElm['role'].value;
+            fetch("/auth/register", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(linksArr)
+                }).then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    res.json().then((d) => {
+                        let msg = document.getElementById("note")
+                        msg.textContent = d.msg;
+                        btn.innerHTML = "Submit"
+                        if(res.status === 200 || res.status === 300){
+                            msg.style.color = "white"
+                            if(d?.token != null){
+                                localStorage.setItem("token", d.token)
+                            }
+                            window.location.href="/"
+                        }
+                        else if(req.status === 413){
+                            console.log("413 error")
+                        }
+                        else{
+                            emailElem.classList.add("warn");
+                            msg.textContent = d.msg;
+                        }
+                    })
+                })
+        }
+
+
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+# app.py
+from flask import Flask, request, jsonify
+from mongoengine import Document, StringField, connect
+from cloudinary.uploader import upload
+import cloudinary
+
+app = Flask(__name__)
+
+# Configure MongoDB connection
+connect('UNITYZEN', host='mongodb+srv://shaikhazrathali:hazrath@cluster0.ka6xnop.mongodb.net/?retryWrites=true&w=majority')
+
+cloudinary.config(
+    cloud_name='shaikhazrath',
+    api_key='473858717833214',
+    api_secret='jUWEM-caWp2jTtTbq3V09dYcirA'
+)
+
+class User(Document):
+    username = StringField(required=True)
+    email = StringField(required=True)
+    phone = StringField(required=True)
+    password = StringField(required=True)
+    role = StringField(required=True)
+    aadhaar = StringField(required=True)
+    idproof = StringField(required=True)  # Change the type to StringField
+    license = StringField(required=True)
+
+# Endpoint for image upload
+@app.route('/register', methods=['POST'])
+def upload_image():
+    # Getting form data
+    username = request.form.get('username')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    password = request.form.get('password')
+    role = request.form.get('role')
+    
+    # Upload Aadhaar image to Cloudinary
+    aadhaar_image = request.files['aadhaar_image']
+    aadhaar_image_url = upload(aadhaar_image)['url']
+
+    # Upload ID proof image to Cloudinary
+    idproof_image = request.files['idproof_image']
+    idproof_image_url = upload(idproof_image)['url']
+
+    # Upload License image to Cloudinary
+    license_image = request.files['license_image']
+    license_image_url = upload(license_image)['url']
+
+    # Creating a new user with the image URLs
+    new_user = User(
+        username=username,
+        email=email,
+        phone=phone,
+        password=password,
+        role="User",
+        aadhaar=aadhaar_image_url,
+        idproof=idproof_image_url,
+        license=license_image_url
+    )
+
+    # Save the user to MongoDB
+    new_user.save()
+
+    return jsonify({'message': 'User registered successfully'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+    https://imageupladflask-lxy1.vercel.app/register
+
+    
+                function fileCatch(img) {
+                    const file = img["files"][0];
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => {
+                        const img = new Image();
+                        img.src = reader.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0, img.width, img.height);
+                            canvas.toBlob((blob) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(blob);
+                            reader.onloadend = function() {
+                                const base64data = reader.result;
+                                resolve(base64data);
+                            }
+                            }, 'image/jpeg', 0.6); // Adjust quality here
+                        };
+                        };
+                        reader.onerror = (error) => {
+                        console.log(error);
+                        reject(error);
+                        };
+                    });
+                }
+
+
+
+                from flask import Flask, request, jsonify
+from werkzeug.security import generate_password_hash
+from flask_mongoengine import MongoEngine
+from cloudinary.uploader import upload
+import jwt
+import datetime
+
+app = Flask(__name__)
+app.config['MONGODB_SETTINGS'] = {
+    'host': 'mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority'
+}
+db = MongoEngine()
+db.init_app(app)
+
+class IDProof(db.EmbeddedDocument):
+    userType = db.StringField(required=True)
+    proof = db.StringField(required=True)
+
+class User(db.Document):
+    username = db.StringField(required=True)
+    email = db.StringField(required=True)
+    phone = db.IntField(required=True)
+    password = db.StringField(required=True)
+    role = db.StringField(required=True)
+    aadhaar = db.StringField(required=True)
+    idproof = db.EmbeddedDocumentField(IDProof)
+    license = db.StringField(required=True)
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+    data['password'] = hashed_password
+
+    # Upload file to Cloudinary
+    upload_result = upload(request.files['file'], 
+                           cloud_name='your_cloud_name', 
+                           api_key='your_api_key', 
+                           api_secret='your_api_secret')
+    data['file_url'] = upload_result['url']
+
+    # Save user data to MongoDB
+    user = User(**data)
+    user.save()
+
+    # Generate JWT token
+    token = jwt.encode({'email': data['email'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, 'your_jwt_secret')
+
+    return jsonify({'token': token, 'message': 'User saved successfully!'}), 201
+
+if __name__ == '__main__':
+    app.run(debug=True)

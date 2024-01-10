@@ -12,127 +12,115 @@
     <div class="container">
         <div class="opWrap"></div>
         <h3 class="title">CHELORIDE - REGISTER</h3>
+        
         <form id="formElm" class="form">
-            <div class="wrap">
-                <label for="">Name</label>
-                <input type="text" class="inp" name="name">
-            </div>
-            <div class="wrap">
-                <label for="">Email</label>
-                <input type="text" class="inp" name="email" id="email">
-                <p class="msg" id="msg"></p>
-            </div>
-            <div class="wrap">
-                <label for="">Phone</label>
-                <input type="text" class="inp" name="phone">
-            </div>
-            <div class="wrap">
-                <label for="">Password</label>
-                <input type="text" class="inp" name="password">
-            </div>
-            <div class="wrap">
-                <label for="">Aadhaar</label>
-                <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
-                <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
-                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
-                </label>
-            </div>
-            <div class="wrap">
-                <label for="">License</label>
-                <input type="file" id="img" accept="image/*" class="inp none file" name="image">
-                <label for="img" type="text" class="inp second" id="image" style="color: black;">
-                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
-                </label>
-            </div>
-            <div class="wrap">
-                <label for="">Id Proof</label>
-                <div class="row">
-                    <input type="radio" placeholder="student" name="role" value="student" id="st" checked>
-                    <label for="st" class="lab">Student</label>
-                    <input type="radio" placeholder="bussiness" name="role" value="bussiness" id="bs">
-                    <label for="bs" class="lab">Bussiness</label>
-                    <input type="radio" placeholder="job" name="role" value="job" id="jb">
-                    <label for="jb" class="lab">Job</label>
+            <div class="step1">
+                <div class="wrap">
+                    <label for="">Name</label>
+                    <input type="text" class="inp" name="name" required>
                 </div>
-                <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
-                <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;">
-                    <p style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
-                </label>
+                <div class="wrap">
+                    <label for="">Email</label>
+                    <input type="text" class="inp" name="email" id="email" required>
+                </div>
+                <div class="wrap">
+                    <label for="">Phone</label>
+                    <input type="text" class="inp" name="phone" required>
+                </div>
+                <div class="wrap">
+                    <label for="">Password</label>
+                    <input type="text" class="inp" name="password" required>
+                </div>
+                <p class="msg" id="msg"></p>
+                <button class="btn" type="button" id="change">
+                    Next
+                </button>
             </div>
-            <button class="btn" type="submit">
-                Submit
-            </button>
-            <p class="msg" id="note"></p>
+            <div class="step2 none">
+                <div class="wrap">
+                    <label for="">Aadhaar</label>
+                    <input type="file" class="inp none file" id="aid" accept="image/*" name="aadhaar">
+                    <div class="wrap">
+                        <label for="aid" type="text" class="inp second" id="aadhaar" style="color: black;">
+                            <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                        </label>    
+                    </div>
+                </div>
+                <div class="wrap">
+                    <label for="">License</label>
+                    <input type="file" id="img" accept="image/*" class="inp none file" name="image">
+                    <label for="img" type="text" class="inp second" id="image" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>
+                <div class="wrap">
+                    <label for="">Id Proof</label>
+                    <div class="row">
+                        <input type="radio" placeholder="student" name="role" value="student" id="st" checked>
+                        <label for="st" class="lab">Student</label>
+                        <input type="radio" placeholder="bussiness" name="role" value="bussiness" id="bs">
+                        <label for="bs" class="lab">Bussiness</label>
+                        <input type="radio" placeholder="job" name="role" value="job" id="jb">
+                        <label for="jb" class="lab">Job</label>
+                    </div>
+                    <input type="file" class="inp none file" accept="image/*" name="idProof" id="idprrof">
+                    <label for="idprrof" type="text" class="inp second" id="idProof" style="color: black;">
+                        <p class="label" style="color: rgb(57, 57, 57);">Click here to Browse Image</p>
+                    </label>
+                </div>
+                <p class="msg" id="note">Please wait.</p>
+                <button class="btn" id="submit" disabled>
+                    Submit
+                </button>
+            </div>
             <a href="/auth/login" class="link">Already having account? Login</a>
         </form>
+        <div class="steps">
+            <div class="load"></div>
+            <div class="txt b1">Information</div>
+            <div class="txt">Image Upload</div>
+        </div> 
     </div>
     <script>
-
-        const tokenStatus = localStorage.getItem("token") != null;
-        const btn = document.getElementsByClassName("btn")[0]
-        const files = document.querySelectorAll(".file");
         const formElm = document.getElementById("formElm");
-        const msg = document.getElementById("msg")
-        const emailElem = document.getElementById("email")
-        const container = document.getElementsByClassName("container")[0];
+        const chng = document.getElementById("change");
+        const btn = document.getElementById("submit");
+        const st1 = document.getElementsByClassName("step1")[0];
+        const st2 = document.getElementsByClassName("step2")[0];
+        const files = document.querySelectorAll(".file");
+        const labels = document.querySelectorAll(".label");
+        const inps = document.querySelectorAll(".second");
 
-        files.forEach((file) => {
-            file.addEventListener("input", () => {
-                let fileName = file["files"][0].name;
-                console.log(fileName, file)
-                document.getElementById(file.name).textContent = fileName;
-            })
-        })
+        let linksArr = {};
+        chng.onclick = (e) => {
+            e.preventDefault();
+            if(formElm["name"].value == "" || formElm["email"].value == "" || formElm["phone"].value == "" || formElm["password"].value == ""){
+                document.getElementById("msg").textContent = "*Please fill all Details"
+            }else{
+                st1.classList.add("none");
+                linksArr.username = formElm["name"].value
+                linksArr.email = formElm["email"].value
+                linksArr.phone = formElm["phone"].value
+                linksArr.password = formElm["password"].value
+                st2.classList.remove("none");
+                document.getElementsByClassName("load")[0].style.width = "100%"
+            }
+        };
 
-        formElm.onsubmit = async(e) => {
-            try {
-                e.preventDefault();
-                btn.innerHTML = '<div class="circle"></div>';
-                document.getElementById("note").textContent = "*Note: Registeration might take sometime to process the images, kindly wait."
-                msg.textContent = ""
-                const name = formElm["name"].value;
-                const email = formElm["email"].value;
-                const phone = formElm["phone"].value;
-                const password = formElm["password"].value;
-                const role = formElm["role"].value;
+        function checkNulls (){
+            if(linksArr.username != null && linksArr.phone != null && linksArr.password != null && linksArr.email != null && linksArr?.aadhaar != null && linksArr.license !=null && linksArr.id != null){
+                return true;
+            }else{
+                return false
+            }
+        }
 
-                function fileCatch(img) {
-                    const file = img["files"][0];
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = () => {
-                        const img = new Image();
-                        img.src = reader.result;
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            ctx.drawImage(img, 0, 0, img.width, img.height);
-                            canvas.toBlob((blob) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(blob);
-                            reader.onloadend = function() {
-                                const base64data = reader.result;
-                                resolve(base64data);
-                            }
-                            }, 'image/jpeg', 0.6); // Adjust quality here
-                        };
-                        };
-                        reader.onerror = (error) => {
-                        console.log(error);
-                        reject(error);
-                        };
-                    });
-                }
-
-                let aadhaar = await fileCatch(formElm["aadhaar"])
-                let licence = await fileCatch(formElm["image"])
-                let id = await fileCatch(formElm["idProof"])
-                const data = {name, email, "phone":phone, password, role, "license":licence, aadhaar, id}
-                console.log(data)
-                fetch("/auth/register", {
+        files.forEach((file, i) => {
+            file.addEventListener("change", async(e) => {
+                let img = await fileCatch(e.target);
+                labels[i].textContent = e.target["files"][0].name
+                let data = {"file": img};
+                fetch("/auth/uploadImage", {
                     method: 'POST',
                     headers: {
                     'Accept': 'application/json',
@@ -140,10 +128,68 @@
                     },
                     body: JSON.stringify(data)
                 }).then((res) => {
+                    res.json().then((link) => {
+                        inps[i].classList.add("sub")
+                        if(i==0){linksArr.aadhaar = link.link}
+                        else if(i==1){linksArr.license = link.link}
+                        else if(i==2){linksArr.id = link.link}
+                        let status = checkNulls();
+                        console.log(status)
+                        if(status){
+                            btn.removeAttribute("disabled")
+                        }
+                    })
+                })
+            })
+        });
+
+        function fileCatch(img) {
+            const file = img["files"][0];
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    canvas.toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = function() {
+                        const base64data = reader.result;
+                        resolve(base64data);
+                    }
+                    }, 'image/jpeg', 0.4); 
+                };
+                };
+                reader.onerror = (error) => {
+                    console.log(error);
+                    reject(error);
+                };
+            });
+        }
+
+        formElm.onsubmit = (e) => {
+            e.preventDefault();
+            linksArr.role = formElm['role'].value;
+            fetch("/auth/register", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(linksArr)
+                }).then((res) => {
                     if (!res.ok) {
                         throw new Error(`HTTP error! status: ${res.status}`);
                     }
                     res.json().then((d) => {
+                        let msg = document.getElementById("note")
                         msg.textContent = d.msg;
                         btn.innerHTML = "Submit"
                         if(res.status === 200 || res.status === 300){
@@ -162,13 +208,10 @@
                         }
                     })
                 })
-            } catch (error) {
-                msg.textContent = "*Please fill details";
-                btn.innerHTML = "Submit"
-            }
         }
-    </script>
 
+
+    </script>
     
 </body>
 </html>

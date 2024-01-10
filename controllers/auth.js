@@ -9,11 +9,16 @@ const tokenModel = require("../models/tokenModel.js")
 
 const SALT = process.env.SALT;
 
-async function handleUpload(file) {
-  const res = await cloudinary.uploader.upload(file, {
-    resource_type: "auto",
-  });
-  return res.secure_url;
+async function handleUpload(req, res) {
+  let file = req.body.file;
+  if(file != null){
+    const respImg = await cloudinary.uploader.upload(file, {
+      resource_type: "auto",
+    });
+    res.status(200).json({ link: respImg.secure_url });
+  }else{
+    res.render("400.ejs", {t: 500, "sub": "Something went wrong"})
+  }
 }
 
 const register = async(req, res) => {
@@ -23,6 +28,7 @@ const register = async(req, res) => {
             res.render("register.ejs");
         }else if(request.method == "POST"){
             const body = request?.body;
+            console.log(body)
             const user = await userModel.findOne({email: body.email})
             
             if(user){
@@ -30,17 +36,17 @@ const register = async(req, res) => {
             }
 
             let newUser = new userModel({
-              username: body.name,
+              username: body.username,
               email: body.email,
               phone: parseInt(body.phone),
               password: body.password,
               role: "user",
-              aadhaar: await handleUpload(body.aadhaar),
+              aadhaar: body.aadhaar,
               idproof: {
                 userType: body.role,
-                proof: await handleUpload(body.id),
+                proof: body.id,
               },
-              license: await handleUpload(body.license),
+              license: body.license,
             });
             await newUser.save()
             const token = newUser.genToken();
@@ -150,4 +156,4 @@ const verifyLink = async(req, res) => {
 }
 
 
-module.exports = { login, register, checkMail, verifyLink};
+module.exports = { login, register, checkMail, verifyLink, handleUpload };

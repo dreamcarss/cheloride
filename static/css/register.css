@@ -168,6 +168,62 @@
     display: none;
 }
 
+
+.steps{
+    width: 25%;
+    height: max-content;
+    position: relative;
+    z-index: 2;
+    border-radius: 25px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    color: rgba(255, 255, 255, 0.944);
+    font-family: "Poppins";
+    background-color: rgb(39, 39, 39);
+}
+
+.steps .load{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    border-radius: 20px;
+    height: 100%;
+    transition: all 0.3s ease;
+    background-color: rgb(78, 117, 0);
+}
+
+.wrap .wrap{
+    width: 100%;
+    display: flex;
+}
+
+
+.steps .txt{
+    width: 50%;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    position: relative;
+    z-index: 3;
+    text-align: center;
+}
+
+.steps .txt.b1{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid rgb(39, 39, 39);
+}
+
+.wrap .inp.sub{
+    background-color: rgb(162, 255, 167);
+    border: 2px solid rgb(0, 218, 0);
+}
+
 @media only screen and (max-width: 600px) {
     .form{
         width: 100%;

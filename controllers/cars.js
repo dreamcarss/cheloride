@@ -55,7 +55,7 @@ const getALlCars = async(req, res) => {
           if (booking != null) {
             if (
               (sDate >= startDate && sDate < endDate) ||
-              (dDate > startDate && dDate <= endDate)
+              (dDate > startDate && dDate < endDate)
             ) {
               null;
             } else {
