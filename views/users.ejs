@@ -94,6 +94,7 @@
                 if(data.data.length > 0){
                     document.getElementById("tbook").textContent = data.data.length
                     data.data.map((user, i) => {
+                        console.log(user.idproof != undefined);
                         let newRow = document.createElement("tr");
                         newRow.classList.add("row");
                         // All possible roles
@@ -116,12 +117,20 @@
                             </select>
                         </td>
                         <td class="td">
-                            <a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
-                        <td class="td">${user.idproof.userType}</td>
+                            ${
+                                user.aadhaar != undefined ? `<a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: 
+                                `<button class="btn">Upload</button>`
+                            }
+                        <td class="td">${user.idproof?.userType || "Student"}</td>
                         <td class="td">
-                            <a href="${user.idproof.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>
+                            ${
+                                user.idproof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<button class="btn">Upload</button>`
+                            }
                         <td class="td">
-                            <a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a>
+                            ${
+                                user.license != undefined ? `<a href="${user.license}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: 
+                                `<button class="btn">Upload</button>`
+                            }
                         </td>
                         <td class="td">
                             <select id="bookingStatus" class="inp kyc">
