@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./meta.ejs') %>
+
     <link rel="stylesheet" href="../static/css/admin.css">
-    <title>CheloRide</title>
 </head>
 <body>
     <%- include('./adminNavbar.ejs') %>
@@ -69,7 +67,6 @@
                 "paymentStatus": inp[6].value, 
                 "bookingStatus": inp[7].value, 
             }
-            console.log(body)
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
                 headers: {
@@ -79,7 +76,6 @@
                 },
                 body: JSON.stringify(body)
             }).then((res) => res.json().then((data) => {
-                console.log(data)
                 const msg = document.createElement("div");
                 const body = document.getElementsByTagName("body")[0];
                 msg.classList.add("msg");

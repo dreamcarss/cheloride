@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./meta.ejs') %>
+
     <link rel="stylesheet" href="../static/css/home.css">
-    <title>Chelo Ride</title>
 </head>
 <body>
     <div class="container">
@@ -127,7 +125,6 @@
             let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
             let dropDateTime = new Date(form['ddate'].value);
             let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
-            console.log(diff)
             if(diff <= 1.0){
                 form['dtime'].min = form['time'].value
                 form['dtime'].value = form['time'].value;
