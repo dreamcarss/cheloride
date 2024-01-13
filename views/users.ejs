@@ -107,9 +107,10 @@
         const update = (i) => {
             const id = document.getElementsByClassName("upd")[i].classList[2];
             const role = document.getElementsByClassName("location")[i].value;
+            const sttype = document.getElementsByClassName("sttype")[i].value;
             const kyc = document.getElementsByClassName("kyc")[i].value;
             const modal = document.getElementsByClassName("modal")[0]
-            let body = { "role": role , "kycStatus":kyc}
+            let body = { "role": role , "kycStatus":kyc, "idproof": sttype}
             fetch(`/adminpanel/updateRole/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -167,7 +168,7 @@
                                 user.aadhaar != undefined ? `<a href="${user.aadhaar}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="aadhaar${i}" name="aadhaar${i}" onchange="uploadHandler(this, ${i}, 'aadhaar')" /><label for="aadhaar${i}" class="del updt">Upload</label>`
                             }
                         <td class="td">
-                            <select id="bookingStatus" class="inp sttype">
+                            <select id="sttype" name="sttype" class="inp sttype">
                                 ${
                                     user.idproof?.userType == "student" ? '<option value="job">Job</option> <option value="bussiness">Bussiness</option> <option value="student" selected="selected">Student</option>': user.idproof?.userType == "job" ? `<option value="job" selected="selected">Job</option> <option value="bussiness">Bussiness</option> <option value="student" >Student</option>` : '<option value="job">Job</option> <option value="bussiness" selected="selected">Bussiness</option> <option value="student">Student</option>'
                                     
