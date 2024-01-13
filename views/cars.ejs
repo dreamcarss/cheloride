@@ -149,25 +149,31 @@
             console.log(i)
             const id = document.getElementsByClassName("idbtn")[0] || document.getElementsByClassName(i)[0]
             const token = localStorage.getItem("token");
-            if(token != null){
-                    const subs = document.querySelectorAll(".wsub");
-                    const data = [];
-                    subs.forEach((s) => data.push(s.textContent));
-                    let d = {data, carid: id.classList[2]}
-                    fetch("/booking/confirmBooking", {
-                        method: 'POST',
-                        headers: {
-                        'Accept': 'application/json',
-                        'token': token,
-                        'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(d)
-                    }).then(res => res.json().then(data => {
+            // if(token != null){
+                const subs = document.querySelectorAll(".wsub");
+                const data = [];
+                subs.forEach((s) => data.push(s.textContent));
+                let d = {data, carid: id.classList[2]}
+                fetch("/booking/confirmBooking", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'token': token,
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d)
+                }).then(res => res.json().then(data => {
+                    if(res.status == 400){
+                        sessionStorage.setItem("sessionToken", data.sid);
+                        window.location.href = `/auth/register`
+                    }
+                    else{
                         window.location.href = `/booking/book?id=${data.msg}`
+                    }
                 }))
-            }else{
-                window.location.href = "/auth/login"
-            }
+            // }else{
+                // window.location.href = "/auth/login"
+            // }
             
         }
     </script>

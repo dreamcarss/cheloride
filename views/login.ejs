@@ -61,7 +61,13 @@
                                 if(d?.token != null){
                                     localStorage.setItem("token", d.token)
                                 }
-                                window.location.href="/"
+                                let sessionToken = sessionStorage.getItem("sessionToken");
+                                console.log(sessionToken)
+                                if(sessionToken != undefined){
+                                    window.location.href=`/cars?sid=${sessionToken}`
+                                }else{
+                                    window.location.href=`/`
+                                }
                             }else{
                                 emailElem.classList.add("warn");
                             }

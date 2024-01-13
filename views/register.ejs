@@ -48,7 +48,6 @@
         const inps = document.querySelectorAll(".second");
 
         let linksArr = {};
-
         formElm.onsubmit = (e) => {
             e.preventDefault();
             if(formElm["name"].value == "" || formElm["email"].value == "" || formElm["phone"].value == "" || formElm["password"].value == ""){
@@ -76,7 +75,10 @@
                             if(d?.token != null){
                                 localStorage.setItem("token", d.token)
                             }
-                            window.location.href="/"
+                            let sessionToken = sessionStorage.getItem("sessionToken");
+                            if(sessionToken != ""){
+                                window.location.href=`/cars?sid=${sessionToken}`
+                            }
                         }
                         else{
                             formElm["email"].classList.add("warn");

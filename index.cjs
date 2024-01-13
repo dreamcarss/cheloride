@@ -10,6 +10,7 @@ const adminRoutes = require("./routes/admin");
 const carModel = require("./models/carModel.js");
 const adminAuth = require("./middlewares/adminauth");
 const { autoDelete } = require("./controllers/booking");
+const sessionModel = require("./models/sessionModel");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
@@ -54,19 +55,38 @@ app.get("/", async(req, res) => {
   }
 })
 
-app.post("/cars", (req, res) => {
-  try {
-    const data = req.body;
-    console.log(data.dtime);
-    res.render("cars.ejs", {
-      location: data.location,
-      date: data.date,
-      time: data.time,
-      ddate: data.ddate,
-      dtime: data.dtime,
-    });
-  } catch (error) {
-    console.log(error)
+app.use("/cars", async(req, res) => {
+  if(req.method == "GET"){
+    const sid = req.query.sid;
+    console.log(sid);
+    if(sid === null){
+      res.render("index.js")
+    }else{
+      const sessionData = await sessionModel.findById(sid);
+      if (sessionData != null) {
+        res.render("cars.ejs", {
+          location: sessionData.loc,
+          date: sessionData.date,
+          time: sessionData.time,
+          ddate: sessionData.ddate,
+          dtime: sessionData.dtime,
+        });
+      }
+    }
+  }else{
+    try {
+      const data = req.body;
+      console.log(data.dtime);
+      res.render("cars.ejs", {
+        location: data.location,
+        date: data.date,
+        time: data.time,
+        ddate: data.ddate,
+        dtime: data.dtime,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 

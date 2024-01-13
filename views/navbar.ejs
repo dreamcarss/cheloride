@@ -64,6 +64,7 @@
                 ln.textContent = "Logout";
                 ln.onclick = () => {
                     window.localStorage.clear()
+                    window.sessionStorage.clear()
                     window.location.href ="/auth/login"
                 };
             });
