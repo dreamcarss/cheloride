@@ -9,7 +9,6 @@ const authMiddleware = async(req, res, next) => {
   try {
     const token = req.headers?.token;
     let status = req.body?.data;
-    console.log(status)
     const email = jwt.decode(token);
     if (email != null) {
       await userModel.findOne({ email: email }).then(async (user) => {
@@ -27,7 +26,6 @@ const authMiddleware = async(req, res, next) => {
         dtime: status[4],
       });
       newSession.save();
-      console.log(newSession._id);
       res.status(400).json({ sid: newSession._id });
     }
   } catch (error) {

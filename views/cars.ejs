@@ -46,10 +46,14 @@
         let start = '<%- date %>'
         let end = '<%- ddate %>';
         let loc = "<%- location %>"
+        let time = "<%- time %>"
+        let dtime = "<%- dtime %>"
         fetch(`/admin/allCars`, {
             headers:{
                 startDate: start,
                 endDate: end,
+                time: time,
+                dtime: dtime,
                 loc: loc
             }
         }).then(res => res.json().then(data => {
@@ -75,8 +79,10 @@
                                 <p class="label">Total Estimated <br />Amount</p>
                             </div>
                             <div class="wrapRow">
-                                <button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
-                                <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>
+                                ${
+                                    car.timeLeft != undefined ? `<button class="bbtn tm mb">${car.timeLeft}Hrs Left to book the car</button>` : `<button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
+                                <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>`
+                                }
                             </div>
                         </div>
                 </div>`

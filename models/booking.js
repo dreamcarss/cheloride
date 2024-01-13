@@ -5,6 +5,7 @@ const bookingSchema = mongoose.Schema({
   userId: { type: String, require: true },
   carId: { type: String, require: true },
   time: { type: String, require: true },
+  dtime: { type: String, require: true },
   price: { type: Number, require: true },
   paymentStatus: { type: String, default: "unpaid" },
   startDate: { type: String, require: true },

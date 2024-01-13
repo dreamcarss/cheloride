@@ -79,10 +79,12 @@
     width: 100%;
     height: auto;
     padding: 20px;
+    position: relative;
     display: flex;
     background-color: #121212;
     border-radius: 5px;
 }
+
 
 .container .slider .carcard .twrap{
     width: 100%;
@@ -166,6 +168,12 @@
     text-transform: uppercase;
     background-color: yellowgreen;
     border-radius: 5px;
+}
+
+.container .slider .carcard .twrap .price .bbtn.tm{
+    background-color: transparent;
+    border: 2px solid rgb(255, 33, 33);
+    color: rgb(255, 33, 33);
 }
 
 .popup{

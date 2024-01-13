@@ -37,26 +37,42 @@ const createCars = async(req, res) => {
 }
 
 
-const getALlCars = async(req, res) => {
-    try {
-      let sDate = new Date(req.headers.startdate);
-      let dDate = new Date(req.headers.enddate);
-      let carsList = [];
-      let loc = req.headers.loc;
-      console.log(req.headers.loc)
-      let cars = await carModel.find()
-      let diff;
-      let promises = cars.map(async (car) => {
-        await bookingModel.findOne({ carId: car._id, bookingStatus:true}).then((booking) => {
-          let startDate = new Date(sDate);
-          let endDate = new Date(dDate);
-          diff = Math.abs(endDate - startDate) / 8.64e+7;
-          console.log(startDate, endDate, diff)
+const getALlCars = async (req, res) => {
+  try {
+    let sDate = new Date(req.headers.startdate);
+    let dDate = new Date(req.headers.enddate);
+    let dtime = req.headers.time;
+    let carsList = [];
+    let loc = req.headers.loc;
+    let cars = await carModel.find();
+    let diff;
+    let promises = cars.map(async (car) => {
+      diff = Math.abs(dDate - sDate) / 8.64e7;
+      await bookingModel
+        .findOne({ carId: car._id, bookingStatus: true })
+        .then((booking) => {
           if (booking != null) {
+            let startDate = new Date(booking.startDate);
+            let endDate = new Date(booking.dropDate);
+            console.log(diff)
             if (
-              (sDate >= startDate && sDate < endDate) ||
-              (dDate > startDate && dDate < endDate)
-            ) {
+              (sDate >= startDate && sDate <= endDate) ||
+              (dDate > startDate && dDate <= endDate)
+              ) {
+              let stDate = new Date(sDate).toISOString().split("T")[0];
+              let dropDate = new Date(endDate).toISOString().split("T")[0];
+              if(stDate == dropDate){
+                let timeDiff = Math.round(
+                  Math.abs(
+                    new Date(`${stDate} ${dtime}`) -
+                      new Date(`${stDate} ${booking.dtime}`)
+                  ) / 3600000
+                );
+                let carObj = {...car}._doc
+                carObj.timeLeft = timeDiff
+                console.log(carObj);
+                carsList.push(car)
+              }
               null;
             } else {
               carsList.push(car);
@@ -65,18 +81,18 @@ const getALlCars = async(req, res) => {
             carsList.push(car);
           }
         });
-      });
-      Promise.all(promises).then(() => {
-        if(carsList.length > 0){
-          res.status(200).json({"cars": carsList, "diff": diff})
-        }else{
-          res.status(404).json({"msg": "no cars available"})
-        }
-      })
-    } catch (error) {
-        console.log(error)
-    }
-}
+    });
+    Promise.all(promises).then(() => {
+      if (carsList.length > 0) {
+        res.status(200).json({ cars: carsList, diff: diff });
+      } else {
+        res.status(404).json({ msg: "no cars available" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 const getALlCarsAdmin = async (req, res) => {
