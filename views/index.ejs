@@ -98,6 +98,21 @@
         }   
 
         form['date'].addEventListener("change", () => {
+            var now = new Date();
+            if(now.toISOString().split('T')[0] === form['date'].value){
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+                form['time'].min = hours + ':' + minutes;
+                if(form['time'].min > "22:00"){
+                    form['time'].max = hours + ':' + minutes;
+                }
+            }else{
+                form['time'].max = "22:00";
+                form['time'].removeAttribute("min")
+            }
             form['time'].disabled = false
         })
         form['time'].addEventListener("change", () => {
@@ -108,18 +123,7 @@
         })
         
 
-        //past time fixage
-        form['time'].addEventListener("focusin", () => {
-            var now = new Date();
-            if(now.toISOString().split('T')[0] === form['date'].value){
-                var hours = now.getHours();
-                var minutes = now.getMinutes();
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                form['time'].min = hours + ':' + minutes;
-            }
-        })
+        
 
         ddate.addEventListener("focusout", () => {
             let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
