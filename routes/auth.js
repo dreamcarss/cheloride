@@ -1,6 +1,5 @@
 const authFuncs = require("../controllers/auth.js");
 const express = require("express");
-const { upload } = require("../index.cjs");
 const authRoutes = express.Router();
 
 
