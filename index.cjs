@@ -60,7 +60,7 @@ app.get("/", async(req, res) => {
       }
     })
   } catch (error) {
-    console.log(error);
+      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 })
 
@@ -79,7 +79,7 @@ app.get("/locations/:place", async(req, res) => {
       res.status(200).json({"locs": locations})
     }
   } catch (error) {
-    console.log(error)
+      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 })
 
@@ -111,7 +111,7 @@ app.use("/cars", async(req, res) => {
         dtime: data.dtime,
       });
     } catch (error) {
-      console.log(error);
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
   }
 });

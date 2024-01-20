@@ -33,7 +33,7 @@ const createCars = async(req, res) => {
             res.status(200).json({"msg": "saved"})
         })
     } catch (error) {
-        console.log(error);
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
     }
 }
 
@@ -91,7 +91,7 @@ const getALlCars = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
   }
 };
 
@@ -106,7 +106,7 @@ const getALlCarsAdmin = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
   }
 };
 
@@ -121,7 +121,7 @@ const getCar = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
   }
 };
 
@@ -142,7 +142,7 @@ const deleteCar = async(req, res) => {
       }
     });
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 
@@ -166,7 +166,7 @@ const updateCar = async(req, res) => {
       res.status(200).json({"msg": "Car Updated"})
     });
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 

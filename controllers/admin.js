@@ -41,7 +41,7 @@ const getUsers = async(req, res) => {
       }
     })
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 
@@ -61,7 +61,7 @@ const updateRole = async (req, res) => {
         res.status(200).json({ msg: "User Updated" });
       });
   } catch (error) {
-    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
   }
 };
 
@@ -72,7 +72,7 @@ const deleteUser = async(req, res) => {
       res.status(200).json({"msg": "User deleted"})
     })
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 

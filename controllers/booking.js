@@ -15,7 +15,7 @@ const getAllBookings = async(req, res) => {
           }
         })
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 } 
 
@@ -39,7 +39,7 @@ const getBookings = async (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
   }
 }; 
 
@@ -56,7 +56,7 @@ const confirmBook = async(req, res) => {
           res.status(200).json({"msg": newTempBooking._id})
         });
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -80,7 +80,7 @@ const getTempData = async(req, res) => {
             })
         })
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -251,7 +251,7 @@ const updatePayment = async(req, res) => {
         }
       })
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -269,7 +269,7 @@ const updatePayment = async(req, res) => {
 //       })
 //     }
 //   } catch (error) {
-//     console.log(error)
+//     res.render("400.ejs", { t: 500, sub: "Something went wrong" });
 //   }
 // }
 
@@ -287,7 +287,7 @@ const autoDelete = async(req, res) => {
       }
     })
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 
@@ -298,7 +298,7 @@ const deleteBooking = async(req, res) => {
       res.status(200).json({"msg": "Booking deleted"})
     })
   } catch (error) {
-    console.log(error)
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 

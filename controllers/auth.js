@@ -35,7 +35,7 @@ const register = async(req, res) => {
             res.status(200).json({ "msg": "Account Registered", "token": token });
         }
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -61,7 +61,7 @@ const login = (req, res) => {
         });
     }
     } catch (error) {
-        console.log(error);
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
     }
 }
 
@@ -97,7 +97,7 @@ const checkMail = async(req, res) => {
             });
         }
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -133,7 +133,7 @@ const verifyLink = async(req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 

@@ -29,7 +29,7 @@ const authMiddleware = async(req, res, next) => {
       res.status(400).json({ sid: newSession._id });
     }
   } catch (error) {
-    console.log(error);
+      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 };
 

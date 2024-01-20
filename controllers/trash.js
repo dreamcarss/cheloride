@@ -10,7 +10,7 @@ const getTrash = async(req, res) => {
             }
         })
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
@@ -26,7 +26,7 @@ const restoreTrashCar = async(req, res) => {
         })
        }) 
     } catch (error) {
-        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
     }
 }
 
