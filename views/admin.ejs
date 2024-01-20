@@ -49,6 +49,7 @@
             <input type="text" class="inp" name="luggage" placeholder="Luggage Capacity">
             <input type="text" class="inp" name="mileage" placeholder="Mileage">
             <input type="text" class="inp" name="location" placeholder="Location">
+            <input type="text" class="inp" name="place" placeholder="place">
             <input type="text" class="inp" name="fueltype" placeholder="Fuel Type">
             <input type="text" class="inp" name="price" placeholder="Amount">
             <button class="sbt" id="sbt">Submit</button>
@@ -118,6 +119,7 @@
             const mileage = form["mileage"].value;
             const amount = form["price"].value;
             const location = form["location"].value;
+            const place = form["place"].value;
             const fueltype = form["fueltype"].value;
             let data = {
                 brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount

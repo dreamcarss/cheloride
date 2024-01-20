@@ -9,6 +9,7 @@ const carSchema = mongoose.Schema({
   fuelcap: { type: String, required: true },
   seating: { type: String, required: true },
   location: { type: String, required: true },
+  place: { type: String, required: true },
   luggage: { type: String, required: true },
   mileage: { type: String, required: true },
   fueltype: { type: String, default: false },

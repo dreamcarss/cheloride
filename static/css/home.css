@@ -204,6 +204,10 @@
 
 
 @media only screen and (max-width: 600px){
+    .formContainer{
+        height: max-content;
+        padding: 40px 0;
+    }
     .formContainer .title{
         font-size: 30px;
     }

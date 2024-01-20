@@ -74,13 +74,15 @@
                 const msg = document.createElement("div");
                 btn.innerHTML = "Checkout"
                 msg.classList.add("msg");
-                msg.textContent = data.msg;
+                msg.innerHTML = `
+                <div class="bgcircle">
+                <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
+            </div>
+            ${data.msg}
+            <a href="/booking" style="margin-top: 20px;">
+                <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+            </a>`;
                 document.getElementsByTagName("body")[0].appendChild(msg);
-                setTimeout(() => {
-                    const msg = document.getElementsByClassName("msg")[0];
-                    document.getElementsByTagName("body")[0].removeChild(msg);
-                    window.location.href = "/"
-                }, 1500)
             })}))
         }
     </script>

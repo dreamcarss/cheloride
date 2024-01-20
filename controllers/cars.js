@@ -23,6 +23,7 @@ const createCars = async(req, res) => {
           fueltype: body.fueltype,
           seating: body.seating,
           location: body.location,
+          place: body.place,
           luggage: body.luggage,
           amount: body.amount,
           mileage: body.mileage,

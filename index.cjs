@@ -43,9 +43,18 @@ app.get("/", async(req, res) => {
   try {
     await carModel.find().then(cars => {
       if(cars.length > 0){
-        let locations = cars.map((car) => {return car.location.toLowerCase()})
+        let locations = cars
+          .filter(
+            (car) => car.place?.toLowerCase() === "Vizag".toLowerCase()
+          )
+          .map((car) => {
+            return car.location?.toLowerCase();
+          });
+        let places = cars.map((car) => {
+          return car.place?.toLowerCase();
+        });
         locations.push("Any")
-        res.render("index.ejs", { locations: remDups(locations)});
+        res.render("index.ejs", { locations: remDups(locations), places: remDups(places)});
       }else{
         res.render("index.ejs", {locations: "pm palem"});
       }
@@ -55,10 +64,28 @@ app.get("/", async(req, res) => {
   }
 })
 
+app.get("/locations/:place", async(req, res) => {
+  try {
+    let cars = await carModel.find({place: req.params.place});
+    if(cars.length <= 0){ 
+      const locations = ["No cars found"]
+      res.status(400).json({ locs: locations });
+    }else{
+      const locations = remDups(
+        cars.map((car) => {
+          return car.location?.toLowerCase();
+        })
+      );
+      res.status(200).json({"locs": locations})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 app.use("/cars", async(req, res) => {
   if(req.method == "GET"){
     const sid = req.query.sid;
-    console.log(sid);
     if(sid === null){
       res.render("index.js")
     }else{
@@ -76,7 +103,6 @@ app.use("/cars", async(req, res) => {
   }else{
     try {
       const data = req.body;
-      console.log(data.dtime);
       res.render("cars.ejs", {
         location: data.location,
         date: data.date,

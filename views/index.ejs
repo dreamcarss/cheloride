@@ -16,6 +16,14 @@
                 <div style="display: flex; gap: 20px;">
                     <div class="wrap">
                         <label for="" class="lab">Location</label>
+                        <select type="text" name="place" id="place" placeholder="Select location" required>
+                            <% places?.forEach(function(loc, i, entries){ %>
+                                <option class="lelm"><%= loc.toUpperCase() %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="wrap">
+                        <label for="" class="lab">Street/Area</label>
                         <select type="text" name="location" id="location" placeholder="Select location" required>
                             <% locations?.forEach(function(loc, i, entries){ %>
                                 <option class="lelm"><%= loc.toUpperCase() %></option>
@@ -87,6 +95,7 @@
         const list = document.querySelectorAll(".lelm");
         const menuCont = document.getElementsByClassName("menu")[0];
         const loc = document.getElementById("location");
+        const place = document.getElementById("place");
         const pdate = document.getElementById("pdate");
         const ddate = document.getElementById("ddate");
 
@@ -122,7 +131,16 @@
             form['dtime'].disabled = false
         })
         
-
+        place.addEventListener("change", async(e) => {
+            let locs = await fetch(`/locations/${e.target.value.toLowerCase()}`).then((res) => res.json());
+            loc.innerHTML = ""
+            locs.locs.map((location) => {
+                const elem = document.createElement("option");
+                elem.classList.add("lelem");
+                elem.textContent = location.toUpperCase()
+                loc.appendChild(elem)
+            })
+        })
         
 
         ddate.addEventListener("focusout", () => {
@@ -138,12 +156,12 @@
 
         const subHandler = () =>{
             btn.click()}
-        list?.forEach((l) => {
-            l.onclick = () => {
-                loc.value = l.textContent;
-                menuCont.style.display = "none"
-            }
-        });
+        // list?.forEach((l) => {
+        //     l.onclick = () => {
+        //         loc.value = l.textContent;
+        //         menuCont.style.display = "none"
+        //     }
+        // });
 
         pdate.min = new Date().toISOString().split("T")[0];
         ddate.onfocus = () => {
