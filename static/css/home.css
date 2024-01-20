@@ -207,6 +207,7 @@
     .formContainer{
         height: max-content;
         padding: 40px 0;
+        padding-top: 60px;
     }
     .formContainer .title{
         font-size: 30px;

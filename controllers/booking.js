@@ -87,77 +87,80 @@ const getTempData = async(req, res) => {
 const bookCar = async(req, res) => {
     if(req.method == "GET"){
         const id = req._parsedUrl.query.split("=")[1];
-        await tempBooking.findById(id).then(async(booking) => {
-          console.log(booking)
-          if(booking != null){
-            await carModel.findById(booking.carId).then((car) => {
-              const stDt = new Date(booking.data[1] + "T" + booking.data[2]+"Z");
-              const edDt = new Date(
-                booking.data[3] + "T" + booking.data[4] + "Z"
-              );
-              let diff = Math.abs(edDt - stDt)
-              let data = {};
-              let hrs = Math.round(diff / 3.6e+6);
-              let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
-              let totalAmount = Math.ceil(hrlyCharges * hrs);
-              let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
-              if(hrs != null || hrs != undefined && gst != null || gst != undefined && totalAmount != null ||totalAmount != undefined){
-                data.brand = car.brand;
-                data.location = car.location;
-                data.date = booking.data[1];
-                data.ddate = booking.data[3];
-                data.time = booking.data[2];
-                data.dtime = booking.data[4];
-                data.email = booking.userId;
-                data.price = parseInt(car.amount);
-                data.gst = gst;
-                data.days = Math.round((hrs / 24).toFixed(2));
-                data.tamount = totalAmount;
-                data.amount = totalAmount + gst;
-                res.render("confirmBook.ejs", { id, data });
-              }else{
-                res.render("400.ejs", {t: 500, "sub": "Something Went wrong, Please try again"})
-              }
-            });
-          }else{
+        let booking = await tempBooking.findById(id)
+        console.log(booking);
+        if (booking != null) {
+          const car = await carModel.findById(booking.carId);
+          const stDt = new Date(booking.data[1] + "T" + booking.data[2] + "Z");
+          const edDt = new Date(booking.data[3] + "T" + booking.data[4] + "Z");
+          let diff = Math.abs(edDt - stDt);
+          let data = {};
+          let hrs = Math.round(diff / 3.6e6);
+          let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
+          let totalAmount = Math.ceil(hrlyCharges * hrs);
+          let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+          if (
+            hrs != null ||
+            (hrs != undefined && gst != null) ||
+            (gst != undefined && totalAmount != null) ||
+            totalAmount != undefined
+          ) {
+            data.brand = car.brand;
+            data.location = car.location;
+            data.date = booking.data[1];
+            data.ddate = booking.data[3];
+            data.time = booking.data[2];
+            data.dtime = booking.data[4];
+            data.email = booking.userId;
+            data.price = parseInt(car.amount);
+            data.gst = gst;
+            data.days = Math.round((hrs / 24).toFixed(2));
+            data.tamount = totalAmount;
+            data.amount = totalAmount + gst;
+            res.render("confirmBook.ejs", { id, data });
+          } else {
             res.render("400.ejs", {
               t: 500,
               sub: "Something Went wrong, Please try again",
             });
-
           }
-        })
+        } else {
+          res.render("400.ejs", {
+            t: 500,
+            sub: "Something Went wrong, Please try again",
+          });
+        }
     }else if(req.method == "POST"){
         try {
           const body = req.body;
           console.log(body.tempid)
-          await tempBooking.findById(body.tempid).then(async (booking) => {
-            if (booking != null) {
-              await carModel.findById(booking.carId).then(async (car) => {
-                const stDt = new Date(
-                  booking.data[1] + "T" + booking.data[2] + "Z"
-                );
-                const edDt = new Date(
-                  booking.data[3] + "T" + booking.data[4] + "Z"
-                );
-                let diff = Math.abs(edDt - stDt);
-                let data = {};
-                let hrs = diff / 3.6e6;
-                let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
-                let totalAmount = Math.ceil(hrlyCharges * hrs);
-                let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
-                const newBooking = new bookingModel({
-                  time: booking.data[2],
-                  dtime: booking.data[4],
-                  userId: body.email,
-                  carId: car._id,
-                  price: totalAmount + gst,
-                  startDate: booking.data[1],
-                  dropDate: booking.data[3],
-                });
-                await tempBooking.findOneAndDelete({ carId: car._id });
-                await newBooking.save().then(async () => {
-                  let html = `
+          const booking = await tempBooking.findById(body.tempid);
+          if (booking != null) {
+            const car = await carModel.findById(booking.carId);
+            const stDt = new Date(
+              booking.data[1] + "T" + booking.data[2] + "Z"
+            );
+            const edDt = new Date(
+              booking.data[3] + "T" + booking.data[4] + "Z"
+            );
+            let diff = Math.abs(edDt - stDt);
+            let data = {};
+            let hrs = diff / 3.6e6;
+            let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
+            let totalAmount = Math.ceil(hrlyCharges * hrs);
+            let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+            const newBooking = new bookingModel({
+              time: booking.data[2],
+              dtime: booking.data[4],
+              userId: body.email,
+              carId: car._id,
+              price: totalAmount + gst,
+              startDate: booking.data[1],
+              dropDate: booking.data[3],
+            });
+            await tempBooking.findOneAndDelete({ carId: car._id });
+            await newBooking.save().then(async () => {
+              let html = `
                     <div><b style="display: inline-block;">Booking By:</b> <p>${
                       body.email
                     }</p></div> 
@@ -198,18 +201,18 @@ const bookCar = async(req, res) => {
                       }</p> 
                       </div>
                       `;
-                  let executiveMail = process.env.MAIL;
-                  let user = await userModel.findOne({email: body.email});
-                  await mail("New Booking", html, executiveMail).catch();
-                  let msg;
-                  if(user.kycStatus){
-                    msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                      totalAmount + gst
-                    }</p>`;
-                  }else{
-                    msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
-                      totalAmount + gst
-                    }</p>
+              let executiveMail = process.env.MAIL;
+              let user = await userModel.findOne({ email: body.email });
+              await mail("New Booking", html, executiveMail).catch();
+              let msg;
+              if (user.kycStatus) {
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                  totalAmount + gst
+                }</p>`;
+              } else {
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                  totalAmount + gst
+                }</p>
                     <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
                     <ul>
                       <li>Aadhaar Card</li>
@@ -217,17 +220,11 @@ const bookCar = async(req, res) => {
                       <li>Address Proof</li>
                     </ul>
                     `;
-                  }
-                  await mail(
-                    "Booking placed",
-                    msg,
-                    body.email
-                  ).catch();
-                  res.status(200).json({ msg: "car booked" });
-                });
-              });
-            }
-          });
+              }
+              await mail("Booking placed", msg, body.email).catch();
+              res.status(200).json({ msg: "car booked" });
+            });
+          }
         } catch (error) {
           console.log(error, "error");
         }
