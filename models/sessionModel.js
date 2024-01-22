@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
 const sessionSchema = mongoose.Schema({
+  city: { type: Array, require: true },
+  service: { type: Array, require: true },
   loc: { type: Array, require: true },
   date: { type: String, require: true },
   time: { type: String, require: true },

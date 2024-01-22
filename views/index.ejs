@@ -9,13 +9,13 @@
     <div class="container">
         <%- include('./navbar.ejs') %>
         <div class="formContainer">
-            <h2 class="title">Chelo <span style="color: yellowgreen;">Ride</span></h2>
+            <h2 class="title">Car Rental</br><span style="color: yellowgreen;">Services</span></h2>
             <h4 class="sub">Explore limitless possibilities with our comprehensive car rental services! From compact cars to spacious SUVs, we offer a diverse fleet for your every need. Book car by selecting time and date below</h4>
             <div class="opacityMask"></div>
-            <form action="/cars" method="post" class="form">
+            <form id="form" class="form">
                 <div style="display: flex; gap: 20px;">
                     <div class="wrap">
-                        <label for="" class="lab">Location</label>
+                        <label for="" class="lab">City</label>
                         <select type="text" name="place" id="place" placeholder="Select location" required>
                             <% places?.forEach(function(loc, i, entries){ %>
                                 <option class="lelm"><%= loc.toUpperCase() %></option>
@@ -23,34 +23,15 @@
                         </select>
                     </div>
                     <div class="wrap">
-                        <label for="" class="lab">Street/Area</label>
-                        <select type="text" name="location" id="location" placeholder="Select location" required>
-                            <% locations?.forEach(function(loc, i, entries){ %>
-                                <option class="lelm"><%= loc.toUpperCase() %></option>
-                            <% }) %>
+                        <label for="" class="lab">Service</label>
+                        <select type="text" name="service" id="service" placeholder="Select Service" required>
+                            <option class="lelm" value="Self">Self Driven</option>
+                            <option class="lelm" value="Taxi">Taxi Service (incld Driver charges)</option>
                         </select>
                     </div>
-                    <div class="wrap">
-                        <label for="" class="lab">Pickup Date</label>
-                        <input type="date" name="date" id="pdate" required/>
-                    </div>
-                    <div class="wrap">
-                        <label for="" class="lab">Pickup Time</label>
-                        <input type="time" name="time" id="time"  max="22:00" placeholder="10:10 am" required disabled>
-                    </div>
-                    <div class="wrap">
-                        <label for="" class="lab">Drop Date</label>
-                        <input type="date" name="ddate" id="ddate" required disabled>
-                    </div>
-                    <div class="wrap">
-                        <label for="" class="lab">Drop Time</label>
-                        <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required disabled>
-                    </div>
                 </div>
-                <button type="submit" class="subt" style="display: none;"></button>
+                <button type="submit" class="sbt">Book Now</button>
             </form>
-            <h4 class="sub" style="color: rgb(188, 188, 188); margin-bottom:0; margin-top:10px">Please note that if you want to drop before dropdate or time, kindly contact the executive.</h4>
-            <button onclick="subHandler()" class="sbt">Book Now</button>
         </div>
         <div class="icons">
             <div class="wrap">
@@ -89,89 +70,13 @@
         </div>
     </div>
     <script>
-        
-        const btn = document.getElementsByClassName("subt")[0];
-        const form = document.getElementsByClassName("form")[0];
-        const list = document.querySelectorAll(".lelm");
-        const menuCont = document.getElementsByClassName("menu")[0];
-        const loc = document.getElementById("location");
-        const place = document.getElementById("place");
-        const pdate = document.getElementById("pdate");
-        const ddate = document.getElementById("ddate");
-
-        document.onload = () => {
-            form['date'].value = ""
-            form['ddate'].value = ""
-            form['time'].value = ""
-            form['dtime'].value = ""
-        }   
-
-        form['date'].addEventListener("change", () => {
-            var now = new Date();
-            if(now.toISOString().split('T')[0] === form['date'].value){
-                var hours = now.getHours();
-                var minutes = now.getMinutes();
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                form['time'].min = hours + ':' + minutes;
-                if(form['time'].min > "22:00"){
-                    form['time'].max = hours + ':' + minutes;
-                }
-            }else{
-                form['time'].max = "22:00";
-                form['time'].removeAttribute("min")
+        const form = document.getElementById("form");
+        form.onsubmit = (e) => {
+            const token = window.localStorage.getItem("token");
+            if(token == null){form.setAttribute("action", "/auth/login"); form.setAttribute("method", "get")}else{
+                form.setAttribute("action", "/cars"); form.setAttribute("method", "post")
             }
-            form['time'].disabled = false
-        })
-        form['time'].addEventListener("change", () => {
-            form['ddate'].disabled = false
-        })
-        form['ddate'].addEventListener("change", () => {
-            form['dtime'].disabled = false
-        })
-        
-        place.addEventListener("change", async(e) => {
-            let locs = await fetch(`/locations/${e.target.value.toLowerCase()}`).then((res) => res.json());
-            loc.innerHTML = ""
-            locs.locs.map((location) => {
-                const elem = document.createElement("option");
-                elem.classList.add("lelem");
-                elem.textContent = location.toUpperCase()
-                loc.appendChild(elem)
-            })
-        })
-        
-
-        ddate.addEventListener("focusout", () => {
-            let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
-            let dropDateTime = new Date(form['ddate'].value);
-            let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
-            if(diff <= 1.0){
-                form['dtime'].min = form['time'].value
-                form['dtime'].value = form['time'].value;
-            }else{
-            };
-        })
-
-        const subHandler = () =>{
-            btn.click()}
-        // list?.forEach((l) => {
-        //     l.onclick = () => {
-        //         loc.value = l.textContent;
-        //         menuCont.style.display = "none"
-        //     }
-        // });
-
-        pdate.min = new Date().toISOString().split("T")[0];
-        ddate.onfocus = () => {
-            let dates = pdate.value.split("-");
-            let dateObj = new Date(dates[0], dates[1] - 1, dates[2]); // months are 0-indexed in JS
-            dateObj.setDate(dateObj.getDate() + 1);
-            let newDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-            ddate.min = newDate;
         }
-        
     </script>
 </body>
 </html>

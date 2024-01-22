@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bookingSchema = mongoose.Schema({
   userId: { type: String, require: true },
   carId: { type: String, require: true },
+  service: { type: String, default: "Self" },
   time: { type: String, require: true },
   dtime: { type: String, require: true },
   price: { type: Number, require: true },

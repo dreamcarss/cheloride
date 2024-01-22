@@ -16,6 +16,42 @@
     width: 100%;
     height: max-content;
     min-height: 100vh;
+    background-color: rgb(21, 21, 21);
+    display: flex;
+    justify-content: center;
+}
+
+.msg {
+    color: #52f994;
+    position: absolute;
+    top: 75px;
+    right: 20px;
+    z-index: 6;
+    height: max-content;
+    width: max-content;
+    padding: 9px 15px;
+    background: #121212;
+    border-radius: 10px;
+    font-family: poppins;
+    font-size: 12px;
+    display: block;
+    animation: fade 1s ease forwards;
+}
+
+@keyframes fade {
+    0% {
+        right: -10%;
+    }
+
+    100% {
+        right: 20px;
+    }
+}
+
+.bg {
+    width: max-content;
+    height: max-content;
+    min-height: 100vh;
     background: black;
     padding: 30px;
     padding-top: 60px;
@@ -32,7 +68,7 @@
 }
 
 .container .card{
-    width: 50%;
+    flex: 0.5fr;
     margin: 20px 0;
     height: max-content;
     display: flex;
@@ -47,7 +83,27 @@
 .container .card .wrap{
     width: max-content;
     padding: 0 20px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
     border-right: 1px solid rgba(255, 255, 255, 0.114);
+}
+
+.container .card .wrap select, input{
+    padding: 0 10px;
+    border: none;
+    width: max-content;
+    height: 35px;
+    font-family: Poppins;
+    font-size: 12px;
+    color: white;
+    background-color: rgb(38, 38, 38);
+    border-radius: 5px;
+}
+
+.container .card .wrap input{
+    padding: 0 5px;
+    font-size: 12px;
 }
 
 .container .card .wrap:last-child{
@@ -68,7 +124,6 @@
 }
 
 .container .slider{
-    width: 50%;
     height: max-content;
     display: flex;
     flex-direction: column;
@@ -85,6 +140,36 @@
     border-radius: 5px;
 }
 
+.circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    position: relative;
+    background: conic-gradient(white 0deg, white 270deg, transparent 270deg, transparent 360deg);
+    animation: loading 0.3s ease infinite;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.circle::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background-color: yellowgreen;
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .container .slider .carcard .twrap{
     width: 100%;
@@ -255,7 +340,7 @@
     gap: 20px;
 }
 
-.popup .inner div .wrap .btnWrap .bbtn{
+.bbtn{
     width: max-content;
     height: 35px;
     border: 2px solid rgb(63, 63, 63);
@@ -268,7 +353,17 @@
     background-color: rgb(44, 44, 44);
 }
 
-.popup .inner div .wrap .btnWrap .bbtn.idbtn{
+.bbtn.idbtn.sbt{
+    padding: 0;
+    width: 35px;
+    border-radius: 5px;
+}
+
+.bbtn.idbtn.sbt .hide{
+    display: none;
+}
+
+.bbtn.idbtn{
     background: yellowgreen;
     border: 2px solid yellowgreen;
     color: white;
@@ -331,7 +426,23 @@
         gap: 20px;
         flex-direction: row-reverse;
     }
+    .container .card .wrap{
+        width: 100%;
+    }
+    .bbtn.idbtn.sbt {
+        width: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+    }
 
+    .bbtn.idbtn.sbt .hide {
+        display: flex;
+    }
+    .container .card .wrap input{
+        width: 100%;
+    }
     .container .slider .carcard .twrap .price.pmb div .cost{
         font-size: 15px;
     }

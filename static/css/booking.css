@@ -174,7 +174,7 @@
 .bx1.w2 .row .amt{
     font-weight: bolder;
     font-family: "Montserrat";
-    font-size: 14px
+    font-size: 14px;
 }
 
 
@@ -200,8 +200,9 @@
 }
 
 .gt .cnt1 .amt{
-    font-size: 20px;
+    font-size: 25px;
     font-family: "Montserrat";
+    text-align: right;
 }
 .btn{
     width: max-content;

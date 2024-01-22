@@ -38,6 +38,7 @@
     background-color: rgb(224, 224, 224);
     position: relative;
     z-index: 3;
+    display: flex;
     gap: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -130,6 +131,7 @@
 .formContainer .title{
     font-family: "Integral";
     font-size: 80px;
+    text-align: center;
 }
 
 .formContainer .sub{
@@ -217,11 +219,15 @@
         margin-bottom: 10px;
         font-size: 9px;
     }
+    .formContainer .sbt{
+        margin-top: 0;
+    }     
     .form div{
         flex-direction: column; 
     }
     .form{
         width: 80%;
+        flex-direction: column;
     }
     .form .wrap,
     .wrap input, select{

@@ -28,6 +28,14 @@
             <div class="bx1 w2">
                 <h2 class="stit">Billing</h2>
                 <div class="row">
+                    <p class="span">Service Type</p>
+                    <p class="amt"><%=data.service %></p>
+                </div>
+                <div class="row">
+                    <p class="span">Service Charges</p>
+                    <p class="amt"><%=data.serviceCharges %>/-</p>
+                </div>
+                <div class="row">
                     <p class="span">Price Per Day</p>
                     <p class="amt"><%=data.price %>/-</p>
                 </div>
@@ -45,11 +53,11 @@
                 </div>
             </div>
             <div class="gt">
-                <div class="cnt1">
-                    <h2 class="stit">Grand Total</h2>
-                    <p class="amt"><%=data.amount %>/-</p>
-                </div>
                 <button class="btn" onclick="bookingHandler()">Checkout</button>
+                <div class="cnt1">
+                    <p class="amt"><%=data.amount %>/-</p>
+                    <h2 class="stit">Grand Total</h2>
+                </div>
             </div>
         </div>
     </div>

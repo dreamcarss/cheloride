@@ -73,10 +73,7 @@
                             if(d?.token != null){
                                 localStorage.setItem("token", d.token)
                             }
-                            let sessionToken = sessionStorage.getItem("sessionToken");
-                            if(sessionToken != ""){
-                                window.location.href=`/cars?sid=${sessionToken}`
-                            }
+                            window.location.href=`/`
                         }
                         else{
                             formElm["email"].classList.add("warn");

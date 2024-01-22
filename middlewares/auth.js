@@ -8,7 +8,7 @@ const SALT = process.env.SALT;
 const authMiddleware = async(req, res, next) => {
   try {
     const token = req.headers?.token;
-    let status = req.body?.data;
+    let status = req.body;
     const email = jwt.decode(token);
     if (email != null) {
       await userModel.findOne({ email: email }).then(async (user) => {
@@ -18,15 +18,7 @@ const authMiddleware = async(req, res, next) => {
         next();
       });
     } else {
-      const newSession = new sessionModel({
-        loc: status[0],
-        date: status[1],
-        time: status[2],
-        ddate: status[3],
-        dtime: status[4],
-      });
-      newSession.save();
-      res.status(400).json({ sid: newSession._id });
+      res.status(400).json({ msg: "not found"});
     }
   } catch (error) {
       res.render("400.ejs", { t: 500, sub: "Something went wrong" });

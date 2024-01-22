@@ -83,37 +83,24 @@ app.get("/locations/:place", async(req, res) => {
   }
 })
 
-app.use("/cars", async(req, res) => {
-  if(req.method == "GET"){
-    const sid = req.query.sid;
-    if(sid === null){
-      res.render("index.js")
-    }else{
-      const sessionData = await sessionModel.findById(sid);
-      if (sessionData != null) {
-        res.render("cars.ejs", {
-          location: sessionData.loc,
-          date: sessionData.date,
-          time: sessionData.time,
-          ddate: sessionData.ddate,
-          dtime: sessionData.dtime,
-        });
-      }
-    }
-  }else{
+app.post("/cars", async(req, res) => {
     try {
       const data = req.body;
+      let cars = await carModel.find({ place: data.place.toLowerCase() });
+      const locations = remDups(
+        cars.map((car) => {
+          return car.location?.toLowerCase();
+        })
+      );
       res.render("cars.ejs", {
-        location: data.location,
-        date: data.date,
-        time: data.time,
-        ddate: data.ddate,
-        dtime: data.dtime,
+        locations: locations,
+        service: data.service,
+        city: data.place.toLowerCase(),
       });
     } catch (error) {
-        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+        console.log(error)
+        res.render("400.ejs", { t: 500, sub: "Something went wronggg" });
     }
-  }
 });
 
 app.get("/adminlogin", (req, res) => {
@@ -129,7 +116,7 @@ app.use((req, res, next) => {
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
-    autoDelete();
+    // autoDelete();
     app.listen(PORT, () => {
       console.log("server started");
       console.log(`http://localhost:${PORT}/`)
