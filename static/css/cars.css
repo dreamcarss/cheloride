@@ -386,6 +386,9 @@
         margin: 0;
         display: block;
     }
+    .bg{
+        width: 100%;
+    }
     .container .card{
         width: 100%;
         display: grid;

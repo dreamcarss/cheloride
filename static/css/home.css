@@ -289,6 +289,13 @@
 .section .flx .img{
     width: 50%;
     height: auto;
+    border-radius: 5px;
+}
+
+.section .flx .banner{
+    width: auto;
+    height: 400px;
+    border-radius: 5px;
 }
 
 .flx .wrap{
