@@ -13,7 +13,7 @@
     border-radius: 50%;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: rgb(10, 255, 22);
+    background-color: var(--main-color);
 }
 
 * {
@@ -82,6 +82,32 @@
     animation: loading 0.3s ease infinite;
 }
 
+#check{
+    border: none;
+    height: 25px;
+    width: 25px;
+    border: 2px solid rgb(52, 52, 52);
+    background-color: #222;
+    border-radius: 4px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+#check #checked{
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-color);
+    color: var(--txt);
+    font-size: 23px;
+    font-weight: bolder;
+}
+
+#check #checked.checked{
+    display: flex;
+}
+
 @keyframes loading {
     from {
         transform: rotate(0deg);
@@ -96,7 +122,7 @@
     content: "";
     width: 18px;
     height: 18px;
-    background-color: yellowgreen;
+    background-color:var(--main-color);
     position: absolute;
     border-radius: 50%;
     top: 50%;
@@ -140,7 +166,7 @@
     flex: 1;
     height: 1px;
     margin-top: 10px;
-    border-bottom: 5px dotted rgb(228, 255, 92);
+    border-bottom: 5px dotted var(--main-color);
     /* background-color: blueviolet; */
 }
 
@@ -208,7 +234,7 @@
     width: max-content;
     height: max-content;
     border: none;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     color: white;
     font-family: "Integral";
     font-size: 13px;

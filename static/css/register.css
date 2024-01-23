@@ -97,7 +97,7 @@
 .form .btn{
     width: 100%;
     height: 35px;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     margin-top: 10px;
     font-family: "integral";
     border: none;
@@ -130,7 +130,7 @@
     margin-top: 15px;
     display: block;
     font-family: "Poppins";
-    color: rgb(108, 216, 0);
+    color: var(--main-color);
     text-decoration: none;
     font-size: 11px;
 }
@@ -156,7 +156,7 @@
     content: "";
     width: 18px;
     height: 18px;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     position: absolute;
     border-radius: 50%;
     top: 50%;

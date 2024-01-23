@@ -273,7 +273,7 @@ td {
 
 .sbt{
     height: 35px;
-    background: yellowgreen;
+    background: var(--main-color);
     border-radius: 5px;
     color: rgb(0, 0, 0);
     font-family: "Poppins";

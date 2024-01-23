@@ -4,6 +4,8 @@
     <%- include('./meta.ejs') %>
 
     <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
 </head>
 <body>
     <%- include('./adminNavbar.ejs') %>
@@ -27,6 +29,7 @@
                 <th class="th">Pickup Date</th>
                 <th class="th">Drop Date</th>
                 <th class="th">Pickup Time</th>
+                <th class="th">Drop Time</th>
                 <th class="th">Amount</th>
                 <th class="th">Payment Status</th>
                 <th class="th">Booking Status</th>
@@ -107,6 +110,7 @@
                                 <td class="td"><input class="inp" value="${booking.startDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.dropDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.time}" type="time" /></td>
+                                <td class="td"><input class="inp" value="${booking.dtime}" type="time" /></td>
                                 <td class="td inp">${booking.price}</td>
                                 <td class="td">
                                     <select id="status" class="inp">

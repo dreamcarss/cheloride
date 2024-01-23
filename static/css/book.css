@@ -239,7 +239,7 @@
     cursor: pointer;
     font-weight: bolder;
     text-decoration: none;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
 }
 
 .rdt {
@@ -254,7 +254,7 @@
     cursor: pointer;
     margin-top: 10px;
     text-decoration: none;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
 }
 
 .btns .btn.del{

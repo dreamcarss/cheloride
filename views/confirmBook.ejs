@@ -4,6 +4,8 @@
     <%- include('./meta.ejs') %>
 
     <link rel="stylesheet" href="../static/css/booking.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
 </head>
 <body>
     <%- include('./navbar.ejs') %>
@@ -52,6 +54,18 @@
                     <p class="amt"><%=data.gst %>/-</p>
                 </div>
             </div>
+            <div class="bx1">
+                <h2 class="stit">Terms and Conditions</h2>
+                <div class="row" style="margin-top:0;">
+                    <input type="checkbox" id="hcheck" name="accept" value="yes" hidden>
+                    <div id="check">
+                        <div id="checked">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </div>
+                    </div>
+                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">I accept and agree to the <a class="status" style="color: rgb(110, 110, 255); font-weight: bolder;" href="/terms&conditions">Terms and Conditions</a></h2>
+                </div>
+            </div>
             <div class="gt">
                 <button class="btn" onclick="bookingHandler()">Checkout</button>
                 <div class="cnt1">
@@ -66,32 +80,53 @@
         const id = document.getElementById("id").textContent;
         const details = document.getElementsByClassName("details")[0];
         const btn = document.getElementsByClassName("btn")[0];
+        const check = document.getElementById("check");
+        const checked = document.getElementById("checked");
+        const checkH = document.getElementById("hcheck");
+
+        window.onload = () => {checkH.checked = false}
+
+        check.onclick = () => {
+            checkH.click()
+            if(checked.classList.contains("checked")){
+                checked.classList.remove("checked");
+            }else{
+                checked.classList.add("checked")
+            }
+            console.log(checkH.checked)
+        }
+
         const bookingHandler = () => {
-            btn.innerHTML = "<div class='circle'></div>"
-            let data = {tempid: id}
-            fetch("/booking/book", {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'token': localStorage.getItem("token"),
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then((res => {
-                res.json().then(data => {
-                const msg = document.createElement("div");
-                btn.innerHTML = "Checkout"
-                msg.classList.add("msg");
-                msg.innerHTML = `
-                <div class="bgcircle">
-                <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
-            </div>
-            ${data.msg}
-            <a href="/booking" style="margin-top: 20px;">
-                <button class="btn" style=" font-size: 10px;">Your Bookings</button>
-            </a>`;
-                document.getElementsByTagName("body")[0].appendChild(msg);
-            })}))
+            if(checkH.checked){
+                btn.innerHTML = "<div class='circle'></div>"
+                let data = {tempid: id}
+                fetch("/booking/book", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'token': localStorage.getItem("token"),
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then((res => {
+                    res.json().then(data => {
+                    const msg = document.createElement("div");
+                    btn.innerHTML = "Checkout"
+                    msg.classList.add("msg");
+                    msg.innerHTML = `
+                    <div class="bgcircle">
+                    <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
+                </div>
+                ${data.msg}
+                <a href="/booking" style="margin-top: 20px;">
+                    <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                </a>`;
+                    document.getElementsByTagName("body")[0].appendChild(msg);
+                })}))
+            }else{
+                check.style.border = "2px solid red";
+                check.style.background = "rgba(255, 0, 0, 0.279)";
+            }
         }
     </script>
 </body>

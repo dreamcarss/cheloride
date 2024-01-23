@@ -16,7 +16,7 @@
     width: 100%;
     height: max-content;
     min-height: 100vh;
-    background-color: rgb(21, 21, 21);
+    background-color: var(--sec-bg);
     display: flex;
     justify-content: center;
 }
@@ -52,7 +52,7 @@
     width: max-content;
     height: max-content;
     min-height: 100vh;
-    background: black;
+    background: var(--bg-color);
     padding: 30px;
     padding-top: 60px;
     display: flex;
@@ -62,7 +62,7 @@
 
 .container .title{
     font-size: 40px;
-    color: white;
+    color: var(--txt);
     cursor: pointer;
     font-family: "Integral";
 }
@@ -96,7 +96,7 @@
     height: 35px;
     font-family: Poppins;
     font-size: 12px;
-    color: white;
+    color: var(--txt);
     background-color: rgb(38, 38, 38);
     border-radius: 5px;
 }
@@ -118,7 +118,7 @@
 
 .container .card .wsub{
     font-size: 20px;
-    color: white;
+    color: var(--txt);
     font-weight: lighter;
     margin-top: 5px;
 }
@@ -163,7 +163,7 @@
     content: "";
     width: 18px;
     height: 18px;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     position: absolute;
     border-radius: 50%;
     top: 50%;
@@ -181,7 +181,7 @@
 .container .slider .carcard .twrap .col{
     width: 70%;
     height: max-content;
-    color: white;
+    color: var(--txt);
     font-family: "Poppins";
     font-weight: 300;
     padding: 0 15px;
@@ -226,7 +226,7 @@
 .container .slider .carcard .twrap .price{
     width: max-content;
     height: 100%;
-    color: white;
+    color: var(--txt);
     font-family: "Poppins";
 }
 
@@ -239,7 +239,7 @@
 .container .slider .carcard .twrap .price .cost{
     font-family: "Montserrat";
     font-size: 30px;
-    color: white;
+    color: var(--txt);
 }
 
 .container .slider .carcard .twrap .price .bbtn{
@@ -247,11 +247,11 @@
     height: 40px;
     border: none;
     font-family: "Montserrat";
-    color: white;
+    color: var(--txt);
     cursor: pointer;
     font-size: 10px;
     text-transform: uppercase;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     border-radius: 5px;
 }
 
@@ -278,7 +278,7 @@
     height: max-content;
     padding: 20px;
     border-radius: 10px;
-    color: white;
+    color: var(--txt);
     font-family: "Poppins";
     background: rgb(24, 24, 24);
 }
@@ -348,7 +348,7 @@
     border-radius: 10px;
     font-family: "Montserrat";
     font-size: 12px;
-    color: rgb(227, 227, 227);
+    color: var(--txt);
     cursor: pointer;
     background-color: rgb(44, 44, 44);
 }
@@ -364,9 +364,9 @@
 }
 
 .bbtn.idbtn{
-    background: yellowgreen;
-    border: 2px solid yellowgreen;
-    color: white;
+    background: var(--main-color);
+    border: 2px solid var(--main-color);
+    color: var(--txt);
 }
 
 .mb{
@@ -375,8 +375,8 @@
 }
 
 .container .slider .carcard .twrap .price .bbtn.outer{
-    border: 2px solid yellowgreen;
-    color: yellowgreen;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
     background: transparent;
 }
 

@@ -100,7 +100,7 @@
     flex: 1;
     height: 1px;
     margin-top: 10px;
-    border-bottom: 5px dotted rgb(228, 255, 92);
+    border-bottom: 5px dotted var(--main-color);
     /* background-color: blueviolet; */
 }
 
@@ -168,7 +168,7 @@
     width: max-content;
     height: max-content;
     border: none;
-    background-color: yellowgreen;
+    background-color: var(--main-color);
     color: white;
     font-family: "Integral";
     font-size: 13px;

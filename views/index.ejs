@@ -4,14 +4,38 @@
     <%- include('./meta.ejs') %>
 
     <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
 </head>
 <body>
     <div class="container">
         <%- include('./navbar.ejs') %>
         <div class="formContainer">
-            <h2 class="title">Car Rental</br><span style="color: yellowgreen;">Services</span></h2>
+            <h2 class="title">Car <span style="color: var(--main-color);">Rental</span> Services</h2>
             <h4 class="sub">Explore limitless possibilities with our comprehensive car rental services! From compact cars to spacious SUVs, we offer a diverse fleet for your every need. Book car by selecting time and date below</h4>
-            <div class="opacityMask"></div>
+            <button class="sbt" id="sbt">Book Now</button>
+            <div class="row">
+                <div class="imgs">
+                    <img src="../static/assets/8.jpg" alt="" class="cimg prev">
+                    <div class="tag">
+                        <p class="tit">Mahindra Thar</p>
+                    </div>
+                </div>
+                <div class="imgs">
+                    <img src="../static/assets/3.jpg" alt="" class="cimg">
+                    <div class="tag">
+                        <p class="tit">Rolls Royce Boat Tail</p>
+                    </div>
+                </div>
+                <div class="imgs">
+                    <img src="../static/assets/9.jpg" alt="" class="cimg prev">
+                    <div class="tag">
+                        <p class="tit">Kia EV9</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="popup">
+            <h3 class="title" style="color: white; font-size: 30px; margin-bottom:15px;">Select Location and Service</h3>
             <form id="form" class="form">
                 <div style="display: flex; gap: 20px;">
                     <div class="wrap">
@@ -30,7 +54,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="sbt">Book Now</button>
+                <button type="submit" class="sbt"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Proceed</button>
             </form>
         </div>
         <div class="icons">
@@ -68,9 +92,22 @@
                 </ul>
             </div>
         </div>
+        <div class="footer">
+            <div>
+                <div class="title">CheloRide.com</div>
+                <div class="sub">Explore limitless possibilities with our comprehensive car rental services. Navigate using below links</div>
+                <a href="" class="sub">Developed and Maintained by Sidhardh and Hazrath</a>
+            </div>
+        </div>
     </div>
     <script>
         const form = document.getElementById("form");
+        const btn = document.getElementById("sbt");
+
+        btn.onclick = () => {
+            document.getElementById("popup").style.display = "flex";
+        }
+
         form.onsubmit = (e) => {
             const token = window.localStorage.getItem("token");
             if(token == null){form.setAttribute("action", "/auth/login"); form.setAttribute("method", "get")}else{

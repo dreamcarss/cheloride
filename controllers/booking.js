@@ -29,6 +29,11 @@ const getBookings = async (req, res) => {
         let user = await userModel.findOne({email: email});
         let promise = bookings.map(async(booking) => {
           await carModel.findById(booking.carId).then(async (car) => {
+            booking.dtime =
+              parseInt(booking.dtime.split(":")[0]) +
+              3 -
+              ":" +
+              booking.dtime.split(":")[1];
             data.push({booking, car})
           });
         })
@@ -46,7 +51,6 @@ const getBookings = async (req, res) => {
 
 const confirmBook = async(req, res) => {
     try {
-        console.log(req.body)
         const newTempBooking = new tempBooking({
           data: req.body.data,
           carId: req.body.carid,
@@ -91,7 +95,6 @@ const bookCar = async(req, res) => {
     if(req.method == "GET"){
         const id = req._parsedUrl.query.split("=")[1];
         let booking = await tempBooking.findById(id)
-        console.log(booking);
         if (booking != null) {
           const car = await carModel.findById(booking.carId);
           const stDt = new Date(booking.data[0] + "T" + booking.data[1] + "Z");
@@ -126,6 +129,7 @@ const bookCar = async(req, res) => {
             data.days = Math.round((hrs / 24).toFixed(2));
             data.tamount = totalAmount;
             data.amount = totalAmount + gst;
+          
             res.render("confirmBook.ejs", { id, data });
           } else {
             res.render("400.ejs", {
@@ -142,7 +146,6 @@ const bookCar = async(req, res) => {
     }else if(req.method == "POST"){
         try {
           const body = req.body;
-          console.log(body.tempid)
           const booking = await tempBooking.findById(body.tempid);
           if (booking != null) {
             const car = await carModel.findById(booking.carId);
@@ -158,9 +161,14 @@ const bookCar = async(req, res) => {
             let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
             let totalAmount = Math.ceil(hrlyCharges * hrs);
             let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+            const extTime =
+              parseInt(booking.data[3].split(":")[0]) +
+              3 +
+              ":" +
+              booking.data[3].split(":")[1];
             const newBooking = new bookingModel({
               time: booking.data[1],
-              dtime: booking.data[3],
+              dtime: extTime,
               userId: body.email,
               carId: car._id,
               price: totalAmount + gst,
@@ -245,7 +253,6 @@ const bookCar = async(req, res) => {
             });
           }
         } catch (error) {
-          console.log(error, "error");
         }
     }
 }
