@@ -56,6 +56,7 @@
                 </div>
                 <button type="submit" class="sbt"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Proceed</button>
             </form>
+            <button class="dgr" id="dgr">Cancle</button>
         </div>
         <div class="icons">
             <div class="wrap">
@@ -114,6 +115,10 @@
 
         btn.onclick = () => {
             document.getElementById("popup").style.display = "flex";
+        }
+
+        document.getElementById("dgr").onclick = () => {
+            document.getElementById("popup").style.display = "none";
         }
 
         form.onsubmit = (e) => {

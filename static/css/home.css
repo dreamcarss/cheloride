@@ -339,6 +339,17 @@
     text-decoration: none;
 }
 
+.dgr{
+    margin-top: 20px;
+    padding: 10px 25px;
+    font-family: poppins;
+    font-size: 12px;
+    color: red;
+    background: #ff000040;
+    border: 2px solid red;
+    border-radius: 5px;
+}
+
 @media only screen and (max-width: 600px){
     .ico{
         display: none;
@@ -367,6 +378,7 @@
     }
     .formContainer .sub{
         width: 84%;
+        margin-top: 10px;
         margin-bottom: 10px;
         font-size: 9px;
     }
