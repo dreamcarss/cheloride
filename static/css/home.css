@@ -343,6 +343,10 @@
     .ico{
         display: none;
     }
+    .section .flx .banner {
+        width: 100%;
+        height: auto;
+    }
     .footer{
         grid-template-columns: repeat(1, 1fr);
     }
