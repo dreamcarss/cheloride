@@ -68,7 +68,7 @@
                 "dropDate": inp[3].value, 
                 "time": inp[4].value, 
                 "paymentStatus": inp[6].value, 
-                "bookingStatus": inp[7].value, 
+                "bookingStatus": inp[7].value == "unpaid" ? false : true, 
             }
             fetch("/booking/updateStatus", {
                 method: 'PATCH',

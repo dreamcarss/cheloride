@@ -226,7 +226,13 @@ const bookCar = async(req, res) => {
               if (user.kycStatus) {
                 msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
                   totalAmount + gst
-                }</p>`;
+                }</p>
+                <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
+                    <a href="${process.env.DOMAIN}/booking/cancel/${token}">
+                      <button>
+                        Cancel booking
+                      </button>
+                    </a>`;
               } else {
                 msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
                   totalAmount + gst

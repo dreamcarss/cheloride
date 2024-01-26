@@ -113,10 +113,11 @@ const verifyLink = async(req, res) => {
                   decodedToken.code === obj.code &&
                   decodedToken.email === obj.email
                 ) {
+                  await tokenModel.findByIdAndDelete(id); 
                   res.render("updatePass.ejs", { email: obj.email });
                 }
               } else {
-                res.render("400.ejs", { t: 404, sub: "Not valid code" });
+                res.render("400.ejs", { t: 404, sub: "Link Expired" });
               }
             });
         }else if(req.method == "POST"){
