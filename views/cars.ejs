@@ -35,7 +35,7 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Time</h6>
-                    <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="dtime" id="dtime" min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
                     <button type="submit" class="bbtn idbtn sbt">
@@ -103,6 +103,7 @@
                     formD['time'].max = hours + ':' + minutes;
                 }
             }else{
+                formD['time'].min = "9:00";
                 formD['time'].max = "22:00";
                 formD['time'].removeAttribute("min")
             }
