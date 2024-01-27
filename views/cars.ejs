@@ -45,9 +45,30 @@
                     </button>
                 </div>
             </form>
-                <h6 class="sub">Pickup Date</h6>
             <div class="slider">
-                
+                <div class="carcard">
+                    <img src="../static/assets/2.jpg" alt="" class="img">
+                    <div class="twrap">
+                        <div class="col">
+                            <h3 class="title">Eon Blue</h3>
+                            <p class="ssub">Eon 2018 model petrol 5 speed gear transmission manual 5 seater</p>
+                            <div class="row">
+                                <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">105rs/hr</p>
+                                <p class="price">Petrol</p>
+                                <p class="price">Rk Beach</p>
+                            </div>
+                        </div>
+                        <div class="price pmb">
+                            <div style="text-align: right">
+                                <p class="cost">2800</p>
+                                <p class="label">Total Estimated <br />Amount</p>
+                            </div>
+                            <div class="wrapRow">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="ssub" id="note" style="color: rgba(255, 233, 233, 0.763); font-size: 13px;">** Please select fill the above dates and times to get all available Cars **</p>
             </div>
             <div class="slider slider2">
                 <p class="title otitle" style="text-align: center; margin-top:30px; display:none">Other Locations</p>
@@ -115,7 +136,8 @@
         }
 
         formD.addEventListener("submit", (e) => {
-            e.preventDefault()
+            e.preventDefault();
+            document.getElementById("note").style.display = "none"
             if(formD['date'].value != "" &&
             formD['ddate'].value != "" &&
             formD['time'].value != "" &&
@@ -167,7 +189,7 @@
                                     }
                                 </div>
                                 <div class="price pmb">
-                                    <div onclick = "showPopup(${i})">
+                                    <div onclick = "showPopup(${i})" style="text-align: right">
                                         <p class="cost">${car.amount * diff}/-</p>
                                         <p class="label">Total Estimated <br />Amount</p>
                                     </div>

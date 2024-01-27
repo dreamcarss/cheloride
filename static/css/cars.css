@@ -10,6 +10,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all 0.5s ease;
 }
 
 .container {
@@ -125,6 +126,7 @@
 
 .container .slider{
     height: max-content;
+    width: 90%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -209,9 +211,10 @@
     font-size: 20px;
 }
 
-.container .slider .carcard .twrap .col .ssub{
+.ssub{
     font-size: 11px;
     margin-top: 5px;
+    font-family: "Poppins";
     color: rgb(190, 190, 190);
 }
 
