@@ -12,7 +12,7 @@
     <div class="container">
         <div class="bg">
             <h3 class="title">Select Car</h3>
-            <form class="card" id="form" onsubmit="(e) => e.preventDefault()">
+            <form class="card" id="form">
                 <div class="wrap">
                     <h6 class="wtitle">Place</h6>
                     <select type="text" name="location" id="location" placeholder="Select location" required>
@@ -38,13 +38,14 @@
                     <input type="time" name="dtime" id="dtime"  max="22:00" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
-                    <button type="button" onclick="initFetch()" class="bbtn idbtn sbt">
+                    <button type="submit" class="bbtn idbtn sbt">
                         <div class="circle" id="load" style="display: none;"></div>
                         <p class="hide">Search</p>
                         <ion-icon name="search" id="search" style="font-size:19px"></ion-icon>
                     </button>
                 </div>
             </form>
+                <h6 class="sub">Pickup Date</h6>
             <div class="slider">
                 
             </div>
@@ -113,7 +114,8 @@
             ddate.min = newDate;
         }
 
-        const initFetch = () => {
+        formD.addEventListener("submit", (e) => {
+            e.preventDefault()
             if(formD['date'].value != "" &&
             formD['ddate'].value != "" &&
             formD['time'].value != "" &&
@@ -147,7 +149,6 @@
                     document.getElementById("search").style.display = "flex";
                     let diff = data?.diff;
                     data?.cars.forEach((car, i) => {
-                        console.log(car)
                         const newCar = document.createElement("div");
                         newCar.classList.add("carcard");
                         // newCar.onclick = () => showPopup(i)
@@ -194,7 +195,7 @@
                 msg.textContent = "Please fill all the details";
                 body.appendChild(msg);
             }
-        }
+        })
         
         
         const closePopup = () => {
