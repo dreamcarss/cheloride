@@ -45,7 +45,8 @@ const getALlCars = async (req, res) => {
     let dtime = req.headers.time;
     let carsList = [];
     let loc = req.headers.loc;
-    let cars = await carModel.find();
+    console.log(req.headers.city)
+    let cars = await carModel.find({place: req.headers.city});
     let diff;
     let promises = cars.map(async (car) => {
       diff = Math.abs(dDate - sDate) / 8.64e7;

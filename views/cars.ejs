@@ -138,7 +138,8 @@
                         endDate: end,
                         time: time,
                         dtime: dtime,
-                        loc: loc
+                        loc: loc,
+                        city: "<%- city %>"
                     }
                 }).then(res => res.json().then(data => {
                     document.getElementById("load").style.display = "none";
