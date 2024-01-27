@@ -24,6 +24,7 @@
         <table class="tab">
             <tr class="row">
                 <th class="th">Sno</th>
+                <th class="th">ID</th>
                 <th class="th">Name</th>
                 <th class="th" style="width: 200px;">Description</th>
                 <th class="th">gear type</th>
@@ -79,6 +80,7 @@
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 let elem = `<td class="td">${i+1}</td>
+                                <td class="td">${car._id}</td>
                                 <td class="td">${car.brand}</td>
                                 <td class="td">${car.desc}</td>
                                 <td class="td">${car.geartype}</td>
@@ -163,7 +165,7 @@
         }
 
         const deleteHandler = (i) => {
-            const id = document.getElementsByClassName("del")[i].classList[1];
+            const id = document.getElementsByClassName("upd")[i].classList[2];
             fetch(`/admin/delete/${id}`, {
                 method: "delete",
                 headers:{

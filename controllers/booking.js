@@ -162,14 +162,12 @@ const bookCar = async(req, res) => {
             let hrlyCharges = parseInt(car.amount) / 24;
             let totalAmount = Math.round(hrlyCharges * hrs);
             let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
+            const m = booking.data[3].split(":")[0], n = booking.data[3].split(":")[1]
             const extTime =
-              parseInt(booking.data[3].split(":")[0]) +
-              3 +
-              ":" +
-              booking.data[3].split(":")[1];
+              parseInt(m) + 3 > 10 ? parseInt(m) + 3 : "0" + (parseInt(m) + 3);
             const newBooking = new bookingModel({
               time: booking.data[1],
-              dtime: extTime,
+              dtime: extTime +":" + n,
               userId: body.email,
               carId: car._id,
               price: totalAmount + gst,

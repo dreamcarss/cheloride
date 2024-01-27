@@ -67,7 +67,7 @@
             formD['time'].value = sessionStorage.getItem("time") || ""
             formD['dtime'].value = sessionStorage.getItem("dtime") || ""
         }   
-
+        //previous dates  unselection
         formD['date'].addEventListener("change", () => {
             var now = new Date();
             if(now.toISOString().split('T')[0] === formD['date'].value){
@@ -86,13 +86,14 @@
             }
             formD['time'].disabled = false
         })
+
         formD['time'].addEventListener("change", () => {
             formD['ddate'].disabled = false
         })
         formD['ddate'].addEventListener("change", () => {
             formD['dtime'].disabled = false
         })
-
+        //same
         form['ddate'].addEventListener("focusout", () => {
             let dateTime = new Date(form['date'].value+"T" + form['time'].value + "Z")
             let dropDateTime = new Date(form['ddate'].value);
@@ -146,6 +147,7 @@
                     document.getElementById("search").style.display = "flex";
                     let diff = data?.diff;
                     data?.cars.forEach((car, i) => {
+                        console.log(car)
                         const newCar = document.createElement("div");
                         newCar.classList.add("carcard");
                         // newCar.onclick = () => showPopup(i)
@@ -159,6 +161,9 @@
                                         <p class="price">${car.fueltype}</p>
                                         <p class="price">${car.location}</p>
                                     </div>
+                                    ${
+                                        car.timeLeft != undefined ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>': ""
+                                    }
                                 </div>
                                 <div class="price pmb">
                                     <div onclick = "showPopup(${i})">
@@ -167,7 +172,7 @@
                                     </div>
                                     <div class="wrapRow">
                                         ${
-                                            car.timeLeft != undefined ? `<button class="bbtn tm mb">${car.timeLeft}Hrs Left to book the car</button>` : `<button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
+                                            car.timeLeft != undefined ? `<button class="bbtn outer" >Not Available</button>` : `<button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
                                         <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>`
                                         }
                                     </div>

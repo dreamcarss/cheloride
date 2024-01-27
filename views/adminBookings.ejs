@@ -87,7 +87,7 @@
                 setTimeout(() => {
                     body.removeChild(msg)
                     window.location.href = "/adminpanel/bookings"
-                }, 2500);
+                }, 500);
             }))
         }
 
@@ -102,6 +102,7 @@
         }).then(res => res.json().then(data => {
             document.getElementById("tbook").textContent = data.length;
             data.forEach((booking, i) => {
+                console.log(booking)
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 let elem = `<td class="td">${i+1}</td>

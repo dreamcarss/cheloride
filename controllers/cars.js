@@ -63,17 +63,22 @@ const getALlCars = async (req, res) => {
               ) {
               let stDate = new Date(sDate).toISOString().split("T")[0];
               let dropDate = new Date(endDate).toISOString().split("T")[0];
-              if(stDate == dropDate){
+              console.log(startDate, endDate, stDate, dropDate)
+              if (stDate == dropDate) {
+                console.log("ji");
                 let timeDiff = Math.round(
-                  Math.abs(
+                  (
                     new Date(`${stDate} ${dtime}`) -
                       new Date(`${stDate} ${booking.dtime}`)
                   ) / 3600000
                 );
-                let carObj = {...car}._doc
-                carObj.timeLeft = timeDiff
-                console.log(carObj);
-                carsList.push(car)
+                if(timeDiff <= 0){
+                  let carObj = { ...car }._doc;
+                  carObj.timeLeft = timeDiff;
+                  carsList.push(car);
+                }else{
+                  carsList.push(car)
+                }
               }
               null;
             } else {
