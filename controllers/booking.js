@@ -270,6 +270,7 @@ const updatePayment = async(req, res) => {
           await bookingModel.findById(body.bookingId).then((bill) => {
             if(bill != null){
               bill.time = body.time;
+              bill.dtime = body.dtime;
               bill.paymentStatus = body.paymentStatus;
               bill.bookingStatus = body.bookingStatus;
               bill.startDate = body.startDate;

@@ -60,6 +60,7 @@
             const id = document.getElementsByClassName("upd")[i].classList[2];
             const row = document.getElementsByClassName("row")[i+1];
             const inp = row.querySelectorAll(".inp");
+            console.log(inp)
             let body = {
                 "bookingId": id,
                 "carId": inp[0].textContent, 
@@ -67,6 +68,7 @@
                 "startDate": inp[2].value, 
                 "dropDate": inp[3].value, 
                 "time": inp[4].value, 
+                "dtime": inp[5].value, 
                 "paymentStatus": inp[6].value, 
                 "bookingStatus": inp[7].value == "unpaid" ? false : true, 
             }
