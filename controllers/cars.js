@@ -53,6 +53,7 @@ const getALlCars = async (req, res) => {
       await bookingModel
         .findOne({ carId: car._id, bookingStatus: true })
         .then((booking) => {
+          console.log(booking)
           if (booking != null) {
             let startDate = new Date(booking.startDate);
             let endDate = new Date(booking.dropDate);
@@ -72,6 +73,7 @@ const getALlCars = async (req, res) => {
                       new Date(`${stDate} ${booking.dtime}`)
                   ) / 3600000
                 );
+                console.log(timeDiff)
                 if(timeDiff <= 0){
                   let carObj = { ...car }._doc;
                   carObj.timeLeft = timeDiff;
