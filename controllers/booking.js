@@ -102,12 +102,13 @@ const bookCar = async(req, res) => {
           let diff = Math.abs(edDt - stDt);
           let data = {};
           let hrs = Math.round(diff / 3.6e6);
-          let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
+          let hrlyCharges = parseInt(car.amount) / 24;
+          console.log(diff, hrs, hrlyCharges)
           let totalAmount =
             booking.service == "Self"
-              ? Math.ceil(hrlyCharges * hrs)
-              : (Math.ceil(hrlyCharges * hrs))+parseInt(process.env.DRIVECHARGE);
-          let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+              ? Math.round(hrlyCharges * hrs)
+              : (Math.round(hrlyCharges * hrs))+parseInt(process.env.DRIVECHARGE);
+          let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
           if (
             hrs != null ||
             (hrs != undefined && gst != null) ||
@@ -158,9 +159,9 @@ const bookCar = async(req, res) => {
             let diff = Math.abs(edDt - stDt);
             let data = {};
             let hrs = diff / 3.6e6;
-            let hrlyCharges = Math.ceil(parseInt(car.amount) / 24);
-            let totalAmount = Math.ceil(hrlyCharges * hrs);
-            let gst = Math.ceil(parseFloat(process.env.GST) * totalAmount);
+            let hrlyCharges = parseInt(car.amount) / 24;
+            let totalAmount = Math.round(hrlyCharges * hrs);
+            let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
             const extTime =
               parseInt(booking.data[3].split(":")[0]) +
               3 +
