@@ -26,6 +26,7 @@
                 <th class="th">Sno</th>
                 <th class="th">CarId</th>
                 <th class="th" style="width: 200px;">Booked by</th>
+                <th class="th">Service Type</th>
                 <th class="th">Pickup Date</th>
                 <th class="th">Drop Date</th>
                 <th class="th">Pickup Time</th>
@@ -110,6 +111,7 @@
                 let elem = `<td class="td">${i+1}</td>
                                 <td class="td inp">${booking.carId}</td>
                                 <td class="td inp">${booking.userId}</td>
+                                <td class="td inp">${booking.service}</td>
                                 <td class="td"><input class="inp" value="${booking.startDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.dropDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.time}" type="time" /></td>

@@ -27,7 +27,7 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Pickup Time</h6>
-                    <input type="time" name="time" id="time"  max="22:00" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="time" id="time"  min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Date</h6>
@@ -46,8 +46,9 @@
                 </div>
             </form>
             <div class="slider">
+                <p class="ssub" style="color: rgba(255, 45, 45, 0.763); font-size: 13px;">Note: Any Midnight booking services, contact customer care. Terms and Conditions applicable</p>
                 <div class="carcard">
-                    <img src="../static/assets/2.jpg" alt="" class="img">
+                    <img src="../static/assets/3.jpg" alt="" class="img">
                     <div class="twrap">
                         <div class="col">
                             <h3 class="title">Eon Blue</h3>
@@ -103,7 +104,7 @@
                     formD['time'].max = hours + ':' + minutes;
                 }
             }else{
-                formD['time'].min = "9:00";
+                formD['time'].min = "09:00";
                 formD['time'].max = "22:00";
                 formD['time'].removeAttribute("min")
             }
@@ -143,75 +144,87 @@
             formD['ddate'].value != "" &&
             formD['time'].value != "" &&
             formD['dtime'].value != ""){
-                document.getElementById("load").style.display = "flex";
-                document.getElementById("search").style.display = "none";
-                let start = formD["date"].value;
-                let end = formD["ddate"].value;
-                let loc = formD["location"].value;
-                let time = formD["time"].value;
-                let dtime = formD["dtime"].value;
+                if(formD['time'].value > "09:00" && formD['dtime'].value > "09:00"){
+                    document.getElementById("load").style.display = "flex";
+                    document.getElementById("search").style.display = "none";
+                    let start = formD["date"].value;
+                    let end = formD["ddate"].value;
+                    let loc = formD["location"].value;
+                    let time = formD["time"].value;
+                    let dtime = formD["dtime"].value;
 
-                const carsCards = document.querySelectorAll(".carcard");
-                if(carsCards.length > 0){
-                    carsCards.forEach((card) => {
-                        card.remove()
-                    })
-                }
-
-                fetch(`/admin/allCars`, {
-                    headers:{
-                        startDate: start,
-                        endDate: end,
-                        time: time,
-                        dtime: dtime,
-                        loc: loc,
-                        city: "<%- city %>"
+                    const carsCards = document.querySelectorAll(".carcard");
+                    if(carsCards.length > 0){
+                        carsCards.forEach((card) => {
+                            card.remove()
+                        })
                     }
-                }).then(res => res.json().then(data => {
-                    document.getElementById("load").style.display = "none";
-                    document.getElementById("search").style.display = "flex";
-                    let diff = data?.diff;
-                    data?.cars.forEach((car, i) => {
-                        const newCar = document.createElement("div");
-                        newCar.classList.add("carcard");
-                        // newCar.onclick = () => showPopup(i)
-                        let carData = ` <img onclick = "showPopup(${i})" src="${car.image}" alt="" class="img">
-                            <div class="twrap">
-                                <div class="col" onclick = "showPopup(${i})">
-                                    <h3 class="title">${car.brand}</h3>
-                                    <p class="ssub">${car.desc}</p>
-                                    <div class="row">
-                                        <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(car.amount / 24)}rs/hr</p>
-                                        <p class="price">${car.fueltype}</p>
-                                        <p class="price">${car.location}</p>
-                                    </div>
-                                    ${
-                                        car.timeLeft != undefined ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>': ""
-                                    }
-                                </div>
-                                <div class="price pmb">
-                                    <div onclick = "showPopup(${i})" style="text-align: right">
-                                        <p class="cost">${car.amount * diff}/-</p>
-                                        <p class="label">Total Estimated <br />Amount</p>
-                                    </div>
-                                    <div class="wrapRow">
+
+                    fetch(`/admin/allCars`, {
+                        headers:{
+                            startDate: start,
+                            endDate: end,
+                            time: time,
+                            dtime: dtime,
+                            loc: loc,
+                            city: "<%- city %>"
+                        }
+                    }).then(res => res.json().then(data => {
+                        document.getElementById("load").style.display = "none";
+                        document.getElementById("search").style.display = "flex";
+                        let diff = data?.diff;
+                        data?.cars.forEach((car, i) => {
+                            const newCar = document.createElement("div");
+                            newCar.classList.add("carcard");
+                            // newCar.onclick = () => showPopup(i)
+                            let carData = ` <img onclick = "showPopup(${i})" src="${car.image}" alt="" class="img">
+                                <div class="twrap">
+                                    <div class="col" onclick = "showPopup(${i})">
+                                        <h3 class="title">${car.brand}</h3>
+                                        <p class="ssub">${car.desc}</p>
+                                        <div class="row">
+                                            <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(car.amount / 24)}rs/hr</p>
+                                            <p class="price">${car.fueltype}</p>
+                                            <p class="price">${car.location}</p>
+                                        </div>
                                         ${
-                                            car.timeLeft != undefined ? `<button class="bbtn outer" >Not Available</button>` : `<button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
-                                        <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>`
+                                            car.timeLeft != undefined ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>': ""
                                         }
                                     </div>
-                                </div>
-                        </div>`
-                        newCar.innerHTML = carData;
-                        if(loc.toLowerCase() == car.location.toLowerCase()){
-                            slider.appendChild(newCar)
-                        }else{
-                            slider2.appendChild(newCar);
-                            document.getElementsByClassName("otitle")[0].style.display = "block"
-                        }
-                    })
-                }))
-            }else{
+                                    <div class="price pmb">
+                                        <div onclick = "showPopup(${i})" style="text-align: right">
+                                            <p class="cost">${car.amount * diff}/-</p>
+                                            <p class="label">Total Estimated <br />Amount</p>
+                                        </div>
+                                        <div class="wrapRow">
+                                            ${
+                                                car.timeLeft != undefined ? `<button class="bbtn outer" >Will be Available</button>` : `<button class="bbtn mb" onclick = "bookHandler(${i})">Book Now</button>
+                                            <button class="bbtn outer ${car._id} ${i}" onclick = "showPopup(${i})">View more</button>`
+                                            }
+                                        </div>
+                                    </div>
+                            </div>`
+                            newCar.innerHTML = carData;
+                            if(loc.toLowerCase() == car.location.toLowerCase()){
+                                slider.appendChild(newCar)
+                            }else{
+                                slider2.appendChild(newCar);
+                                document.getElementsByClassName("otitle")[0].style.display = "block"
+                            }
+                        })
+                    }))
+                }else{
+                    const msg = document.createElement("div");
+                    const body = document.getElementsByTagName("body")[0];
+                    msg.classList.add("msg");
+                    msg.textContent = "Please adjust the time-zone to after 9:00am";
+                    body.appendChild(msg);
+                    setTimeout(() => {
+                        body.removeChild(msg)
+                    }, 2500);
+                }
+            }
+            else{
                 const msg = document.createElement("div");
                 const body = document.getElementsByTagName("body")[0];
                 msg.classList.add("msg");

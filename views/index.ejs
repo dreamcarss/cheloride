@@ -39,17 +39,14 @@
                             <% }) %>
                         </select>
                     </div>
-                    <div class="wrap">
+                    <div class="wrap" >
                         <label for="" class="lab">Service</label>
-                        <select type="text" name="service" id="service" placeholder="Select Service" required disabled>
-                            <option class="lelm" id="self" value="Self">Self Driven</option>
-                            <option class="lelm" id="taxi" value="Taxi">Taxi Service (incld Driver charges)</option>
-                        </select>
+                        <input type="text" class="inp" style="pointer-events: none; background-color: rgb(225, 225, 225);" name="service" id="service" placeholder="Select Service" required>
                     </div>
                 </div>
                 <button type="submit" class="sbt"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Proceed</button>
             </form>
-            <button class="dgr" id="dgr">Cancle</button>
+            <button class="dgr" id="dgr"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
         </div>
         <div class="icons">
             <div class="wrap">
@@ -108,11 +105,9 @@
 
         btns.forEach((btn, i) => btn.onclick = () => {
             if(i==0){
-                document.getElementById("self").setAttribute("selected", true)
-                document.getElementById("taxi").removeAttribute("selected")
+                document.getElementById("service").value = "Self"
             }else{
-                document.getElementById("taxi").setAttribute("selected", true)
-                document.getElementById("self").removeAttribute("selected")
+                document.getElementById("service").value = "Taxi"
             }
             document.getElementById("popup").style.display = "flex";
         })

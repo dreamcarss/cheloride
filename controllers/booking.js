@@ -115,6 +115,7 @@ const bookCar = async(req, res) => {
             (gst != undefined && totalAmount != null) ||
             totalAmount != undefined
           ) {
+            console.log(booking.service, "service")
             data.brand = car.brand;
             data.location = car.location;
             data.date = booking.data[0];
@@ -169,6 +170,7 @@ const bookCar = async(req, res) => {
               time: booking.data[1],
               dtime: extTime +":" + n,
               userId: body.email,
+              service : booking.service,
               carId: car._id,
               price: totalAmount + gst,
               startDate: booking.data[0],
