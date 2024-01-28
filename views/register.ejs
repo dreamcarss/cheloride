@@ -73,7 +73,28 @@
                             if(d?.token != null){
                                 localStorage.setItem("token", d.token)
                             }
-                            window.location.href=`/`
+                            if(sessionStorage.getItem("date") != null){
+                                var form = document.createElement("form");
+                                form.action = "/cars";
+                                form.method = "post";
+                                var place = sessionStorage.getItem("place");
+                                var service = sessionStorage.getItem("service");
+                                var input1 = document.createElement("input");
+                                input1.name = "place";
+                                input1.value = place;
+                                input1.type = "hidden"; 
+                                var input2 = document.createElement("input");
+                                input2.name = "service";
+                                input2.value = service;
+                                input2.type = "hidden"; 
+                                form.appendChild(input1);
+                                form.appendChild(input2);
+                                document.body.appendChild(form);
+                                form.submit();
+                                                                
+                            }else{
+                                window.location.href=`/`
+                            }
                         }
                         else{
                             formElm["email"].classList.add("warn");

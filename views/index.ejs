@@ -17,12 +17,12 @@
                 <div class="card">
                     <!-- <p class="sub">Self Drive Cars</p> -->
                     <img src="../static/assets/8.jpg" alt="" class="cimg">
-                    <button class="sbt spp"  style="background-color: orange; color: black; font-size:15px;">Rent Car</button>
+                    <button class="sbt spp"  style="background-color: orange; color: black; font-size:15px;">Rent a Car</button>
                 </div>
                 <div class="card">
                     <!-- <p class="sub">Taxi Service</p> -->
                     <img src="../static/assets/3.jpg" alt="" class="cimg">
-                    <button class="sbt spp" style="background-color: rgb(229, 229, 0); color: black; border: 2px solid rgb(229, 229, 0); font-size:15px;" >Book Taxi</button>
+                    <button class="sbt spp" style="background-color: rgb(229, 229, 0); color: black; border: 2px solid rgb(229, 229, 0); font-size:15px;" >Book a Taxi</button>
                 </div>
             </div>
             <div class="opacityMask"></div>
@@ -117,10 +117,7 @@
         }
 
         form.onsubmit = (e) => {
-            const token = window.localStorage.getItem("token");
-            if(token == null){form.setAttribute("action", "/auth/login"); form.setAttribute("method", "get")}else{
-                form.setAttribute("action", "/cars"); form.setAttribute("method", "post")
-            }
+            form.setAttribute("action", "/cars"); form.setAttribute("method", "post")
         }
     </script>
 </body>

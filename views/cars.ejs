@@ -84,7 +84,7 @@
         const formD = document.getElementById("form")
         const pdate = document.getElementById("pdate");
         const ddate = document.getElementById("ddate");
-        document.onload = () => {
+        window.onload = () => {
             formD['date'].value = sessionStorage.getItem("date") || ""
             formD['ddate'].value = sessionStorage.getItem("ddate") || ""
             formD['time'].value = sessionStorage.getItem("time") || ""
@@ -170,11 +170,11 @@
                             city: "<%- city %>"
                         }
                     }).then(res => res.json().then(data => {
+                        document.getElementsByClassName("otitle")[0].style.display = "none"
                         if(res.status === 404){
                             document.getElementsByClassName("otitle")[0].textContent = "No Cars Available"
-                            document.getElementsByClassName("otitle")[0].style.display = "block"
+                            document.getElementsByClassName("otitle")[0].style.display = "flex"
                         }
-                        document.getElementsByClassName("otitle")[0].style.display = "none"
                         document.getElementById("load").style.display = "none";
                         document.getElementById("search").style.display = "flex";
                         let diff = data?.diff;
@@ -295,31 +295,41 @@
         }
 
         const bookHandler = async(i) => {
-            const id = document.getElementById("idbtn") || document.getElementsByClassName(i)[0]
             const token = localStorage.getItem("token");
-            const subs = document.querySelectorAll(".wsub");
-            const data = {};
-            subs.forEach((s) => {
-                data [s.name] = s.value
-            });
-            let d = {data, city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
-            fetch("/booking/confirmBooking", {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'token': token,
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d)
-            }).then(res => res.json().then(data => {
-                if(res.status == 400){
-                    sessionStorage.setItem("sessionToken", data.sid);
-                    window.location.href = `/auth/register`
-                }
-                else{
-                    window.location.href = `/booking/book?id=${data.msg}`
-                }
-            }))
+            if(token){
+                const id = document.getElementById("idbtn") || document.getElementsByClassName(i)[0]
+                const subs = document.querySelectorAll(".wsub");
+                const data = {};
+                subs.forEach((s) => {
+                    data [s.name] = s.value
+                });
+                let d = {data, city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
+                fetch("/booking/confirmBooking", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'token': token,
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d)
+                }).then(res => res.json().then(data => {
+                    if(res.status == 400){
+                        sessionStorage.setItem("sessionToken", data.sid);
+                        window.location.href = `/auth/register`
+                    }
+                    else{
+                        window.location.href = `/booking/book?id=${data.msg}`
+                    }
+                }))
+            }else{
+                sessionStorage.setItem("service", "<%- service %>")
+                sessionStorage.setItem("place", "<%- city %>")
+                sessionStorage.setItem("date", formD["date"].value)
+                sessionStorage.setItem("ddate", formD["ddate"].value)
+                sessionStorage.setItem("time", formD["time"].value)
+                sessionStorage.setItem("dtime", formD["dtime"].value)
+                window.location.href = "/auth/login"
+            }
         }
     </script>
 </body>
