@@ -15,7 +15,7 @@
             <form class="card" id="form">
                 <div class="wrap">
                     <h6 class="wtitle">Place</h6>
-                    <select type="text" name="location" id="location" placeholder="Select location" required>
+                    <select type="text" class="wsub" name="location" id="location" placeholder="Select location" required>
                         <% locations?.forEach(function(loc, i, entries){ %>
                             <option class="lelm"><%= loc.toUpperCase() %></option>
                         <% }) %>
@@ -292,8 +292,10 @@
             const id = document.getElementById("idbtn") || document.getElementsByClassName(i)[0]
             const token = localStorage.getItem("token");
             const subs = document.querySelectorAll(".wsub");
-            const data = [];
-            subs.forEach((s) => data.push(s.value));
+            const data = {};
+            subs.forEach((s) => {
+                data [s.name] = s.value
+            });
             let d = {data, city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
             fetch("/booking/confirmBooking", {
                 method: 'POST',

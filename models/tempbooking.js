@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const tempBookingSchema = mongoose.Schema({
-  data: { type: Array, require: true },
+  data: { type: Object, require: true },
   carId: { type: String, require: true },
   service: { type: String, default: "Self" },
   userId: { type: String, require: true },
