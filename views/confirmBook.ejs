@@ -33,10 +33,12 @@
                     <p class="span">Service Type</p>
                     <p class="amt"><%=data.service %></p>
                 </div>
-                <div class="row">
-                    <p class="span">Service Charges</p>
-                    <p class="amt"><%=data.serviceCharges %>/-</p>
-                </div>
+                <% if (data.serviceCharges !== 0) { %>
+                    <div class="row">
+                        <p class="span">Driver Charges</p>
+                        <p class="amt"><%=data.serviceCharges %>/-</p>
+                    </div>
+                <% } %>
                 <div class="row">
                     <p class="span">Price Per Day</p>
                     <p class="amt"><%=data.price %>/-</p>
