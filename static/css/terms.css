@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap');
+
+@font-face {
+    font-family: "integral";
+    src: url("../fonts/integral.ttf");
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.5s ease;
+}
+
+.container {
+    width: 100%;
+    height: max-content;
+    min-height: 100vh;
+    background-color: var(--sec-bg);
+    display: flex;
+    justify-content: center;
+}
+
+.msg {
+    color: #52f994;
+    position: absolute;
+    top: 75px;
+    right: 20px;
+    z-index: 6;
+    height: max-content;
+    width: max-content;
+    padding: 9px 15px;
+    background: #121212;
+    border-radius: 10px;
+    font-family: poppins;
+    font-size: 12px;
+    display: block;
+    animation: fade 1s ease forwards;
+}
+
+@keyframes fade {
+    0% {
+        right: -10%;
+    }
+
+    100% {
+        right: 20px;
+    }
+}
+
+.bg {
+    width: max-content;
+    height: max-content;
+    min-height: 100vh;
+    background: var(--bg-color);
+    padding: 30px;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .title{
+    font-size: 40px;
+    color: var(--txt);
+    cursor: pointer;
+    font-family: "Integral";
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.ssub, .tit{
+    font-size: 11px;
+    margin-top: 5px;
+    font-family: "Poppins";
+    color: rgb(190, 190, 190);
+}
+
+.tit{
+    font-size: 17px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+
+.subtit{
+    margin-top: 25px;
+    color: var(--main-color);
+    font-weight: bolder;
+    font-family: Poppins;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .mb{
+        margin: 0;
+        display: block;
+    }
+    .bg{
+        width: 100%;
+    }
+    .container .card{
+        width: 100%;
+        display: grid;
+        row-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .container .slider .carcard{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .container .slider .carcard .img{
+        width: 100%;
+        height: max-content;
+    }
+
+    .container .slider .carcard .twrap{
+        flex-direction: column;
+    }
+
+    .container .slider .carcard .twrap .col{
+        width: 100%;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .container .slider .carcard .twrap .price.pmb{
+        width: 100%;
+        height: max-content;
+    }
+
+    .container .slider .carcard .twrap .price.pmb div{
+        width: 100%;
+        height: max-content;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-direction: row-reverse;
+    }
+    .container .card .wrap{
+        width: 100%;
+    }
+    .bbtn.idbtn.sbt {
+        width: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bbtn.idbtn.sbt .hide {
+        display: flex;
+    }
+    .container .card .wrap input{
+        width: 100%;
+    }
+    .container .slider .carcard .twrap .price.pmb div .cost{
+        font-size: 15px;
+    }
+
+    .container .card .wrap{
+        border: none;
+    }
+
+    .container .slider{
+        width: 100%;
+    }
+    .popup .inner .img,
+    .popup .inner{
+        width: 100%;
+        margin-top: 50px
+    }
+    .inner div .wrap .grid{
+        flex-direction: row;
+    }
+}

@@ -34,6 +34,7 @@ app.use("/admin", carRoutes)
 app.use("/adminpanel", adminRoutes);
 app.use("/booking", bookingRouter)
 app.use("/terms&conditions", (req, res) => res.render("terms.ejs"));
+app.use("/join-us", (req, res) => res.render("join.ejs"));
 
 
 function remDups(arr) {
