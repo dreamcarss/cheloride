@@ -12,6 +12,7 @@ const bookingSchema = mongoose.Schema({
   startDate: { type: String, require: true },
   dropDate: { type: String, require: true },
   bookingStatus: { type: Boolean, default: true },
+  aggrement: { type: Boolean, default: true },
 });
 
 
