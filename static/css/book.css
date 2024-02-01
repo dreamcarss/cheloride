@@ -263,6 +263,10 @@
     background-color: transparent;
 }
 
+.container .title.tit{
+    font-size: 100px;
+}
+
 
 
 @media only screen and (max-width: 600px) {
@@ -272,5 +276,8 @@
     }
     .btns {
         width: 100%;
+    }
+    .container .title.tit {
+        font-size: 60px;
     }
 }

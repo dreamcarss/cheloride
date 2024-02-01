@@ -50,12 +50,12 @@
 }
 
 .bg {
-    width: max-content;
+    width: 50%;
     height: max-content;
     min-height: 100vh;
     background: var(--bg-color);
     padding: 30px;
-    padding-top: 60px;
+    padding-top: 80px;
     display: flex;
     flex-direction: column;
 }
@@ -90,9 +90,62 @@
     font-weight: bolder;
     font-family: Poppins;
 }
+.row{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+.banner{
+    width: 350px;
+    height: auto;
+}
+
+.row .col{
+    color: white;
+    font-family: "Poppins";
+    display: flex;
+    flex-direction: column;
+}
+
+.row .col label{
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: rgb(219, 219, 219);
+}
+
+.row .col .inp, .row .col .sbt{
+    border-radius: 5px;
+}
+
+.row .col .inp{
+    padding: 5px 10px;
+    height: 35px;
+}
+
+.row .col .sub{
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.row .col .sbt{
+    margin-top: 5px;
+    height: 30px;
+    color: white;
+    font-family: "Integral";
+    background-color: var(--main-color);
+    border: none;
+    cursor: pointer;
+}
 
 @media only screen and (max-width: 600px) {
-
+    .banner {
+        width: 100%;
+    }
+    .row{
+        flex-direction: column;
+    }
     .mb{
         margin: 0;
         display: block;
