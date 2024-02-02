@@ -14,6 +14,7 @@ async function handleUpload(file) {
 const createCars = async(req, res) => {
     try {
         const body = req?.body;
+        console.log(body.place)
         const newCar = new carModel({
           brand: body.brand,
           image: await handleUpload(body.image),
@@ -22,15 +23,16 @@ const createCars = async(req, res) => {
           fuelcap: body.fuel,
           fueltype: body.fueltype,
           seating: body.seating,
-          location: body.location,
-          place: body.place,
+          location: body.location.toLowerCase(),
+          place: body.place.toLowerCase(),
           luggage: body.luggage,
           amount: body.amount,
           mileage: body.mileage,
           location: body.location,
         });
         await newCar.save().then(() => {
-            res.status(200).json({"msg": "saved"})
+          console.log(newCar)
+            res.status(200).json({msg: "saved"})
         })
     } catch (error) {
         res.render("400.ejs", { t: 500, sub: "Something went wrong" });;

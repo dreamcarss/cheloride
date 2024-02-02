@@ -179,6 +179,7 @@
                         document.getElementById("search").style.display = "flex";
                         let diff = data?.diff;
                         data?.cars.forEach((car, i) => {
+                            console.log(car)
                             const newCar = document.createElement("div");
                             newCar.classList.add("carcard");
                             // newCar.onclick = () => showPopup(i)

@@ -111,7 +111,7 @@
                 });
             }
 
-        btn.addEventListener("click", async(e) => {
+        form.addEventListener("submit", async(e) => {
             e.preventDefault();
             const brand = form["brand"].value;
             const desc = form["desc"].value;
@@ -126,7 +126,7 @@
             const place = form["place"].value;
             const fueltype = form["fueltype"].value;
             let data = {
-                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount
+                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype
             }
             await fetch('/admin/uploadCar', {
                 method: 'POST',

@@ -197,6 +197,7 @@ app.post("/cars", async(req, res) => {
           return car.location?.toLowerCase();
         })
       );
+      console.log(cars);
       res.render("cars.ejs", {
         locations: locations,
         service: data.service,
