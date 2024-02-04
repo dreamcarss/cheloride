@@ -38,7 +38,7 @@
                     <input type="time" name="dtime" id="dtime" min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
-                    <button type="submit" class="bbtn idbtn sbt">
+                    <button type="submit" class="bbtn idbtn sbt" id="searchbt">
                         <div class="circle" id="load" style="display: none;"></div>
                         <p class="hide">Search</p>
                         <ion-icon name="search" id="search" style="font-size:19px"></ion-icon>
@@ -146,6 +146,7 @@
             formD['dtime'].value != ""){
                 if(formD['time'].value > "09:00" && formD['dtime'].value > "09:00"){
                     document.getElementById("load").style.display = "flex";
+                    document.getElementById("searchbt").setAttribute("disabled", true);
                     document.getElementById("search").style.display = "none";
                     let start = formD["date"].value;
                     let end = formD["ddate"].value;
@@ -176,6 +177,7 @@
                             document.getElementsByClassName("otitle")[0].style.display = "flex"
                         }
                         document.getElementById("load").style.display = "none";
+                        document.getElementById("searchbt").removeAttribute("disabled");
                         document.getElementById("search").style.display = "flex";
                         let diff = data?.diff;
                         data?.cars.forEach((car, i) => {

@@ -56,6 +56,8 @@
                 linksArr.phone = formElm["phone"].value
                 linksArr.password = formElm["password"].value
             }
+            btn.setAttribute("disabled", true);
+            btn.style.background = "rgb(151, 99, 2)"
             fetch("/auth/register", {
                     method: 'POST',
                     headers: {
@@ -64,6 +66,8 @@
                     },
                     body: JSON.stringify(linksArr)
                 }).then((res) => {
+                    btn.removeAttribute("disabled");
+                    btn.style.background = "orange"
                     res.json().then((d) => {
                         let msg = document.getElementById("note")
                         msg.textContent = d.msg;

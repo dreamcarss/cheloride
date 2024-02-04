@@ -44,6 +44,8 @@
                      btn.innerHTML = "Submit"
                     msg.textContent = "*Please fill details";
                 }else{
+                    btn.setAttribute("disabled", true);
+                    btn.style.background = "rgb(151, 99, 2)"
                     const data = {email, password}
                     fetch("/auth/login", {
                         method: 'POST',
@@ -53,6 +55,8 @@
                         },
                         body: JSON.stringify(data)
                     }).then((res) => {
+                        btn.removeAttribute("disabled");
+                        btn.style.background = "orange"
                         res.json().then((d) => {
                             msg.textContent = d.msg;
                             btn.innerHTML = "Submit"
