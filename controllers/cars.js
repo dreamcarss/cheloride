@@ -58,7 +58,6 @@ const getALlCars = async (req, res) => {
           if (booking != null) {
             let startDate = new Date(booking.startDate);
             let endDate = new Date(booking.dropDate);
-            console.log(diff)
             if (
               (sDate >= startDate && sDate <= endDate) ||
               (dDate > startDate && dDate <= endDate)
@@ -67,7 +66,6 @@ const getALlCars = async (req, res) => {
               let dropDate = new Date(endDate).toISOString().split("T")[0];
               console.log(startDate, endDate, stDate, dropDate)
               if (stDate == dropDate) {
-                console.log("ji");
                 let timeDiff = Math.round(
                   (
                     new Date(`${stDate} ${dtime}`) -

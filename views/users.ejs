@@ -178,7 +178,7 @@
                         </td>
                         <td class="td">
                             ${
-                                user.idproof.proof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="idproof${i}" name="idproof${i}" onchange="uploadHandler(this, ${i}, 'idproof')"/><label for="idproof${i}" class="del updt">Upload</label>`
+                                user.idproof?.proof != undefined ? `<a href="${user.idproof?.proof}" class="link" target="_blank" rel="noopener noreferrer">Show</a></td>`: `<input type="file" class="none" id="idproof${i}" name="idproof${i}" onchange="uploadHandler(this, ${i}, 'idproof')"/><label for="idproof${i}" class="del updt">Upload</label>`
                             }
                         <td class="td">
                             ${

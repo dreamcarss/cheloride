@@ -122,7 +122,7 @@ const bookCar = async(req, res) => {
             data.ddate = booking.data.ddate;
             data.time = booking.data.time;
             data.dtime = booking.data.dtime;
-            data.email = booking.userId;
+            data.email = booking.userId.split("@")[0];
             data.service = booking.service;
             data.serviceCharges = booking.service == "Self"
               ? 0 : process.env.DRIVECHARGE;

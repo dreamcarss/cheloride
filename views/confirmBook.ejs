@@ -22,25 +22,36 @@
                     <p class="data bg"><span class="span">Drop Date:</span> <%=data.ddate %></p>
                 </div>
                 <div class="row">
-                    <p class="data"><span class="span">Booking Time:</span> <%=data.time %></p>
-                    <p class="data"><span class="span">Booking By:</span> <%=data.email %></p>
+                    <p class="data"><span class="span">Booking<br/>Time:</span> <%=data.time %></p>
+                    <p class="data"><span class="span">Booking<br/> By:</span> <%=data.email %></p>
                     <p class="data"><span class="span">Location:</span> <%=data.location %></p>
                 </div>
             </div>
             <div class="bx1 w2">
                 <h2 class="stit">Billing</h2>
                 <div class="row">
-                    <p class="span">Service Type</p>
+                    <p class="span">Service Type
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                        <div class="info">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit sapiente enim laudantium eum pariatur iste
+                        </div>
+                    </p>
                     <p class="amt"><%=data.service %></p>
                 </div>
                 <% if (data.serviceCharges !== 0) { %>
                     <div class="row">
-                        <p class="span">Driver Charges</p>
+                        <p class="span">Driver Charges <ion-icon name="information-circle-outline"></ion-icon>
+                        <div class="info">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit sapiente enim laudantium eum pariatur iste
+                        </div></p>
                         <p class="amt"><%=data.serviceCharges %>/-</p>
                     </div>
                 <% } %>
                 <div class="row">
-                    <p class="span">Price Per Day</p>
+                    <p class="span">Price Per Day <ion-icon name="information-circle-outline"></ion-icon>
+                        <div class="info">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit sapiente enim laudantium eum pariatur iste
+                        </div></p>
                     <p class="amt"><%=data.price %>/-</p>
                 </div>
                 <div class="row">
@@ -52,7 +63,10 @@
                     <p class="amt"><%=data.tamount %>/-</p>
                 </div>
                 <div class="row">
-                    <p class="span">GST (18%)</p>
+                    <p class="span">GST (18%) <ion-icon name="information-circle-outline"></ion-icon>
+                        <div class="info">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit sapiente enim laudantium eum pariatur iste
+                        </div></p>
                     <p class="amt"><%=data.gst %>/-</p>
                 </div>
             </div>
