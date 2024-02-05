@@ -111,7 +111,8 @@
 
         const bookingHandler = () => {
             if(checkH.checked){
-                btn.innerHTML = "<div class='circle'></div>"
+                btn.innerHTML = "<div class='circle'></div>";
+                btn.setAttribute("disabled", true);
                 let data = {tempid: id}
                 fetch("/booking/book", {
                     method: 'POST',
@@ -122,6 +123,7 @@
                     },
                     body: JSON.stringify(data)
                 }).then((res => {
+                    btn.removeAttribute("disabled")
                     res.json().then(data => {
                     const msg = document.createElement("div");
                     btn.innerHTML = "Checkout"

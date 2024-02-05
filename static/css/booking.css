@@ -270,7 +270,7 @@
     height: 100vh;
     padding: 5px 10px;
     font-size: 16px;
-    position: absolute;
+    position: fixed;
     top: 30px;
     right: 10px;
     z-index: 1;
