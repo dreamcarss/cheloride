@@ -66,12 +66,12 @@
                 "bookingId": id,
                 "carId": inp[0].textContent, 
                 "userId": inp[1].textContent, 
-                "startDate": inp[2].value, 
-                "dropDate": inp[3].value, 
-                "time": inp[4].value, 
-                "dtime": inp[5].value, 
-                "paymentStatus": inp[7].value, 
-                "bookingStatus": inp[8].value == "Expired" ? false : true, 
+                "startDate": inp[3].value, 
+                "dropDate": inp[4].value, 
+                "time": inp[5].value, 
+                "dtime": inp[6].value, 
+                "paymentStatus": inp[8].value, 
+                "bookingStatus": inp[9].value == "Expired" ? false : true, 
             }
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
@@ -105,7 +105,7 @@
         }).then(res => res.json().then(data => {
             document.getElementById("tbook").textContent = data.length;
             data.forEach((booking, i) => {
-                console.log(booking)
+                console.log(booking.time)
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 let elem = `<td class="td">${i+1}</td>
