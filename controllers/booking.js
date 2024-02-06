@@ -45,7 +45,7 @@ const getBookings = async (req, res) => {
       }
     })
   } catch (error) {
-    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }; 
 

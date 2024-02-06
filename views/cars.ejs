@@ -38,7 +38,7 @@
                     <input type="time" name="dtime" id="dtime" min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
-                    <button type="submit" class="bbtn idbtn sbt" id="searchbt">
+                    <button type="submit" class="bbtn idbtn sbt" id="searchbt" name="searchbt">
                         <div class="circle" id="load" style="display: none;"></div>
                         <p class="hide">Search</p>
                         <ion-icon name="search" id="search" style="font-size:19px"></ion-icon>
@@ -89,6 +89,10 @@
             formD['ddate'].value = sessionStorage.getItem("ddate") || ""
             formD['time'].value = sessionStorage.getItem("time") || ""
             formD['dtime'].value = sessionStorage.getItem("dtime") || ""
+            formD['searchbt'].click();
+            document.querySelectorAll(".wsub").forEach(sub => {
+                sub.removeAttribute("disabled")
+            })
         }   
         //previous dates  unselection
         formD['date'].addEventListener("change", () => {
@@ -304,7 +308,7 @@
                 const subs = document.querySelectorAll(".wsub");
                 const data = {};
                 subs.forEach((s) => {
-                    data [s.name] = s.value
+                    data[s.name] = s.value
                 });
                 let d = {data, city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
                 fetch("/booking/confirmBooking", {
