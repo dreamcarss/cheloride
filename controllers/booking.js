@@ -81,11 +81,11 @@ const getTempData = async(req, res) => {
                   email: req.body.email,
                   brand: car.brand,
                   price: car.amount,
-                  time: data.data.time,
-                  dtime: data.data.dtime,
-                  location: data.data.location.toLowerCase(),
-                  date: data.data.date,
-                  ddate: data.data.ddate,
+                  time: data.time,
+                  dtime: data.dtime,
+                  location: data.location.toLowerCase(),
+                  date: data.date,
+                  ddate: data.ddate,
                 };
                 res.status(200).json(resp);
             })
@@ -95,14 +95,37 @@ const getTempData = async(req, res) => {
     }
 }
 
+//utills
+class changeTime{
+  constructor(time) {
+    this.time = "";
+    this.m = parseInt(time.split(":")[0]);
+    this.n = time.split(":")[1];
+    this.m += 3;
+    if(this.m <= 9){this.checkLess(this.m)}else{this.exceeds()}
+  }
+  checkLess(hs){
+    hs = "0" + hs;
+    this.time = hs + ":" + this.n;
+  }
+  exceeds(){
+    if(this.m > 23){
+      this.diff = this.m - 24;
+      this.checkLess(this.diff)
+    }else{
+      this.time = this.m+":"+this.n
+    }
+  }
+}
+
 const bookCar = async(req, res) => {
     if(req.method == "GET"){
         const id = req._parsedUrl.query.split("=")[1];
         let booking = await tempBooking.findById(id)
         if (booking != null) {
           const car = await carModel.findById(booking.carId);
-          const stDt = new Date(booking.data.date + "T" + booking.data.time + "Z");
-          const edDt = new Date(booking.data.ddate + "T" + booking.data.dtime + "Z");
+          const stDt = new Date(booking.date + "T" + booking.time + "Z");
+          const edDt = new Date(booking.ddate + "T" + booking.dtime + "Z");
           let diff = Math.abs(edDt - stDt);
           let data = {};
           let hrs = Math.round(diff / 3.6e6);
@@ -122,10 +145,10 @@ const bookCar = async(req, res) => {
             console.log(booking.service, "service")
             data.brand = car.brand;
             data.location = car.location;
-            data.date = booking.data.date;
-            data.ddate = booking.data.ddate;
-            data.time = booking.data.time;
-            data.dtime = booking.data.dtime;
+            data.date = booking.date;
+            data.ddate = booking.ddate;
+            data.time = booking.time;
+            data.dtime = booking.dtime;
             data.email = "@"+booking.userId.split("@")[0];
             data.service = booking.service;
             data.serviceCharges = booking.service == "Self"
@@ -158,10 +181,10 @@ const bookCar = async(req, res) => {
           if (booking != null) {
             const car = await carModel.findById(booking.carId);
             const stDt = new Date(
-              booking.data.date + "T" + booking.data.time + "Z"
+              booking.date + "T" + booking.time + "Z"
             );
             const edDt = new Date(
-              booking.data.ddate + "T" + booking.data.dtime + "Z"
+              booking.ddate + "T" + booking.dtime + "Z"
             );
             let diff = Math.abs(edDt - stDt);
             let data = {};
@@ -169,20 +192,16 @@ const bookCar = async(req, res) => {
             let hrlyCharges = parseInt(car.amount) / 24;
             let totalAmount = Math.round(hrlyCharges * hrs);
             let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
-            const m = booking.data.dtime.split(":")[0],
-              n = booking.data.dtime.split(":")[1];
-            const extTime =
-              parseInt(m) + 3 > 10 ? parseInt(m) + 3 : "0" + (parseInt(m) + 3);
-              
+            let timeObj = new changeTime(booking.dtime);
             const newBooking = new bookingModel({
-              time: booking.data.time,
-              dtime: extTime +":" + n,
+              time: booking.time,
+              dtime: timeObj.time,
               userId: body.email,
               service : booking.service,
               carId: car._id,
               price: totalAmount + gst,
-              startDate: booking.data.date,
-              dropDate: booking.data.ddate,
+              startDate: booking.date,
+              dropDate: booking.ddate,
             });
             await tempBooking.findOneAndDelete({ carId: car._id });
             await newBooking.save().then(async () => {
@@ -199,19 +218,19 @@ const bookCar = async(req, res) => {
                     </br> 
                       <div>
                         <b style="display: inline-block;">Booking date:</b> <p>${
-                          booking.data.date
+                          booking.date
                         }</p> 
                       </div>
                     </br>
                       <div>
                         <b style="display: inline-block;">Drop date:</b> <p>${
-                          booking.data.ddate
+                          booking.ddate
                         }</p>
                       </div>
                     </br> 
                       <div>
                         <b style="display: inline-block;">Booking time:</b> <p>${
-                          booking.data.time
+                          booking.time
                         }</p> 
                       </div>
                     </br> 

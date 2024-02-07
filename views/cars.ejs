@@ -314,23 +314,23 @@
                     d[s.name] = s.value
                 });
                 console.log(d)
-                // fetch("/booking/confirmBooking", {
-                //     method: 'POST',
-                //     headers: {
-                //     'Accept': 'application/json',
-                //     'token': token,
-                //     'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify(d)
-                // }).then(res => res.json().then(data => {
-                //     if(res.status == 400){
-                //         sessionStorage.setItem("sessionToken", data.sid);
-                //         window.location.href = `/auth/register`
-                //     }
-                //     else{
-                //         window.location.href = `/booking/book?id=${data.msg}`
-                //     }
-                // }))
+                fetch("/booking/confirmBooking", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'token': token,
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d)
+                }).then(res => res.json().then(data => {
+                    if(res.status == 400){
+                        sessionStorage.setItem("sessionToken", data.sid);
+                        window.location.href = `/auth/register`
+                    }
+                    else{
+                        window.location.href = `/booking/book?id=${data.msg}`
+                    }
+                }))
             }else{
                 sessionStorage.setItem("service", "<%- service %>")
                 sessionStorage.setItem("place", "<%- city %>")

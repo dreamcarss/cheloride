@@ -30,7 +30,8 @@
                 <th class="th">Pickup Date</th>
                 <th class="th">Drop Date</th>
                 <th class="th">Pickup Time</th>
-                <th class="th">Drop Time</th>
+                <th class="th">Drop Time (Actual)</th>
+                <th class="th">Drop Time (incld servicing)</th>
                 <th class="th">Amount</th>
                 <th class="th">Payment Status</th>
                 <th class="th">Booking Status</th>
@@ -69,10 +70,11 @@
                 "startDate": inp[3].value, 
                 "dropDate": inp[4].value, 
                 "time": inp[5].value, 
-                "dtime": inp[6].value, 
-                "paymentStatus": inp[8].value, 
-                "bookingStatus": inp[9].value == "Expired" ? false : true, 
+                "dtime": inp[7].value, 
+                "paymentStatus": inp[9].value, 
+                "bookingStatus": inp[10].value == "Expired" ? false : true, 
             }
+            console.log(body)
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
                 headers: {
@@ -105,7 +107,7 @@
         }).then(res => res.json().then(data => {
             document.getElementById("tbook").textContent = data.length;
             data.forEach((booking, i) => {
-                console.log(booking.time)
+                const expTime = time => (time.slice(0, 2) - 3 + 24) % 24 + time.slice(2)
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 let elem = `<td class="td">${i+1}</td>
@@ -115,6 +117,7 @@
                                 <td class="td"><input class="inp" value="${booking.startDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.dropDate}" type="date" /></td>
                                 <td class="td"><input class="inp" value="${booking.time}" type="time" /></td>
+                                <td class="td"><input class="inp" value="${expTime(booking.dtime)}" type="time" disabled/></td>
                                 <td class="td"><input class="inp" value="${booking.dtime}" type="time" /></td>
                                 <td class="td inp">${booking.price}</td>
                                 <td class="td">
