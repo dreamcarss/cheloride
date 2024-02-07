@@ -52,7 +52,11 @@ const getBookings = async (req, res) => {
 const confirmBook = async(req, res) => {
     try {
         const newTempBooking = new tempBooking({
-          data: req.body.data,
+          date: req.body.date,
+          time: req.body.time,
+          dtime: req.body.dtime,
+          ddate: req.body.ddate,
+          location: req.body.location,
           carId: req.body.carid,
           service: req.body.service,
           userId: req.body.email,

@@ -112,14 +112,17 @@
                 formD['time'].max = "22:00";
                 formD['time'].removeAttribute("min")
             }
-            formD['time'].disabled = false
+            formD['time'].disabled = false;
+            formD['time'].focus();
         })
 
         formD['time'].addEventListener("change", () => {
-            formD['ddate'].disabled = false
+            formD['ddate'].disabled = false;
+            formD['ddate'].focus();
         })
         formD['ddate'].addEventListener("change", () => {
-            formD['dtime'].disabled = false
+            formD['dtime'].disabled = false;
+            formD['dtime'].focus();
         })
         //same
         form['ddate'].addEventListener("focusout", () => {
@@ -306,28 +309,28 @@
             if(token){
                 const id = document.getElementById("idbtn") || document.getElementsByClassName(i)[0]
                 const subs = document.querySelectorAll(".wsub");
-                const data = {};
+                let d = { city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
                 subs.forEach((s) => {
-                    data[s.name] = s.value
+                    d[s.name] = s.value
                 });
-                let d = {data, city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>"|| sessionStorage.getItem("service")}
-                fetch("/booking/confirmBooking", {
-                    method: 'POST',
-                    headers: {
-                    'Accept': 'application/json',
-                    'token': token,
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(d)
-                }).then(res => res.json().then(data => {
-                    if(res.status == 400){
-                        sessionStorage.setItem("sessionToken", data.sid);
-                        window.location.href = `/auth/register`
-                    }
-                    else{
-                        window.location.href = `/booking/book?id=${data.msg}`
-                    }
-                }))
+                console.log(d)
+                // fetch("/booking/confirmBooking", {
+                //     method: 'POST',
+                //     headers: {
+                //     'Accept': 'application/json',
+                //     'token': token,
+                //     'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(d)
+                // }).then(res => res.json().then(data => {
+                //     if(res.status == 400){
+                //         sessionStorage.setItem("sessionToken", data.sid);
+                //         window.location.href = `/auth/register`
+                //     }
+                //     else{
+                //         window.location.href = `/booking/book?id=${data.msg}`
+                //     }
+                // }))
             }else{
                 sessionStorage.setItem("service", "<%- service %>")
                 sessionStorage.setItem("place", "<%- city %>")
