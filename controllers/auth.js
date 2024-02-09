@@ -138,5 +138,19 @@ const verifyLink = async(req, res) => {
     }
 }
 
+const userData = async(req, res) => {
+    try {
+        let email =  jwt.decode(req.headers.token, SALT);
+        const user = await userModel.findOne({email});
+        if(user != null){
+            res.status(200).json({ name: user.username });
+        }else{
+            res.status(400).json({"name": "none"})
+        }
+    } catch (error) {
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    }
+}
 
-module.exports = { login, register, checkMail, verifyLink };
+
+module.exports = { login, register, checkMail, verifyLink, userData };

@@ -188,7 +188,6 @@
                         document.getElementById("search").style.display = "flex";
                         let diff = data?.diff;
                         data?.cars.forEach((car, i) => {
-                            console.log(car)
                             const newCar = document.createElement("div");
                             newCar.classList.add("carcard");
                             // newCar.onclick = () => showPopup(i)
@@ -313,7 +312,6 @@
                 subs.forEach((s) => {
                     d[s.name] = s.value
                 });
-                console.log(d)
                 fetch("/booking/confirmBooking", {
                     method: 'POST',
                     headers: {

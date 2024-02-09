@@ -361,19 +361,24 @@
 .footer .title{
     font-size: 30px;
     text-align: left;
+    width: 100%;
 }
 
 .footer .sub{
     font-size: 12px;
     margin-top: 5px;
     text-align: left;
-    /* width: 30%; */
+    width: 260px;
     font-family: "Poppins";
 }
 
 .footer a.sub{
     color: rgb(178, 178, 255);
     text-decoration: none;
+}
+
+.footer .sub.mt{
+    margin-top: 40px;
 }
 
 .dgr{
@@ -406,6 +411,12 @@
     }
     .footer{
         grid-template-columns: repeat(1, 1fr);
+    }
+    .footer div{
+        flex-direction: column;
+    }
+    .footer .sub.mt {
+        margin-top: 0;
     }
     .mb-none{
         display: none;

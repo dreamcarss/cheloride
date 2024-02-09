@@ -142,7 +142,6 @@
                 if(data.data.length > 0){
                     document.getElementById("tbook").textContent = data.data.length
                     data.data.map((user, i) => {
-                        console.log(user.idproof)
                         let newRow = document.createElement("tr");
                         newRow.classList.add("row");
                         // All possible roles

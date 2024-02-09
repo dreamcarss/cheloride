@@ -12,6 +12,7 @@ const carSchema = mongoose.Schema({
   place: { type: String, required: true },
   luggage: { type: String, required: true },
   mileage: { type: String, required: true },
+  quantity: { type: Number, default: 1 },
   fueltype: { type: String, default: "petrol" },
 });
 

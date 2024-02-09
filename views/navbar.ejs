@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="../static/css/navbar.css">
 </head>
 <body>
+    <a class="floating contact">
+        contact us
+    </a>
     <div class="navbar">
         <a href="/" class="logo">Chelo Ride</a>
         <div class="links lcont">
@@ -27,11 +30,13 @@
                 <p>Chelo Ride</p>
                 <ion-icon name="close-outline" id="close"></ion-icon>
             </div>
+            <p class="link" style="font-family: poppins;font-size: 12px;color: #e8a22d;" id="uname"></p>
             <div class="links lcont">
                 <a href="/" class="link">Home</a>
-                <a href="/" class="link">About</a>
-                <a href="/" class="link">Bullitens</a>
+                <a href="/#about" class="link">About</a>
+                <a href="/#banners" class="link">Bullitens</a>
                 <a href="/booking" class="link bookings">Booking</a>
+                <a class="link contact">Contact Us</a>
             </div>
             <div class="links lg">
                 <a class="link ln">Login</a>
@@ -47,6 +52,20 @@
         const open = document.getElementById("ico");
         const close = document.getElementById("close");
         const menu = document.getElementsByClassName("sidemenu")[0];
+        const cbtns = document.querySelectorAll(".contact");
+
+        cbtns.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                var ua = navigator.userAgent.toLowerCase();
+                var isAndroid = ua.indexOf("android") > -1;
+
+                if(isAndroid) {
+                    window.location.href = 'tel:8919617664';
+                } else {
+                    window.location.href = 'mailto:dreamcarsvizag@gmail.com';
+                }
+            });
+        })
 
         const token = window.localStorage.getItem("token");
         if(token == null || token == undefined){
@@ -58,6 +77,15 @@
                 booking.style.display = "none"
             })
         }else{
+            fetch("/auth/username", {
+                headers: {
+                    token: token
+                }
+            }).then((res) => res.json().then((data) => {
+                if(res.status == 200){
+                    document.getElementById("uname").textContent = "Hi " + data.name + "!"
+                }
+            }))
             lns.forEach(ln => {
                 ln.textContent = "Logout";
                 ln.onclick = () => {

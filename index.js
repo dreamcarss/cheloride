@@ -212,18 +212,13 @@ app.post("/cars", async(req, res) => {
 app.get("/adminlogin", (req, res) => {
   res.render("adminlogin.ejs")
 })
-
-
-
 app.use((req, res, next) => {
   res.render("400.ejs", {t:404, sub: "Not Found"})
 })
 
-//run daily funcs
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
-    // autoDelete();
     app.listen(PORT, () => {
       console.log("server started");
       console.log(`http://localhost:${PORT}/`)

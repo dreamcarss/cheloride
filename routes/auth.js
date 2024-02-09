@@ -17,5 +17,7 @@ authRoutes.post("/checkMail", authFuncs.checkMail);
 authRoutes.get("/forgetPassword", authFuncs.verifyLink);
 authRoutes.post("/forgetPassword", authFuncs.verifyLink);
 
+authRoutes.get("/username", authFuncs.userData);
+
 
 module.exports = authRoutes;
