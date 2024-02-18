@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const cloudinary = require("cloudinary").v2;
+const bookingModel = require("../models/booking");
+const carModel = require("../models/carModel");
 
 async function handleUpload(req, res) {
   let file = req.body.file;
@@ -76,4 +78,51 @@ const deleteUser = async(req, res) => {
   }
 }
 
-module.exports = { getUsers, updateRole, deleteUser, handleUpload };
+function remDups(array) {
+  return [...new Set(array)];
+}
+
+const executive_data = async (req, res) => {
+  try {
+    const users = await userModel.find({ role: "Executive" });
+    const allCars = await carModel.find();
+    const data = [];
+    if (users.length > 0) {
+      try {
+        await Promise.all(
+          users.map(async (user) => {
+            const obj = {};
+            obj.username = user.username;
+            let cars = {};
+            allCars.forEach((car) => {
+              cars[car.brand] = 0; // Initialize all car counts to 0
+            });
+            const bookings = await bookingModel.find({ userId: user.email });
+            obj.bookingcount = bookings.length;
+            await Promise.all(
+              bookings.map(async (booking) => {
+                const car = await carModel.findById(booking.carId);
+                cars[car.brand] = (cars[car.brand] || 0) + 1;
+              })
+            );
+            obj.cars = Object.keys(cars).map((brand) => ({
+              carname: brand,
+              count: cars[brand],
+            }));
+            data.push(obj);
+          })
+        );
+        res.status(200).json({"data": data})
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  } catch (error) {
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+  }
+};
+
+
+
+
+module.exports = { getUsers, updateRole, deleteUser, handleUpload, executive_data };

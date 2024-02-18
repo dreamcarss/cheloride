@@ -9,7 +9,7 @@ const authMiddleware = async(req, res, next) => {
   try {
     const token = req.headers?.token;
     let status = req.body;
-    const email = jwt.decode(token);
+    const email = jwt.decode(token, SALT);
     if (email != null) {
       await userModel.findOne({ email: email }).then(async (user) => {
         req.body.email = email;

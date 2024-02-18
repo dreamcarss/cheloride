@@ -107,7 +107,15 @@
         }).then(res => res.json().then(data => {
             document.getElementById("tbook").textContent = data.length;
             data.forEach((booking, i) => {
-                const expTime = time => (time.slice(0, 2) - 3 + 24) % 24 + time.slice(2)
+                const expTime = (time) => {
+                    let t = (time.slice(0, 2) - 3 + 24) % 24 + time.slice(2);
+                    let hrs = t.split(":")[0];
+                    let mins = t.split(":")[1];
+                    if(hrs < 10){
+                        hrs = "0" + hrs;
+                    }
+                    return hrs+":"+mins
+                };
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 let elem = `<td class="td">${i+1}</td>
@@ -155,34 +163,6 @@
                 });
             }
 
-        // btn.addEventListener("click", async(e) => {
-        //     e.preventDefault();
-        //     const brand = form["brand"].value;
-        //     const desc = form["desc"].value;
-        //     const upload = form["upload"];
-        //     const gear = form["gear"].value;
-        //     const fuel = form["fuel"].value;
-        //     const luggage = form["luggage"].value;
-        //     const seating = form["seating"].value;
-        //     const mileage = form["mileage"].value;
-        //     const location = form["location"].value;
-        //     let data = {
-        //         brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating
-        //     }
-        //     const resp = await fetch('/admin/uploadCar', {
-        //         method: 'POST',
-        //         headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify(data)
-        //     });
-        //     const content = await resp.json();
-        // })
-
-        // close.addEventListener("click", () => {
-        //     popup.style.display = "none";
-        // })
     </script>
 </body>
 </html>

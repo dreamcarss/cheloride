@@ -27,7 +27,7 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Pickup Time</h6>
-                    <input type="time" name="time" id="time"  min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="time" id="time"  min="4:59" max="22:01" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Date</h6>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Time</h6>
-                    <input type="time" name="dtime" id="dtime" min="9:00" max="22:00" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="dtime" id="dtime" min="4:59" max="22:01" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
                     <button type="submit" class="bbtn idbtn sbt" id="searchbt" name="searchbt">
@@ -104,12 +104,12 @@
                     minutes = '0' + minutes;
                 }
                 formD['time'].min = hours + ':' + minutes;
-                if(formD['time'].min > "22:00"){
+                if(formD['time'].min > "22:01"){
                     formD['time'].max = hours + ':' + minutes;
                 }
             }else{
-                formD['time'].min = "09:00";
-                formD['time'].max = "22:00";
+                formD['time'].min = "04:59";
+                formD['time'].max = "22:01";
                 formD['time'].removeAttribute("min")
             }
             formD['time'].disabled = false;
@@ -151,7 +151,7 @@
             formD['ddate'].value != "" &&
             formD['time'].value != "" &&
             formD['dtime'].value != ""){
-                if(formD['time'].value > "09:00" && formD['dtime'].value > "09:00"){
+                if(formD['time'].value > "04:59" && formD['dtime'].value > "04:59"){
                     document.getElementById("load").style.display = "flex";
                     document.getElementById("searchbt").setAttribute("disabled", true);
                     document.getElementById("search").style.display = "none";

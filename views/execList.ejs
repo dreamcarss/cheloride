@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./meta.ejs') %>
+
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
+</head>
+<body>
+    <%- include('./adminNavbar.ejs') %>
+    <div class="container">
+        <div class="title">
+            <p>Executive Bookings</p>
+        </div>
+        <table class="tab" id="bookingTable">
+            <tr class="row">
+                <th class="th wd" style="background: transparent;">Executives/Cars</th>
+            </tr>
+        </table>
+    </div>
+    <script>
+        fetch("/adminpanel/executives/data", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+            },
+        }).then((res) => res.json().then(info => {
+            let data = info.data;
+            const table = document.getElementById('bookingTable');
+            const carBrands = data[0].cars;
+            const headerRow = table.rows[0];
+            carBrands.forEach(brand => {
+                const th = document.createElement('th');
+                th.className = 'th wd';
+                th.textContent = brand.carname;
+                headerRow.appendChild(th);
+            });
+            const totalTh = document.createElement('th');
+            totalTh.className = 'th wd';
+            totalTh.textContent = 'Total Bookings';
+            headerRow.appendChild(totalTh);
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'row';
+                const th = document.createElement('th');
+                th.className = 'th wd';
+                th.textContent = item.username;
+                tr.appendChild(th);
+                item.cars.forEach(car => {
+                    const td = document.createElement('td');
+                    td.className = 'td';
+                    td.style.fontFamily = "Integral";
+                    td.style.fontSize = "16px"
+                    if(car.count > 0){
+                        td.style.color = "#fff"
+                    }else{
+                        td.style.color = "#323232"
+                    }
+                    td.textContent = car.count;
+                    tr.appendChild(td);
+                });
+                const totalTd = document.createElement('td');
+                totalTd.className = 'td';
+                totalTd.className = 'td';
+                totalTd.style.fontFamily = "Integral";
+                totalTd.style.fontSize = "16px";
+                totalTd.style.color = "lime"
+                totalTd.textContent = item.bookingcount;
+                tr.appendChild(totalTd);
+                table.appendChild(tr);
+            });
+        }))
+    </script>
+</body>
+
+</html>
