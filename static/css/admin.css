@@ -169,10 +169,13 @@ td {
     font-size: 12px;
     font-weight: 300;
     text-align: center;
+    padding: 5px;
+    width: max-content;
+    height: max-content;
 }
 
 .tab .row .td button{
-    margin-right: 10px;
+    margin-top: 10px;
 }
 
 .tab .row .td .del.upd{

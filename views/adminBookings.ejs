@@ -62,7 +62,6 @@
             const id = document.getElementsByClassName("upd")[i].classList[2];
             const row = document.getElementsByClassName("row")[i+1];
             const inp = row.querySelectorAll(".inp");
-            console.log(inp)
             let body = {
                 "bookingId": id,
                 "carId": inp[0].textContent, 
@@ -72,9 +71,8 @@
                 "time": inp[5].value, 
                 "dtime": inp[7].value, 
                 "paymentStatus": inp[9].value, 
-                "bookingStatus": inp[10].value == "Expired" ? false : true, 
+                "bookingStatus": inp[10].value, 
             }
-            console.log(body)
             fetch("/booking/updateStatus", {
                 method: 'PATCH',
                 headers: {

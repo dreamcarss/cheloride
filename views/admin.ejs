@@ -24,12 +24,13 @@
         <table class="tab">
             <tr class="row">
                 <th class="th">Sno</th>
-                <th class="th">ID</th>
+                <th class="th">Id</th>
+                <th class="th">Image</th>
                 <th class="th">Name</th>
                 <th class="th" style="width: 200px;">Description</th>
                 <th class="th">gear type</th>
                 <th class="th">Fuel Capacity</th>
-                <th class="th">Seating Capacity</th>
+                <th class="th">Seating</th>
                 <th class="th">Luggage Capacity</th>
                 <th class="th">Mileage</th>
                 <th class="th">Location</th>
@@ -67,6 +68,43 @@
         const popup = document.getElementsByClassName("popup")[0];
         const table = document.getElementsByClassName("tab")[0];
 
+        const update = (i) => {
+            const card = document.querySelectorAll(".row")[i+1];
+            const inps = card.querySelectorAll(".inpt");
+            const id = card.getElementsByClassName(`id${i}`)[0].textContent;
+            const body = { 
+                brand: inps[0].value, 
+                desc: inps[1].value, 
+                gear: inps[2].value, 
+                fuel:inps[3].value, 
+                seating:inps[4].value, 
+                luggage:inps[5].value, 
+                mileage:inps[6].value, 
+                location: inps[7].value, 
+                fueltype:inps[8].value, 
+                amount: inps[9].value, 
+            }
+            fetch(`/admin/updateCar/${id}`, {
+                method: 'PATCH',
+                headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => res.json().then((data) => {
+                const msg = document.createElement("div");
+                const body = document.getElementsByTagName("body")[0];
+                msg.classList.add("msg");
+                msg.textContent = data.msg;
+                body.appendChild(msg);
+                setTimeout(() => {
+                    body.removeChild(msg)
+                    window.location.href = "/adminpanel"
+                }, 500);
+            }))
+        }
+
         fetch("/admin/allCarsAdmin", {
             headers: {
                 "token": localStorage.getItem("token")
@@ -79,22 +117,29 @@
             data?.cars.forEach((car, i) => {
                 const row = document.createElement("tr");
                 row.classList.add("row");
+                row.classList.add(i);
                 let elem = `<td class="td">${i+1}</td>
-                                <td class="td">${car._id}</td>
-                                <td class="td">${car.brand}</td>
-                                <td class="td">${car.desc}</td>
-                                <td class="td">${car.geartype}</td>
-                                <td class="td">${car.fuelcap}</td>
-                                <td class="td">${car.seating}</td>
-                                <td class="td">${car.luggage}</td>
-                                <td class="td">${car.mileage}</td>
-                                <td class="td">${car.location}</td>
-                                <td class="td">${car.fueltype}</td>
-                                <td class="td">${car.amount}</td>
-                                <td class="td">
-                                    <button class="del upd ${car._id}" onclick="showModal(${i})">Update</button>
-                                    <button class="del ${car._id}" onclick="showModal(${i})">Delete</button>
-                                </td>`;
+                            <td class="td id${i}">${car._id}</td>
+                            <td class="td">
+                                <button class="del upd">
+                                    <a href="${car.image}" style="color: white; text-decoration: none">Show</a>
+                                </button>    
+                                <input type="file" class="none" id="aadhaar${i}" name="aadhaar${i}" onchange="uploadHandler(this, ${i})" /><label for="aadhaar${i}" style="margin-top:10px; display:block" class="del updt">Upload</label>
+                            </td>
+                            <td class="td"><input class="inpt" value="${car.brand}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><textarea class="inpt" style="background:transparent; width:100%; height: 100%; border:none; color: white; font-family: poppins; text-align:center; font-size: 12px">${car.desc}</textarea></td>
+                            <td class="td"><input class="inpt" value="${car.geartype}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.fuelcap}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.seating}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.luggage}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.mileage}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.location}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.fueltype}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.amount}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td">
+                                <button class="del upd ${car._id}" onclick="update(${i})">Update</button>
+                                <button class="del ${car._id}" onclick="showModal(${i})">Delete</button>
+                            </td>`;
                 row.innerHTML = elem;
                 table.appendChild(row);
             })
@@ -172,6 +217,32 @@
                     'token': window.localStorage.getItem("token")
                 }
             }).then(res => res.json().then(data => {
+                window.location.href = "/adminpanel"
+            }))
+        }
+
+        const uploadHandler = async(e, i ) => {
+            const card = document.querySelectorAll(".row")[i+1];
+            const id = card.getElementsByClassName(`id${i}`)[0].textContent;
+            let file = new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(e["files"][0]);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+            let body = {
+                "file": await file,
+            }
+
+            fetch(`/admin/updateImg/${id}`, {
+                method: 'PATCH',
+                headers: {
+                'Accept': 'application/json',
+                'token':window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => res.json().then((data) => {
                 window.location.href = "/adminpanel"
             }))
         }

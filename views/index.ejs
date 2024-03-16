@@ -46,7 +46,24 @@
                 </div>
                 <button type="submit" class="sbt"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Proceed</button>
             </form>
-            <button class="dgr" id="dgr"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
+            <button class="dgr" id="dgr1"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
+        </div>
+        <div class="popup" id="popup2">
+            <h3 class="title" style="color: white; font-size: 30px; margin-bottom:15px;">Taxi Service</h3>
+            <form id="form2" class="form">
+                <div style="display: flex; gap: 20px;">
+                    <div class="wrap">
+                        <label for="" class="lab">Pickup Time</label>
+                        <input type="time" id="time" class="inp time" required>
+                    </div>
+                    <div class="wrap" >
+                        <label for="" class="lab">Location</label>
+                        <input type="text" class="inp" name="service" id="loc" placeholder="Ex: Maddilapalem" required>
+                    </div>
+                </div>
+                <button type="submit" class="sbt" id="sbt2"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Book Now</button>
+            </form>
+            <button class="dgr" id="dgr2"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
         </div>
         <div class="icons">
             <div class="wrap">
@@ -110,23 +127,72 @@
     </div>
     <script>
         const form = document.getElementById("form");
+        const form2 = document.getElementById("form2");
         const btns = document.querySelectorAll(".spp");
 
         btns.forEach((btn, i) => btn.onclick = () => {
             if(i==0){
                 document.getElementById("service").value = "Self"
+                document.getElementById("popup").style.display = "flex";
             }else{
+                document.getElementById("popup2").style.display = "flex";
                 document.getElementById("service").value = "Taxi"
             }
-            document.getElementById("popup").style.display = "flex";
         })
 
-        document.getElementById("dgr").onclick = () => {
+        document.getElementById("dgr1").onclick = () => {
             document.getElementById("popup").style.display = "none";
+        }
+
+        document.getElementById("dgr2").onclick = () => {
+            document.getElementById("popup2").style.display = "none";
         }
 
         form.onsubmit = (e) => {
             form.setAttribute("action", "/cars"); form.setAttribute("method", "post")
+        }
+        
+        window.onload = () => {
+            const date = new Date();
+            const hrs = date.getHours();
+            const mins = date.getMinutes();
+            
+            const sel_time = form2.getElementsByClassName("time")[0];
+            console.log(sel_time)
+            sel_time.setAttribute("min", `${hrs}:${mins}`);
+        }
+        
+        form2.onsubmit = (e) => {
+            e.preventDefault();
+            form2.querySelector("#sbt2").setAttribute("disable", true);
+            const data = {
+                time: form2.querySelector("#time").value,
+                service: form2.querySelector("#loc").value
+            }
+            const token = window.localStorage.getItem("token");
+            fetch("/taxi", {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'token': token
+                },
+                body: JSON.stringify(data)
+            }).then((res) => res.json().then((data) => {
+                const msg = document.createElement("p");
+                msg.setAttribute("id", "msg");
+                form2.querySelector("#sbt2").setAttribute("disable", false);
+                if(res.status == 200){
+                    msg.textContent = data.msg;
+                    document.getElementsByClassName("container")[0].appendChild(msg);
+                    setTimeout(() => {
+                        window.location.href = "/"
+                    }, 2000)
+                }else{
+                    msg.textContent = "Unable to book right now, please try again";
+                    document.getElementsByClassName("container")[0].appendChild(msg);
+                }
+            }))
         }
     </script>
 </body>

@@ -12,6 +12,8 @@ const adminAuth = require("./middlewares/adminauth");
 const { autoDelete } = require("./controllers/booking");
 const sessionModel = require("./models/sessionModel");
 const mail = require("./utils/mailer");
+const userModel = require("./models/userModel");
+const authMiddleware = require("./middlewares/auth");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
@@ -139,6 +141,109 @@ app.post("/join-request", async(req, res) => {
   res.status(200).render("400.ejs", { t: "Join Request", sub: "Join request has been sent, Our executive will contact you shortly mean whil you can check our cars and services" });
 })
 
+app.post("/taxi", authMiddleware, async (req, res) => {
+  const email = req.body.email;
+  const time = req.body.time;
+  const location = req.body.location;
+  const user = await userModel.findOne({email});
+  if(user != null){
+    await mail(
+      "New Taxi Booking",
+      `<html>
+          <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 14px;
+              color: #333333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              border: 1px solid #cccccc;
+            }
+            .header {
+              padding: 20px;
+              text-align: center;
+              background-color: #f0f0f0;
+            }
+            .header img {
+              width: 200px;
+              height: auto;
+            }
+            .content {
+              padding: 20px;
+            }
+            .content h1 {
+              font-size: 24px;
+              font-weight: bold;
+              color: #000000;
+              margin: 0 0 10px 0;
+            }
+            .content p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin: 0 0 10px 0;
+            }
+            .content ul {
+              list-style-type: disc;
+              margin: 0 0 10px 20px;
+              padding: 0;
+            }
+            .content ul li {
+              font-size: 16px;
+              line-height: 1.5;
+              margin: 0 0 5px 0;
+            }
+            .content a {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #00a0e9;
+              color: #ffffff;
+              text-decoration: none;
+              font-weight: bold;
+              border-radius: 5px;
+            }
+            .footer {
+              padding: 20px;
+              text-align: center;
+              background-color: #f0f0f0;
+            }
+            .footer p {
+              font-size: 12px;
+              color: #999999;
+              margin: 0;
+            }
+          </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <img src="logo.png" alt="CheloRide Logo">
+              </div>
+              <div class="content">
+                <h1>Email: ${email},</h1>
+                <p>Phone: ${user.phone}</p>
+                <p>Time: ${time}</p>
+                <p>Location: ${location}</p>
+              </div>
+            </div>
+          </body>
+          </html>
+      `,
+      process.env.MAIL
+    );
+    res
+      .status(200)
+      .json({
+        msg: "Taxi Booked! Your taxi will arrive shortly.",
+      });
+  }
+});
+
 
 function remDups(arr) {
   return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -216,6 +321,8 @@ app.use((req, res, next) => {
   res.render("400.ejs", {t:404, sub: "Not Found"})
 })
 
+const interval = 24 * 60 * 60 * 1000;
+setInterval(autoDelete, interval);
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")

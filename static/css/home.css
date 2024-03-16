@@ -16,6 +16,7 @@
     width: 100%;
     height: max-content;
     background: var(--bg-color);
+    overflow-x: hidden;
 }
 
 .formContainer .rowt .card {
@@ -399,6 +400,28 @@
     align-items: center;
     gap: 10px;
     text-align: center;
+}
+
+#msg{
+    width: max-content;
+    height: max-content;
+    padding: 10px 15px;
+    background: #1b1b1b;
+    border-radius: 10px;
+    position: absolute;
+    top: 55px;
+    right: -10%;
+    color: white;
+    font-family: Poppins;
+    font-size: 12px;
+    animation: slide 1s ease forwards;
+    z-index: 5;
+}
+
+@keyframes slide {
+    to{
+        right: 10px;
+    }
 }
 
 @media only screen and (max-width: 600px){

@@ -158,24 +158,56 @@ const updateCar = async(req, res) => {
   try {
     const id = req.params.id;
     const body = req.body;
-    await userModel.findByIdAndUpdate(id, {
-      brand: body.brand,
-      desc: body.desc,
-      geartype: body.gear,
-      fuelcap: body.fuel,
-      fueltype: body.fueltype,
-      seating: body.seating,
-      location: body.location,
-      luggage: body.luggage,
-      amount: body.amount,
-      mileage: body.mileage,
-      location: body.location,
-    }).then(() => {
-      res.status(200).json({"msg": "Car Updated"})
-    });
+    console.log(id)
+    const car = await carModel.findById(id);
+    if(car != null){
+      console.log(car._id)
+      car.brand = body.brand,
+      car.desc = body.desc,
+      car.geartype = body.gear,
+      car.fuelcap = body.fuel,
+      car.fueltype = body.fueltype,
+      car.seating = body.seating,
+      car.location = body.location,
+      car.luggage = body.luggage,
+      car.amount = body.amount,
+      car.mileage = body.mileage,
+      car.save().then(() => {
+        res.status(200).json({ msg: "Car Updated" });
+      })
+    }else{
+      console.log(car)
+    }
   } catch (error) {
     res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 }
 
-module.exports = { createCars, getALlCars, updateCar, getCar, getALlCarsAdmin, deleteCar };
+
+async function handleUpload(req, res) {
+  let file = req.body.file;
+  let id = req.params.id;
+  let car = await carModel.findById(id);
+  if (car != null) {
+    if (file != null) {
+        const respImg = await cloudinary.uploader.upload(file, {
+          resource_type: "auto",
+        });
+        car.image = respImg.secure_url;
+        car.save();
+        res.status(200).json({ msg: "Image saved" });
+    } else {
+      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    }
+  }
+}
+
+module.exports = {
+  createCars,
+  getALlCars,
+  updateCar,
+  getCar,
+  getALlCarsAdmin,
+  deleteCar,
+  handleUpload,
+};
