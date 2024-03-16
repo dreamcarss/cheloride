@@ -147,6 +147,12 @@ body{
     height: 45px;
 }
 
+.sc{
+    width: 100%;
+    height: max-content;
+    overflow-x: auto;
+}
+
 table {
     border-collapse: collapse;
 }
