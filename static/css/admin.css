@@ -15,6 +15,7 @@
 
 body{
     width: 100%;
+    background: rgb(11, 11, 11);
     overflow-x: hidden;
 }
 
