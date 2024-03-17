@@ -36,6 +36,7 @@
                 <th class="th">Mileage</th>
                 <th class="th">Location</th>
                 <th class="th">Fuel Type</th>
+                <th class="th">Vendor</th>
                 <th class="th">Price</th>
                 <th class="th">Action</th>
             </tr>
@@ -57,6 +58,7 @@
             <input type="text" class="inp" name="location" placeholder="Location">
             <input type="text" class="inp" name="place" placeholder="place">
             <input type="text" class="inp" name="fueltype" placeholder="Fuel Type">
+            <input type="text" class="inp" name="vendor" placeholder="Vendor Email">
             <input type="text" class="inp" name="price" placeholder="Amount">
             <button class="sbt" id="sbt">Submit</button>
         </form>
@@ -84,7 +86,8 @@
                 mileage:inps[6].value, 
                 location: inps[7].value, 
                 fueltype:inps[8].value, 
-                amount: inps[9].value, 
+                vendor:inps[9].value, 
+                amount: inps[10].value, 
             }
             fetch(`/admin/updateCar/${id}`, {
                 method: 'PATCH',
@@ -137,6 +140,7 @@
                             <td class="td"><input class="inpt" value="${car.mileage}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.location}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.fueltype}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.vendor}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.amount}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td">
                                 <button class="del upd ${car._id}" onclick="update(${i})">Update</button>
@@ -171,9 +175,10 @@
             const amount = form["price"].value;
             const location = form["location"].value;
             const place = form["place"].value;
+            const vendor = form["vendor"].value;
             const fueltype = form["fueltype"].value;
             let data = {
-                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype
+                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype, vendor
             }
             await fetch('/admin/uploadCar', {
                 method: 'POST',

@@ -281,7 +281,47 @@ const bookCar = async(req, res) => {
                       </button>
                     </a>
                     `;
-              }
+              };
+              let vendor_mail = car.vendor;
+              await mail(
+                "Booking Placed",
+                `
+                    <div><b style="display: inline-block;">Booking By:</b> <p>${
+                      body.email
+                    }</p></div> 
+                    </br>
+                      <div>
+                        <b style="display: inline-block;">Booking date:</b> <p>${
+                          booking.date
+                        }</p> 
+                      </div>
+                    </br>
+                      <div>
+                        <b style="display: inline-block;">Drop date:</b> <p>${
+                          booking.ddate
+                        }</p>
+                      </div>
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Booking time:</b> <p>${
+                          booking.time
+                        }</p> 
+                      </div>
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Car brand:</b> <p>${
+                          car.brand
+                        }</p> 
+                      </div>
+                      </br> 
+                      <div>
+                        <b style="display: inline-block;">Booking date:</b> <p>${
+                          (car.location, car.place)
+                        }</p> 
+                      </div>
+                      `,
+                vendor_mail
+              );
               await mail("Booking placed", msg, body.email).catch();
               res.status(200).json({ msg: "car booked" });
             });

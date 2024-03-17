@@ -29,6 +29,7 @@ const createCars = async(req, res) => {
           amount: body.amount,
           mileage: body.mileage,
           location: body.location,
+          vendor: body.vendor,
         });
         await newCar.save().then(() => {
           console.log(newCar)
@@ -172,6 +173,7 @@ const updateCar = async(req, res) => {
       car.luggage = body.luggage,
       car.amount = body.amount,
       car.mileage = body.mileage,
+      car.vendor = body.vendor,
       car.save().then(() => {
         res.status(200).json({ msg: "Car Updated" });
       })
