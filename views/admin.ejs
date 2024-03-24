@@ -124,7 +124,7 @@
                 row.classList.add("row");
                 row.classList.add(i);
                 let elem = `<td class="td">${i+1}</td>
-                            <td class="td id${i}">${car._id}</td>
+                            <td class="td id${i}" id="id${i}">${car._id}</td>
                             <td class="td">
                                 <button class="del upd">
                                     <a href="${car.image}" style="color: white; text-decoration: none">Show</a>
@@ -217,7 +217,7 @@
         }
 
         const deleteHandler = (i) => {
-            const id = document.getElementsByClassName("upd")[i].classList[2];
+            const id = document.getElementById(`id${i}`).textContent;
             fetch(`/admin/delete/${id}`, {
                 method: "delete",
                 headers:{
