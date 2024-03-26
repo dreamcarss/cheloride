@@ -169,6 +169,7 @@ const updateCar = async(req, res) => {
       car.fueltype = body.fueltype,
       car.seating = body.seating,
       car.location = body.location,
+      car.place = body.place,
       car.luggage = body.luggage,
       car.amount = body.amount,
       car.mileage = body.mileage,

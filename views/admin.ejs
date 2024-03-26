@@ -35,6 +35,7 @@
                 <th class="th">Luggage Capacity</th>
                 <th class="th">Mileage</th>
                 <th class="th">Location</th>
+                <th class="th">Place</th>
                 <th class="th">Fuel Type</th>
                 <th class="th">Vendor</th>
                 <th class="th">Price</th>
@@ -85,9 +86,10 @@
                 luggage:inps[5].value, 
                 mileage:inps[6].value, 
                 location: inps[7].value, 
-                fueltype:inps[8].value, 
-                vendor:inps[9].value, 
-                amount: inps[10].value, 
+                place: inps[8].value, 
+                fueltype:inps[9].value, 
+                vendor:inps[10].value, 
+                amount: inps[11].value, 
             }
             fetch(`/admin/updateCar/${id}`, {
                 method: 'PATCH',
@@ -139,6 +141,7 @@
                             <td class="td"><input class="inpt" value="${car.luggage}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.mileage}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.location}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
+                            <td class="td"><input class="inpt" value="${car.place}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.fueltype}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.vendor}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
                             <td class="td"><input class="inpt" value="${car.amount}" style="background:transparent; width:100px; border:none; color: white; font-family: poppins; text-align:center" /></td>
