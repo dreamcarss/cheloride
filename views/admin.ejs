@@ -180,6 +180,7 @@
             let data = {
                 brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype, vendor
             }
+            console.log(data)
             await fetch('/admin/uploadCar', {
                 method: 'POST',
                 headers: {
@@ -189,9 +190,9 @@
                 },
                 body: JSON.stringify(data)
             }).then((res) => {
-                if(res.status == 200){
-                    window.location.href = "/adminpanel/"
-                }
+                // if(res.status == 200){
+                //     window.location.href = "/adminpanel/"
+                // }
             });
             
         })

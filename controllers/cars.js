@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary");
 const bookingModel = require("../models/booking.js");
 const userModel = require("../models/userModel.js");
 
-async function handleUpload(file) {
+async function handleFileUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
     resource_type: "auto",
   });
@@ -13,28 +13,27 @@ async function handleUpload(file) {
 
 const createCars = async(req, res) => {
     try {
-        const body = req?.body;
-        console.log(body.place)
-        const newCar = new carModel({
-          brand: body.brand,
-          image: await handleUpload(body.image),
-          desc: body.desc,
-          geartype: body.gear,
-          fuelcap: body.fuel,
-          fueltype: body.fueltype,
-          seating: body.seating,
-          location: body.location.toLowerCase(),
-          place: body.place.toLowerCase(),
-          luggage: body.luggage,
-          amount: body.amount,
-          mileage: body.mileage,
-          location: body.location,
-          vendor: body.vendor,
-        });
-        await newCar.save().then(() => {
-          console.log(newCar)
-            res.status(200).json({msg: "saved"})
-        })
+      const body = req?.body;
+      const newCar = new carModel({
+        brand: body.brand,
+        image: await handleFileUpload(body.image),
+        desc: body.desc,
+        geartype: body.gear,
+        fuelcap: body.fuel,
+        fueltype: body.fueltype,
+        seating: body.seating,
+        location: body.location.toLowerCase(),
+        place: body.place.toLowerCase(),
+        luggage: body.luggage,
+        amount: body.amount,
+        mileage: body.mileage,
+        location: body.location,
+        vendor: body.vendor,
+      });
+      await newCar.save().then(() => {
+        console.log(newCar);
+        res.status(200).json({ msg: "saved" });
+      });
     } catch (error) {
       console.log(error)
         res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
