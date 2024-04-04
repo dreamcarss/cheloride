@@ -293,6 +293,9 @@ td {
     font-family: "Poppins";
     border: none;
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cls{
@@ -370,7 +373,7 @@ td {
     content: "";
     width: 18px;
     height: 18px;
-    background-color:#346dff;
+    background-color:var(--after-col);
     position: absolute;
     border-radius: 50%;
     top: 50%;

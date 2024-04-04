@@ -49,7 +49,8 @@
 
         const deleteHandler = (i) => {
             let modalLoader = document.getElementsByClassName("grn")[0];
-            modalLoader.innerHTML="<div class='circle' />"
+            modalLoader.innerHTML="<div class='circle' />";
+            modalLoader.setAttribute("style", "--after-col: #346dff")
             let card = document.getElementsByClassName("tcard")[i];
             let id = card.getElementsByClassName("sub")[0].textContent.split(":")[1];
             let data = {"trashId":id}

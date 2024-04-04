@@ -38,7 +38,7 @@
                 <th class="th">Place</th>
                 <th class="th">Fuel Type</th>
                 <th class="th">Vendor</th>
-                <th class="th">Price</th>
+                <th class="th">Price per Day</th>
                 <th class="th">Action</th>
             </tr>
         </table>
@@ -60,8 +60,8 @@
             <input type="text" class="inp" name="place" placeholder="place">
             <input type="text" class="inp" name="fueltype" placeholder="Fuel Type">
             <input type="text" class="inp" name="vendor" placeholder="Vendor Email">
-            <input type="text" class="inp" name="price" placeholder="Amount">
-            <button class="sbt" id="sbt">Submit</button>
+            <input type="text" class="inp" name="price" placeholder="Amount per day">
+            <button class="sbt grn" id="sbt">Submit</button>
         </form>
     </div>
 
@@ -167,36 +167,52 @@
 
         form.addEventListener("submit", async(e) => {
             e.preventDefault();
-            const brand = form["brand"].value;
-            const desc = form["desc"].value;
-            const upload = form["upload"];
-            const gear = form["gear"].value;
-            const fuel = form["fuel"].value;
-            const luggage = form["luggage"].value;
-            const seating = form["seating"].value;
-            const mileage = form["mileage"].value;
-            const amount = form["price"].value;
-            const location = form["location"].value;
-            const place = form["place"].value;
-            const vendor = form["vendor"].value;
-            const fueltype = form["fueltype"].value;
-            let data = {
-                brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype, vendor
-            }
-            console.log(data)
-            await fetch('/admin/uploadCar', {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'token':window.localStorage.getItem("token")
-                },
-                body: JSON.stringify(data)
-            }).then((res) => {
-                if(res.status == 200){
-                    window.location.href = "/adminpanel/"
+            let modalLoader = document.getElementsByClassName("grn")[0];
+            modalLoader.innerHTML="<div class='circle' />"
+            modalLoader.setAttribute("style", "--after-col: var(--main-color)")
+            try {
+                const brand = form["brand"].value;
+                const desc = form["desc"].value;
+                const upload = form["upload"];
+                const gear = form["gear"].value;
+                const fuel = form["fuel"].value;
+                const luggage = form["luggage"].value;
+                const seating = form["seating"].value;
+                const mileage = form["mileage"].value;
+                const amount = form["price"].value;
+                const location = form["location"].value;
+                const place = form["place"].value;
+                const vendor = form["vendor"].value;
+                const fueltype = form["fueltype"].value;
+                let data = {
+                    brand, desc, image: await fileCatch(upload), gear, fuel, location, luggage, mileage, seating, amount, place, fueltype, vendor
                 }
-            });
+                console.log(data)
+                await fetch('/admin/uploadCar', {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'token':window.localStorage.getItem("token")
+                    },
+                    body: JSON.stringify(data)
+                }).then((res) => {
+                    modalLoader.innerHTML = "Submit"
+                    if(res.status == 200){
+                        window.location.href = "/adminpanel/"
+                    }
+                }).catch(e => {
+                    modalLoader.innerHTML = "Upload Error";
+                    setTimeout(() => {
+                        modalLoader.innerHTML = "Submit";
+                    }, 2500)
+                });
+            } catch (error) {
+                modalLoader.innerHTML = "Upload Error";
+                setTimeout(() => {
+                    modalLoader.innerHTML = "Submit";
+                }, 2500)
+            }
             
         })
 
