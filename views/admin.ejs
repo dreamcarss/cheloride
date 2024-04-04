@@ -47,7 +47,7 @@
     <div class="popup">
         <p class="title">ADD NEW CAR</p>
         <form class="inner" id="form">
-            <button class="cls" type="button">Close</button>
+            <button class="cls" type="button" onclick="closepop()">Close</button>
             <input type="text" name="brand" class="inp" placeholder="Car brand">
             <input type="text" name="desc" class="inp" placeholder="Car Description">
             <input type="file" name="upload" class="inp" placeholder="upload Image">
@@ -203,9 +203,10 @@
         add.addEventListener("click", () => {
             popup.style.display = "flex";
         })
-        close.addEventListener("click", () => {
+        const closepop = () => {
+            console.log("hi")
             popup.style.display = "none";
-        })
+        }
 
         const showModal = (i) => {
             const modal = document.createElement("div");
