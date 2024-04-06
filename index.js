@@ -42,80 +42,68 @@ app.post("/join-request", async(req, res) => {
   await mail("New Join Request", `<b>${email}</b>`, process.env.MAIL)
   await mail(
     "Request regarding joining CheloRide community",
-    `<html>
+    `<!DOCTYPE html>
+      <html>
         <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            color: #333333;
-            margin: 0;
-            padding: 0;
-          }
-          .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-          }
-          .header {
-            padding: 20px;
-            text-align: center;
-            background-color: #f0f0f0;
-          }
-          .header img {
-            width: 200px;
-            height: auto;
-          }
-          .content {
-            padding: 20px;
-          }
-          .content h1 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #000000;
-            margin: 0 0 10px 0;
-          }
-          .content p {
-            font-size: 16px;
-            line-height: 1.5;
-            margin: 0 0 10px 0;
-          }
-          .content ul {
-            list-style-type: disc;
-            margin: 0 0 10px 20px;
-            padding: 0;
-          }
-          .content ul li {
-            font-size: 16px;
-            line-height: 1.5;
-            margin: 0 0 5px 0;
-          }
-          .content a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #00a0e9;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-          }
-          .footer {
-            padding: 20px;
-            text-align: center;
-            background-color: #f0f0f0;
-          }
-          .footer p {
-            font-size: 12px;
-            color: #999999;
-            margin: 0;
-          }
-        </style>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 14px;
+              color: #333333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              border: 1px solid #cccccc;
+            }
+            .header {
+              padding: 20px;
+              text-align: center;
+              background-color: #f0f0f0;
+            }
+            .content {
+              padding: 20px;
+            }
+            .content h1 {
+              font-size: 24px;
+              font-weight: bold;
+              color: #000000;
+              margin: 0 0 10px 0;
+            }
+            .content p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin: 0 0 10px 0;
+            }
+            .content ul {
+              list-style-type: disc;
+              margin: 0 0 10px 20px;
+              padding: 0;
+            }
+            .content ul li {
+              font-size: 16px;
+              line-height: 1.5;
+              margin: 0 0 5px 0;
+            }
+            .footer {
+              padding: 20px;
+              text-align: center;
+              background-color: #f0f0f0;
+            }
+            .footer p {
+              font-size: 12px;
+              color: #999999;
+              margin: 0;
+            }
+          </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <img src="logo.png" alt="CheloRide Logo">
+              <h1>CheloRide</h1>
             </div>
             <div class="content">
               <h1>Hi ${email},</h1>
@@ -126,17 +114,20 @@ app.post("/join-request", async(req, res) => {
                 <li>List your car for rent and set your own price and availability</li>
                 <li>Browse and book from a variety of cars, from classic to exotic, at affordable rates</li>
               </ul>
-              <p>If you have any questions or need any help, please feel free to contact us at ${process.env.MAIL}. We are always happy to assist you.</p>
+              <p>If you have any questions or need any help, please feel free to contact us at support@cheloride.com. We are always happy to assist you.</p>
               <p>We look forward to seeing you on CheloRide soon!</p>
               <p>Happy driving,</p>
               <p>The CheloRide Team</p>
             </div>
+            <div class="footer">
+              <p>&copy; CheloRide</p>
+            </div>
           </div>
         </body>
-        </html>
+      </html>
     `,
     email
-  )
+  );
   res.status(200).render("400.ejs", { t: "Join Request", sub: "Join request has been sent, Our executive will contact you shortly mean whil you can check our cars and services" });
 })
 
