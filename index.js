@@ -106,16 +106,9 @@ app.post("/join-request", async(req, res) => {
               <h1>CheloRide</h1>
             </div>
             <div class="content">
-              <h1>Hi ${email},</h1>
+              <h1>Hi,</h1>
               <p>Thank you for your interest in joining CheloRide, the car rental community for car lovers. We are thrilled to have you on board!</p>
               <p>CheloRide is a platform where you can share your car with other car enthusiasts and earn money while you do it. You can also rent a car from our community and enjoy the thrill of driving your dream car.</p>
-              <p>As a member of CheloRide, you will be able to:</p>
-              <ul>
-                <li>List your car for rent and set your own price and availability</li>
-                <li>Browse and book from a variety of cars, from classic to exotic, at affordable rates</li>
-              </ul>
-              <p>If you have any questions or need any help, please feel free to contact us at support@cheloride.com. We are always happy to assist you.</p>
-              <p>We look forward to seeing you on CheloRide soon!</p>
               <p>Happy driving,</p>
               <p>The CheloRide Team</p>
             </div>
