@@ -426,10 +426,18 @@ td {
     height: max-content;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
 }
 
 .container.taxi .wrapper-table{
     width: max-content;
 }    
+
+
+@media only screen and (max-width: 600px) {
+    .container.taxi{
+        width: 100%;
+        align-items: flex-start;
+    }
+}
