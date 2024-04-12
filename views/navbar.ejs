@@ -88,6 +88,7 @@
             }))
             lns.forEach(ln => {
                 ln.textContent = "Logout";
+                ln.style.cursor = "pointer"
                 ln.onclick = () => {
                     window.localStorage.clear()
                     window.sessionStorage.clear()

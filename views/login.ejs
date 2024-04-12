@@ -11,7 +11,11 @@
     <%- include('./navbar.ejs') %>
     <div class="container">
         <div class="opWrap"></div>
-        <h3 class="title">CHELORIDE - Login</h3>
+        <h3 class="title">Quick Booking</h3>
+        <div class="form" style="margin-bottom: 10px;">
+            <button class="btn" onclick="window.location.href = '/quickbooking'">Book now</button>
+        </div>
+        <h3 class="title">or</h3>
         <form id="formElm" class="form">
             <div class="wrap">
                 <label for="">Email</label>
@@ -22,13 +26,13 @@
                 <label for="">Password</label>
                 <input type="text" class="inp" name="password">
             </div>
-            <button class="btn" type="submit">Submit</button>
+            <button class="btn" id="submit" type="submit">Submit</button>
             <a href="/auth/register" class="link">Not having an account? Register</a>
             <a href="/auth/checkMail" class="link" style="margin-top:3px ;">Forgot Password?</a>
         </form>
     </div>
     <script>
-        const btn = document.getElementsByClassName("btn")[0]
+        const btn = document.getElementById("submit")
         const msg = document.getElementById("msg")
         const emailElem = document.getElementById("email")
         const formElm = document.getElementById("formElm");

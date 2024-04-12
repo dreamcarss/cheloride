@@ -1,0 +1,30 @@
+2<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./meta.ejs') %>
+
+    <link rel="stylesheet" href="../static/css/register.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <div class="opWrap"></div>
+        <h3 class="title">Quick Booking</h3>
+        <form id="formElm" class="form" action="/quickbook" method="POST">
+            <div class="wrap">
+                <label for="">Name</label>
+                <input type="text" class="inp" name="name" id="email" placeholder="Enter Fullname" required>
+                <p class="msg" id="msg"></p>
+            </div>
+            <div class="wrap">
+                <label for="">Phone</label>
+                <input type="text" class="inp" name="phone" placeholder="Enter your Phone number" required>
+            </div>
+            <button class="btn" id="submit" type="submit">Book now</button>
+            <a href="/auth/register" class="link">Not having an account? Register</a>
+        </form>
+    </div>
+</body>
+</html>

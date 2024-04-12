@@ -39,7 +39,7 @@ app.use("/terms&conditions", (req, res) => res.render("terms.ejs"));
 app.get("/join-us", (req, res) => res.render("join.ejs"));
 app.post("/join-request", async(req, res) => {
   const email = req.body.email;
-  await mail("New Join Request", `<b>${email}</b>`, process.env.MAIL)
+  await mail("New Vendor Join Request", `<b>${email}</b>`, process.env.MAIL)
   await mail(
     "Request regarding joining CheloRide community",
     `<!DOCTYPE html>
@@ -299,10 +299,35 @@ app.post("/cars", async(req, res) => {
 
 app.get("/adminlogin", (req, res) => {
   res.render("adminlogin.ejs")
+});
+
+app.get("/quickbooking", (req, res) => {
+  res.render("quickbooking.ejs")
 })
-app.use((req, res, next) => {
-  res.render("400.ejs", {t:404, sub: "Not Found"})
+
+// app.use((req, res, next) => {
+//   res.render("400.ejs", {t:404, sub: "Not Found"})
+// })
+
+
+app.post("/quickbook", async(req, res) => {
+  const {name, phone} = req.body;
+  try {
+    if(name != null || phone != null){
+      await mail(
+        "Request for QUICK BOOKING",
+        `<b>Name : ${name}</b> <br/> <b> Phone : ${phone}</b>`,
+        process.env.MAIL
+      );
+      res.render("400.ejs", { t: "Quick booking", sub: `Hi ${name}, Request sent successfully, our executive will contact you within few minutes. Thankyou!` });
+    }else{
+      res.render("400.ejs", { t: 400, sub: "Invalid Details" });
+    }
+  } catch (error) {
+    res.render("400.ejs", { t: 500, sub: "Something went wronggg" });
+  }
 })
+
 
 const interval = 24 * 60 * 60 * 1000;
 setInterval(autoDelete, interval);

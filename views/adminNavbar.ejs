@@ -53,6 +53,7 @@
 
         if(token != null){
             link.textContent = "logout"
+            link.style.cursor = "pointer"
             link.onclick = (e) => {
                 e.preventDefault();
                 window.localStorage.removeItem("token");
