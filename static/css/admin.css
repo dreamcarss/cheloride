@@ -161,6 +161,7 @@ table {
 th,
 td {
     border: 1px solid rgba(38, 255, 219, 0.262);
+    padding: 0 10px;
 }
 
 .tab .row .th{
@@ -417,3 +418,18 @@ td {
     justify-content: space-between;
     color: white;
 }
+
+
+
+.container.taxi{    
+    width: max-content;
+    height: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.container.taxi .wrapper-table{
+    width: max-content;
+}    

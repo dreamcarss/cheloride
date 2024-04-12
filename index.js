@@ -338,6 +338,10 @@ setInterval(autoDelete, interval);
 //   );
 // })
 
+app.get("/taxiservices", (req, res) => {
+  res.render("taxi.ejs")
+})
+
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
     app.listen(PORT, () => {
