@@ -49,6 +49,7 @@
         const link = document.getElementById("auth");
         const open = document.getElementById("ico");
         const close = document.getElementById("close");
+        const logout = document.getElementById("auth");
         const menu = document.getElementsByClassName("sidemenu")[0];
 
         if(token != null){
@@ -68,6 +69,15 @@
         }
         close.onclick = () => {
             menu.style.left = "-100%";
+        }
+
+
+
+        logout.onclick = () => {
+            window.localStorage.removeItem("token");
+            setTimeout(() => {
+                window.location.href = "/auth/login"
+            }, 1000)
         }
     </script>
 </body>
