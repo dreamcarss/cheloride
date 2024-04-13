@@ -252,9 +252,9 @@ const bookCar = async(req, res) => {
               let msg;
               const token = newBooking._id;
               if (user.kycStatus) {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ${
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
                   totalAmount + gst
-                }₹</b> 
+                }</b> 
 
                 <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
                       Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
@@ -267,9 +267,9 @@ const bookCar = async(req, res) => {
                 </a>
                 `;
               } else {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ${
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
                   totalAmount + gst
-                }₹</b> 
+                }</b> 
                     <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
                     <ul>
                       <li>Aadhaar Card</li>
@@ -278,7 +278,7 @@ const bookCar = async(req, res) => {
                     </ul>
                     </br>
                     </br>
-                    <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;>
+                    <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
                       Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
                     </a>
                     </br>
