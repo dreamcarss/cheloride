@@ -252,11 +252,11 @@ const bookCar = async(req, res) => {
               let msg;
               const token = newBooking._id;
               if (user.kycStatus) {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ${
                   totalAmount + gst
-                }</p>
+                }₹</b> 
 
-                <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;>
+                <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
                       Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
                     </a>
                 <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
@@ -267,9 +267,9 @@ const bookCar = async(req, res) => {
                 </a>
                 `;
               } else {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
+                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ${
                   totalAmount + gst
-                }</p>
+                }₹</b> 
                     <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
                     <ul>
                       <li>Aadhaar Card</li>
@@ -403,16 +403,37 @@ const autoDelete = async(req, res) => {
   }
 }
 
-const deleteBooking = async(req, res) => {
+const deleteBooking = async (req, res) => {
   try {
     let id = req.params.id;
-    await bookingModel.findByIdAndDelete(id).then(async() => {
-      res.render("400.ejs", {"t": "Booking Canceled", "sub": "Your request for booking cancellation is successfull"})
-    })
+    const booking = await bookingModel.findByIdAndDelete(id);
+
+    if (booking) {
+      const user = await userModel.findOne({ email: booking.userId });
+      if (user) {
+        const mailContent = `
+          <p>Dear ${user.email},</p>
+          <p>Your booking with booking ID ${booking._id} has been canceled successfully.</p>
+          <p>If you have any further questions or concerns, please feel free to contact us.</p>
+          <p>Best regards,</p>
+          <p>Your Car Rental Service</p>
+        `;
+        await mail("Booking Canceled", mailContent, user.email);
+        res.redirect("/");
+      } else {
+        res.redirect("/");
+      }
+    } else {
+      res.redirect("/");
+    }
   } catch (error) {
-    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    console.error(error);
+    res.render("400.ejs", {
+      t: "500",
+      sub: "Server Error",
+    });
   }
-}
+};
 
 module.exports = {
   bookCar,
