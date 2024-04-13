@@ -314,9 +314,6 @@ app.get("/quickbooking", (req, res) => {
   res.render("quickbooking.ejs")
 })
 
-app.use((req, res, next) => {
-  res.render("400.ejs", {t:404, sub: "Not Found"})
-})
 
 
 app.post("/quickbook", async(req, res) => {
@@ -330,6 +327,7 @@ app.post("/quickbook", async(req, res) => {
       );
       res.render("400.ejs", { t: "Quick booking", sub: `Hi ${name}, Request sent successfully, our executive will contact you within few minutes. Thankyou!` });
     }else{
+      console.log(name, phone)
       res.render("400.ejs", { t: 400, sub: "Invalid Details" });
     }
   } catch (error) {
@@ -350,6 +348,11 @@ setInterval(autoDelete, interval);
 app.get("/taxiservices", (req, res) => {
   res.render("taxi.ejs")
 })
+
+
+app.use((req, res, next) => {
+  res.render("400.ejs", { t: 404, sub: "Not Found" });
+});
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
