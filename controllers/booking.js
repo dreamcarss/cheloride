@@ -255,13 +255,17 @@ const bookCar = async(req, res) => {
                 msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
                   totalAmount + gst
                 }</p>
+
+                <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;>
+                      Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
+                    </a>
                 <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
-                <a href="${process.env.DOMAIN}/booking/cancel/${token}">
+                <a href="https://${process.env.DOMAIN}/booking/cancel/${token}">
                   <button>
                     Cancel booking
                   </button>
                 </a>
-                <img style='width:250px; height: auto;' src="../static/assets/map.png"/>`;
+                `;
               } else {
                 msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount:</b> <p>${
                   totalAmount + gst
@@ -270,18 +274,22 @@ const bookCar = async(req, res) => {
                     <ul>
                       <li>Aadhaar Card</li>
                       <li>License Id</li>
-                      <li>Address Proof</li>mo
+                      <li>Address Proof</li>
                     </ul>
                     </br>
                     </br>
+                    <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;>
+                      Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
+                    </a>
                     </br>
                     <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
-                    <a href="${process.env.DOMAIN}/booking/cancel/${token}">
+                    <a href="https://${
+                      process.env.DOMAIN
+                    }/booking/cancel/${token}">
                       <button>
                         Cancel booking
                       </button>
                     </a>
-                    <img style='width:250px; height: auto;' src="../static/assets/map.png"/>
                     `;
               };
               let vendor_mail = car.vendor;
