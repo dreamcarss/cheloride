@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./meta.ejs') %>
+
+    <link rel="stylesheet" href="../static/css/terms.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+        <div class="bg">
+            <a onclick="window.history.go(-1); return false;" style="text-decoration: none;">
+                 <h3 class="title">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                Fee Policy</h3>
+            </a>
+            <div class="ssub">
+
+                <div class="tit">Refundable security deposit</div>
+                No refundable security Deposit
+
+                <div class="tit">Pricing plans and extra Kms charges</div>
+                We offer multiple pricing plans to fit your requirements. Each pricing plan differs in terms of "Time Period". The Trip duration (pickup - drop) for your booking is determined by multiplying the duration of your booking with the hourly, of the pricing plan that you select. Customers are obligated to trip only in our designated localities only. if customer needed to go beyond our geotagged limits just proper information in advance is recommended.
+
+                <div class="tit">Fuel reimbursement</div>
+                Fuel is to be filled by the customer only, company is responsible for providing fuel till reaching the nearest fuel station.
+
+                <div class="tit">Cancellations & Modifications before starting the trip</div>
+                Our flexible modification policy allows you to make modifications depending upon the time remaining before the start of your trip:
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Cancelling the trip</th>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">More than 24 hours before start time</td>
+                            <td>Rs. 500 Cancellation charge. Rest of the amount will be refunded to you</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Between 24 and 3 hours before start time</td>
+                            <td>You will be charged 50% of the base fare estimated and paid. From a minimum of Rs. 500 to a maximum of half of Trip estimation, Rest of the amount will be refunded to you</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Within 3 hours of start time</td>
+                            <td>You will be charged 100% of the estimated and paid fare. From a minimum of Rs. 500 to a maximum of Trip estimation,and also the doorstep delivery charges.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" colspan="2" style="text-align: left;">Changing the start/end time of the trip</th>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">More than 24 hours before start time</td>
+                            <td>
+                                <ul>
+                                    <li>Postponing start time or Preponing end time (Shortening): No refund will be provided</li>
+                                    <li>Preponing start time or Postponing end time (Extension): Rs. 500 plus revised fare for the extended hours</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Between 24 and 3 hours before start time</td>
+                            <td>
+                                <ul>
+                                    <li>Postponing start time or Preponing end time (Shortening): No refund will be provided, initial fare will be charged</li>
+                                    <li>Preponing start time or Postponing end time (Extension): Rs. 500 plus revised fare for the extended hours</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Within 3 hours of start time</td>
+                            <td>
+                                <ul>
+                                    <li>Postponing start time or Preponing end time (Shortening): 100% of fare amount should be paid</li>
+                                    <li>Preponing start time or Postponing end time (Extension): Rs. 500 plus revised fare for the extended hours</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" colspan="3" style="text-align: left;">Car model change</th>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">From low end to high end</td>
+                            <td class="th">From high end to low end</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">24 hrs before trip start time</td>
+                            <td>Just pay the difference in fare modification fee</td>
+                            <td>Additional 500 will be charged according to the fare modified fee</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">From 24 hrs to 3 hrs before trip start time</td>
+                            <td>Just pay the difference in fare modification fee</td>
+                            <td>Additional 500 will be charged according to the fare modified fee</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Location change</th>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">24 hrs before trip start time</td>
+                            <td>Both delivery and pickup location change allowed with the equivalent charges in accordance with distance</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">From 24 hrs to 3 hrs before trip start time</td>
+                            <td>Both delivery and pickup location change allowed free of charge</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <ul>
+                    <li>In cases of multiple modifications, or multiple modifications followed by cancellation, the maximum limit of Rs 5000 will be applied INDIVIDUALLY to the modification/cancellation charge for every modification or cancellation step. This means that the total modification/cancellation charges can become more than Rs 5000, if you modify your booking multiple times</li>
+                    <li>All modifications are subject to availability</li>
+                    <li>Car or Location changes are not allowed within 3 hours of trip start time or after.</li>
+                </ul>
+
+                <div class="tit">Modifications after starting the trip</div>
+                Our trip extension policies are subject to availability and charges are depending upon the time remaining before the end of your trip. You can postpone your trip End Time in order to extend your booking:
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Extension</th>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Before 3 hours of end time</td>
+                            <td>We levy a surcharge of 20% on the fare for the increased hours, over the fare for the extended hours. Min charge Rs. 500<br><br>However, these changes are subject to the availability of the vehicle. In case the vehicle is not available and you still go ahead with the extension, a penalty of Rs 300/hr will be charged (minimum penalty: Rs 50)</td>
+                        </tr>
+                        <tr class="row">
+                            <td class="th">Within 3 hours of end time</td>
+                            <td>
+                                If car is available: Revised fare for the extended hours plus 20% surcharged on revised fare plus a penalty Rs. 500/-<br><br>
+                                If car is NOT available, and you do not return the car in time:<br>
+                                Revised fare for the extended hours plus 20% surcharged on revised fare plus a penalty of Rs. 300/hr (min. of Rs. 500)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <ul>
+                    <li>For any shortening after starting the trip, no charges are refunded.</li>
+                    <li>All extensions, except the forced extensions defined above, will accrue additional kilometres limit based on the extended duration and the pricing plan</li>
+                </ul>
+
+                <div class="tit">Limited liability</div>
+                You will need to pay Damage Fee equivalent to the repair cost (as estimated by an authorized dealership) and downtime losses.<br><br>
+                Please note that the maximum liability policy is intended to benefit and protect the responsible user. In situations of irresponsible or unsafe or negligent usage, there could be discretionary exceptions to this policy, whereby the user could be liable for all damages. Examples of such situation include, but are not limited to:
+
+                <ul>
+                    <li>When the User is not in compliance with the laws and/or with terms of the User Agreement</li>
+                    <li>When the User is found to be under the influence of alcohol/narcotics while driving</li>
+                    <li>When the User is over-speeding (i.e. above prescribed speed limit of road or 90 Kms/Hr, whichever is lower)</li>
+                    <li>When the User is in violation of traffic rules or of the Motor Vehicles Act (for example, if the User has not paid the inter-state tax while crossing a state border)</li>
+                    <li>When the person driving the vehicle at the time of the incident is found to be different than the one who made the booking</li>
+                    <li>When the vehicle workshop and/or insurance company deem the damage to be consequential in nature (this will be clearly stated in the accident report). Consequential damage occurs when the User continues driving the vehicle even when it is performing abnormally</li>
+                    <li>When the number of people in the car at the time of the incident exceed the standard seating capacity of the car</li>
+                    <li>When the incident happened in a state for which the user had failed to pay the inter-state tax while entering the state</li>
+                    <li>When there is misrepresentation of information in the driving license and ID proof details shared by the user</li>
+                    <li>Where there is clear evidence of extremely rash and negligent driving on the user's part</li>
+                </ul>
+
+                In cases where the estimated damage charges exceed the security deposit, we will request the user to pay the same at the time of returning the car. In cases of non-payment, we reserve the right of legal action, reporting to credit bureau and reporting to other authorities or persons, irrespective of their direct relevance to the case.<br><br>
+                In cases of accident, fare for the unused hours will not be refunded.<br><br>
+                Please note: If the user notices any pre-existing issue with the car, which was observed after the car delivery, the user needs to report it within the first 2 hours of car delivery. Any issues reported later will be deemed as having arisen during the user's trip, and relevant damage charges will be charged to the user.<br><br>
+                In cases of collision or User failure, towing and impounding charges will be paid by the User. In cases of vehicle failure, towing and impounding charges will be paid by us.
+
+                <div class="tit">Penalties</div>
+                To deliver a smooth and pleasant experience to all our Users, we need them to follow some basic norms.<br><br>
+                These are simple and easy to follow. Breach of these norms can attract the following penalties:
+
+                <div class="sc">
+                    <table class="tab">
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Driving license & identity proof (Aadhaar card or Passport) not shown at the time of car delivery</th>
+                            <td>The booking will be treated as cancelled. 100% of base fare, plus the doorstep delivery and pickup charges, as applicable, will be charged. Driving license printed on A4 sheet of paper (original or otherwise) will not be considered as a valid document.</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Delay in taking the car delivery from delivery executive</th>
+                            <td>No fee for the first 15 mins of delay (counted from scheduled booking start time). After that, Rs. 50 for every 15 mins of delay</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Traffic/Parking violations</th>
+                            <td>Full payment of fines/late fees, including cases where we receive notification from relevant authorities after the end of booking. Plus Rs. 500 for every 30 days delay in payment</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Over-speeding (above 90 Kms/Hr)</th>
+                            <td>Rs. 750 for the first incident. Rs. 2000 for repeated infraction after warning. Upon repeated over-speeding, we will be compelled to withdraw services from the User</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Loss/non-return of key</th>
+                            <td>Rs. 300, plus replacement cost if the key is not returned within 3 days</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Smoking</th>
+                            <td>Rs. 1000, plus applicable damage costs related to interiors</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Cleaning required (interiors)</th>
+                            <td>Minor cleaning - Rs. 500. Major cleaning - Rs. 1000.</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Vehicle returned to wrong location (i.e., different from the one specified at the time of booking/modification)</th>
+                            <td>Rs. 500 + base fare and late penalty for the additional hours till the vehicle is returned.</td>
+                        </tr>
+                        <tr class="row">
+                            <th class="th" style="text-align: left;">Not fuelling (returning the car at a lower fuel level than what was received)</th>
+                            <td>Rs 500 refuelling service charge + actual fuel cost to get the tank to the same level as what was received.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    </script>
+</body>
+</html>

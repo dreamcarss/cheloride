@@ -45,6 +45,7 @@ app.use("/admin", carRoutes)
 app.use("/adminpanel", adminRoutes);
 app.use("/booking", bookingRouter)
 app.use("/terms&conditions", (req, res) => res.render("terms.ejs"));
+app.use("/privacyPolicy", (req, res) => res.render("privacypolicy.ejs"));
 app.get("/join-us", (req, res) => res.render("join.ejs"));
 app.post("/join-request", async(req, res) => {
   const email = req.body.email;
@@ -348,6 +349,8 @@ setInterval(autoDelete, interval);
 app.get("/taxiservices", (req, res) => {
   res.render("taxi.ejs")
 })
+
+app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
 app.use((req, res, next) => {
