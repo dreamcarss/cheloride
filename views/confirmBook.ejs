@@ -136,36 +136,36 @@
         const bookingHandler = () => {
             if(checkH2.checked && checkH.checked){
                 btn.innerHTML = "<div class='circle'></div>";
-                // btn.setAttribute("disabled", true);
-                // let data = {tempid: id}
-                // fetch("/booking/book", {
-                //     method: 'POST',
-                //     headers: {
-                //     'Accept': 'application/json',
-                //     'token': localStorage.getItem("token"),
-                //     'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify(data)
-                // }).then((res => {
-                //     btn.removeAttribute("disabled")
-                //     res.json().then(data => {
-                //     const msg = document.createElement("div");
-                //     btn.innerHTML = "Checkout"
-                //     msg.classList.add("msg");
-                //     msg.innerHTML = `
-                //     <div class="bgcircle">
-                //     <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
-                //     </div>
-                //     ${data.msg}
-                //     <a href="/booking" style="margin-top: 20px;">
-                //         <button class="btn" style=" font-size: 10px;">Your Bookings</button>
-                //     </a>`;
-                //     document.getElementsByTagName("body")[0].appendChild(msg);
-                //     setTimeout(() => {
-                //         window.location.href = "/booking"
-                //     }, 3000);
-                // }
-                // )}))
+                btn.setAttribute("disabled", true);
+                let data = {tempid: id}
+                fetch("/booking/book", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'token': localStorage.getItem("token"),
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then((res => {
+                    btn.removeAttribute("disabled")
+                    res.json().then(data => {
+                    const msg = document.createElement("div");
+                    btn.innerHTML = "Checkout"
+                    msg.classList.add("msg");
+                    msg.innerHTML = `
+                    <div class="bgcircle">
+                    <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
+                    </div>
+                    ${data.msg}
+                    <a href="/booking" style="margin-top: 20px;">
+                        <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                    </a>`;
+                    document.getElementsByTagName("body")[0].appendChild(msg);
+                    setTimeout(() => {
+                        window.location.href = "/booking"
+                    }, 3000);
+                }
+                )}))
             }else{
                 check.style.border = "2px solid red";
                 check.style.background = "rgba(255, 0, 0, 0.279)";
