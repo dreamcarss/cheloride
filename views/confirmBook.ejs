@@ -78,6 +78,15 @@
                     </div>
                     <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">I accept and agree to the <a class="status" style="color: rgb(110, 110, 255); font-weight: bolder;" href="/terms&conditions">Terms and Conditions</a></h2>
                 </div>
+                <div class="row" style="margin-top:10px;">
+                    <input type="checkbox" id="h2check" name="accept" value="yes" hidden>
+                    <div id="check2">
+                        <div id="checked2">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </div>
+                    </div>
+                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">I accept the <a class="status" style="color: rgb(110, 110, 255); font-weight: bolder;" href="/privacyPolicy">Privacy Policy and Fee Policy</a></h2>
+                </div>
 
                 <h2 class="stit" style="margin-top: 40px; ">Required Documents</h2>
                 <div class="row" style="margin-top: 0;">
@@ -85,7 +94,7 @@
                 </div>
             </div>
             <div class="gt">
-                <button class="btn" onclick="bookingHandler()">Checkout</button>
+                <button class="btn" onclick="bookingHandler()">Pay Now</button>
                 <div class="cnt1">
                     <p class="amt"><%=data.amount %>/-</p>
                     <h2 class="stit">Grand Total</h2>
@@ -99,10 +108,13 @@
         const details = document.getElementsByClassName("details")[0];
         const btn = document.getElementsByClassName("btn")[0];
         const check = document.getElementById("check");
+        const check2 = document.getElementById("check2");
         const checked = document.getElementById("checked");
+        const checked2 = document.getElementById("checked2");
         const checkH = document.getElementById("hcheck");
+        const checkH2 = document.getElementById("h2check");
 
-        window.onload = () => {checkH.checked = false}
+        window.onload = () => {checkH.checked = false; checkH2.checked = false}
 
         check.onclick = () => {
             checkH.click()
@@ -112,43 +124,53 @@
                 checked.classList.add("checked")
             }
         }
+        check2.onclick = () => {
+            checkH2.click()
+            if(checked2.classList.contains("checked")){
+                checked2.classList.remove("checked");
+            }else{
+                checked2.classList.add("checked")
+            }
+        }
 
         const bookingHandler = () => {
-            if(checkH.checked){
+            if(checkH2.checked && checkH.checked){
                 btn.innerHTML = "<div class='circle'></div>";
-                btn.setAttribute("disabled", true);
-                let data = {tempid: id}
-                fetch("/booking/book", {
-                    method: 'POST',
-                    headers: {
-                    'Accept': 'application/json',
-                    'token': localStorage.getItem("token"),
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }).then((res => {
-                    btn.removeAttribute("disabled")
-                    res.json().then(data => {
-                    const msg = document.createElement("div");
-                    btn.innerHTML = "Checkout"
-                    msg.classList.add("msg");
-                    msg.innerHTML = `
-                    <div class="bgcircle">
-                    <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
-                    </div>
-                    ${data.msg}
-                    <a href="/booking" style="margin-top: 20px;">
-                        <button class="btn" style=" font-size: 10px;">Your Bookings</button>
-                    </a>`;
-                    document.getElementsByTagName("body")[0].appendChild(msg);
-                    setTimeout(() => {
-                        window.location.href = "/booking"
-                    }, 3000);
-                }
-                )}))
+                // btn.setAttribute("disabled", true);
+                // let data = {tempid: id}
+                // fetch("/booking/book", {
+                //     method: 'POST',
+                //     headers: {
+                //     'Accept': 'application/json',
+                //     'token': localStorage.getItem("token"),
+                //     'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(data)
+                // }).then((res => {
+                //     btn.removeAttribute("disabled")
+                //     res.json().then(data => {
+                //     const msg = document.createElement("div");
+                //     btn.innerHTML = "Checkout"
+                //     msg.classList.add("msg");
+                //     msg.innerHTML = `
+                //     <div class="bgcircle">
+                //     <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
+                //     </div>
+                //     ${data.msg}
+                //     <a href="/booking" style="margin-top: 20px;">
+                //         <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                //     </a>`;
+                //     document.getElementsByTagName("body")[0].appendChild(msg);
+                //     setTimeout(() => {
+                //         window.location.href = "/booking"
+                //     }, 3000);
+                // }
+                // )}))
             }else{
                 check.style.border = "2px solid red";
                 check.style.background = "rgba(255, 0, 0, 0.279)";
+                check2.style.border = "2px solid red";
+                check2.style.background = "rgba(255, 0, 0, 0.279)";
             }
         }
     </script>
