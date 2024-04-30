@@ -5,6 +5,15 @@ const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken")
 const mail = require("../utils/mailer");
 require("dotenv").config();
+const axios = require("axios");
+const uniqid = require("uniqid");
+const sha256 = require("sha256")
+
+
+const MERCHANTID = "M22Z0RAGALB6X";
+const SALT_INDEX = 1;
+const SALT_KEY = "12f15971-0f45-4b63-89e9-65a6304b886d";
+const URI = " https://api-preprod.phonepe.com/apis/pg-sandbox";
 
 const getAllBookings = async(req, res) => {
     try {
@@ -174,168 +183,212 @@ const bookCar = async(req, res) => {
         }
     }else if(req.method == "POST"){
         try {
-          const body = req.body;
-          console.log(body)
-          const booking = await tempBooking.findById(body.tempid);
-          console.log(booking)
-          if (booking != null) {
-            const car = await carModel.findById(booking.carId);
-            const stDt = new Date(
-              booking.date + "T" + booking.time + "Z"
-            );
-            const edDt = new Date(
-              booking.ddate + "T" + booking.dtime + "Z"
-            );
-            let diff = Math.abs(edDt - stDt);
-            let data = {};
-            let hrs = diff / 3.6e6;
-            let hrlyCharges = parseInt(car.amount) / 24;
-            let totalAmount = Math.round(hrlyCharges * hrs);
-            let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
-            let timeObj = new changeTime(booking.dtime);
-            const newBooking = new bookingModel({
-              time: booking.time,
-              dtime: timeObj.time,
-              userId: body.email,
-              service : booking.service,
-              carId: car._id,
-              price: totalAmount + gst,
-              startDate: booking.date,
-              dropDate: booking.ddate,
-            });
-            await tempBooking.findOneAndDelete({ carId: car._id });
-            await newBooking.save().then(async () => {
-              let html = `
-                    <div><b style="display: inline-block;">Booking By:</b> <p>${
-                      body.email
-                    }</p></div> 
-                    </br>
-                    <div>
-                      <b style="display: inline-block;">User phone:</b> <p>${
-                        body.phone
-                      }</p>
-                    </div> 
-                    </br> 
-                      <div>
-                        <b style="display: inline-block;">Booking date:</b> <p>${
-                          booking.date
-                        }</p> 
-                      </div>
-                    </br>
-                      <div>
-                        <b style="display: inline-block;">Drop date:</b> <p>${
-                          booking.ddate
-                        }</p>
-                      </div>
-                    </br> 
-                      <div>
-                        <b style="display: inline-block;">Booking time:</b> <p>${
-                          booking.time
-                        }</p> 
-                      </div>
-                    </br> 
-                      <div>
-                        <b style="display: inline-block;">Car brand:</b> <p>${
-                          car.brand
-                        }</p> 
-                      </div>
-                    </br> 
-                      <div>
-                      <b style="display: inline-block;">Total Amount:</b> <p>${
-                        totalAmount + gst
-                      }</p> 
-                      </div>
-                      `;
-              let executiveMail = process.env.MAIL;
-              let user = await userModel.findOne({ email: body.email });
-              await mail("New Booking", html, executiveMail).catch();
-              let msg;
-              const token = newBooking._id;
-              if (user.kycStatus) {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
-                  totalAmount + gst
-                }</b> 
+          const endpoint = "/pg/v1/pay";
+          const trId = uniqid();
+          const muid = "232SdR22@13"
+          const payload = {
+            merchantId: MERCHANTID,
+            merchantTransactionId: trId,
+            merchantUserId: muid,
+            amount: 10000,
+            redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
+            redirectMode: "REDIRECT",
+            mobileNumber: "9999999999",
+            paymentInstrument: {
+              type: "PAY_PAGE",
+            },
+          };
 
-                <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
-                      Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
-                    </a>
-                <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
-                <a href="https://${process.env.DOMAIN}/booking/cancel/${token}">
-                  <button>
-                    Cancel booking
-                  </button>
-                </a>
-                `;
-              } else {
-                msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
-                  totalAmount + gst
-                }</b> 
-                    <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
-                    <ul>
-                      <li>Aadhaar Card</li>
-                      <li>License Id</li>
-                      <li>Address Proof</li>
-                    </ul>
-                    </br>
-                    </br>
-                    <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
-                      Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
-                    </a>
-                    </br>
-                    <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
-                    <a href="https://${
-                      process.env.DOMAIN
-                    }/booking/cancel/${token}">
-                      <button>
-                        Cancel booking
-                      </button>
-                    </a>
-                    `;
-              };
-              let vendor_mail = car.vendor;
-              await mail(
-                "Booking Placed",
-                `
-                    <div><b style="display: inline-block;">Booking By:</b> <p>${
-                      body.email
-                    }</p></div> 
-                    </br>
-                      <div>
-                        <b style="display: inline-block;">Booking date:</b> <p>${
-                          booking.date
-                        }</p> 
-                      </div>
-                    </br>
-                      <div>
-                        <b style="display: inline-block;">Drop date:</b> <p>${
-                          booking.ddate
-                        }</p>
-                      </div>
-                    </br> 
-                      <div>
-                        <b style="display: inline-block;">Booking time:</b> <p>${
-                          booking.time
-                        }</p> 
-                      </div>
-                    </br> 
-                      <div>
-                        <b style="display: inline-block;">Car brand:</b> <p>${
-                          car.brand
-                        }</p> 
-                      </div>
-                      </br> 
-                      <div>
-                        <b style="display: inline-block;">Booking date:</b> <p>${
-                          (car.location, car.place)
-                        }</p> 
-                      </div>
-                      `,
-                vendor_mail
-              );
-              await mail("Booking placed", msg, body.email).catch();
-              res.status(200).json({ msg: "car booked" });
+          const buffer = Buffer.from(JSON.stringify(payload), "utf8");
+          const base64Enc = buffer.toString("base64");
+          const xverify = sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
+
+
+
+          const options = {
+            method: "post",
+            url: `${URI}${endpoint}`,
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+              "X-VERIFY" : xverify
+            },
+            data: {
+              request: base64Enc
+            },
+          };
+          axios
+            .request(options)
+            .then(function (response) {
+              console.log(response.data);
+            })
+            .catch(function (error) {
+              console.error(error);
             });
-          }
+
+
+          // const body = req.body;
+          // console.log(body)
+          // const booking = await tempBooking.findById(body.tempid);
+          // console.log(booking)
+          // if (booking != null) {
+          //   const car = await carModel.findById(booking.carId);
+          //   const stDt = new Date(
+          //     booking.date + "T" + booking.time + "Z"
+          //   );
+          //   const edDt = new Date(
+          //     booking.ddate + "T" + booking.dtime + "Z"
+          //   );
+          //   let diff = Math.abs(edDt - stDt);
+          //   let data = {};
+          //   let hrs = diff / 3.6e6;
+          //   let hrlyCharges = parseInt(car.amount) / 24;
+          //   let totalAmount = Math.round(hrlyCharges * hrs);
+          //   let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
+          //   let timeObj = new changeTime(booking.dtime);
+          //   const newBooking = new bookingModel({
+          //     time: booking.time,
+          //     dtime: timeObj.time,
+          //     userId: body.email,
+          //     service : booking.service,
+          //     carId: car._id,
+          //     price: totalAmount + gst,
+          //     startDate: booking.date,
+          //     dropDate: booking.ddate,
+          //   });
+          //   await tempBooking.findOneAndDelete({ carId: car._id });
+          //   await newBooking.save().then(async () => {
+          //     let html = `
+          //           <div><b style="display: inline-block;">Booking By:</b> <p>${
+          //             body.email
+          //           }</p></div> 
+          //           </br>
+          //           <div>
+          //             <b style="display: inline-block;">User phone:</b> <p>${
+          //               body.phone
+          //             }</p>
+          //           </div> 
+          //           </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Booking date:</b> <p>${
+          //                 booking.date
+          //               }</p> 
+          //             </div>
+          //           </br>
+          //             <div>
+          //               <b style="display: inline-block;">Drop date:</b> <p>${
+          //                 booking.ddate
+          //               }</p>
+          //             </div>
+          //           </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Booking time:</b> <p>${
+          //                 booking.time
+          //               }</p> 
+          //             </div>
+          //           </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Car brand:</b> <p>${
+          //                 car.brand
+          //               }</p> 
+          //             </div>
+          //           </br> 
+          //             <div>
+          //             <b style="display: inline-block;">Total Amount:</b> <p>${
+          //               totalAmount + gst
+          //             }</p> 
+          //             </div>
+          //             `;
+          //     let executiveMail = process.env.MAIL;
+          //     let user = await userModel.findOne({ email: body.email });
+          //     await mail("New Booking", html, executiveMail).catch();
+          //     let msg;
+          //     const token = newBooking._id;
+          //     if (user.kycStatus) {
+          //       msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
+          //         totalAmount + gst
+          //       }</b> 
+
+          //       <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
+          //             Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
+          //           </a>
+          //       <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
+          //       <a href="https://${process.env.DOMAIN}/booking/cancel/${token}">
+          //         <button>
+          //           Cancel booking
+          //         </button>
+          //       </a>
+          //       `;
+          //     } else {
+          //       msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
+          //         totalAmount + gst
+          //       }</b> 
+          //           <p>Your KYC is pending, Go to the RK Beach Hub for full kyc registeration. Bring the below given documents xerox copies to the hub.</p>
+          //           <ul>
+          //             <li>Aadhaar Card</li>
+          //             <li>License Id</li>
+          //             <li>Address Proof</li>
+          //           </ul>
+          //           </br>
+          //           </br>
+          //           <a href="https://maps.app.goo.gl/sNiTJBNERFbrtcRQA" style="margin-bottom: 20px;">
+          //             Our Address: RK Beach Rd, Pandurangapuram, Visakhapatnam, Andhra Pradesh 530002
+          //           </a>
+          //           </br>
+          //           <p style="color:red;">If this booking is not booked by you, then please cancel the order</p>
+          //           <a href="https://${
+          //             process.env.DOMAIN
+          //           }/booking/cancel/${token}">
+          //             <button>
+          //               Cancel booking
+          //             </button>
+          //           </a>
+          //           `;
+          //     };
+          //     let vendor_mail = car.vendor;
+          //     await mail(
+          //       "Booking Placed",
+          //       `
+          //           <div><b style="display: inline-block;">Booking By:</b> <p>${
+          //             body.email
+          //           }</p></div> 
+          //           </br>
+          //             <div>
+          //               <b style="display: inline-block;">Booking date:</b> <p>${
+          //                 booking.date
+          //               }</p> 
+          //             </div>
+          //           </br>
+          //             <div>
+          //               <b style="display: inline-block;">Drop date:</b> <p>${
+          //                 booking.ddate
+          //               }</p>
+          //             </div>
+          //           </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Booking time:</b> <p>${
+          //                 booking.time
+          //               }</p> 
+          //             </div>
+          //           </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Car brand:</b> <p>${
+          //                 car.brand
+          //               }</p> 
+          //             </div>
+          //             </br> 
+          //             <div>
+          //               <b style="display: inline-block;">Booking date:</b> <p>${
+          //                 (car.location, car.place)
+          //               }</p> 
+          //             </div>
+          //             `,
+          //       vendor_mail
+          //     );
+          //     await mail("Booking placed", msg, body.email).catch();
+          //     res.status(200).json({ msg: "car booked" });
+          //   });
+          // }
         } catch (error) {
           console.log(error)
         }

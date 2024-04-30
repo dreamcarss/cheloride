@@ -16,6 +16,16 @@ const userModel = require("./models/userModel");
 const authMiddleware = require("./middlewares/auth");
 require("dotenv").config();
 
+const axios = require("axios");
+const uniqid = require("uniqid");
+const sha256 = require("sha256");
+
+const MERCHANTID = "M22Z0RAGALB6X";
+const SALT_INDEX = 1;
+const SALT_KEY = "12f15971-0f45-4b63-89e9-65a6304b886d";
+const URI = "https://api.phonepe.com/apis/hermes";
+
+
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.DB;
 const app = express();
@@ -353,9 +363,83 @@ app.get("/taxiservices", (req, res) => {
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
+app.get("/pay", (req, res) => {
+    const endpoint = "/pg/v1/pay";
+    const trId = uniqid();
+    const muid = "1234";
+    const payload = {
+      merchantId: MERCHANTID,
+      merchantTransactionId: trId,
+      merchantUserId: muid,
+      amount: 100,
+      redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
+      redirectMode: "REDIRECT",
+      mobileNumber: "9999999999",
+      paymentInstrument: {
+        type: "PAY_PAGE",
+      },
+    };
+
+    const buffer = Buffer.from(JSON.stringify(payload), "utf8");
+    const base64Enc = buffer.toString("base64");
+    const xverify =
+      sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
+
+    const options = {
+      method: "post",
+      url: `${URI}${endpoint}`,
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        "X-VERIFY": xverify,
+      },
+      data: {
+        request: base64Enc,
+      },
+    };
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+      })
+      .catch(function (error) {
+        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+      });
+})
+
+app.get("/redirect-url/:id", (req, res) => {
+  const id = req.params.id; 
+  const xverify = sha256(`/pg/v1/status/${MERCHANTID}/${id}` + SALT_KEY) + "###" + SALT_INDEX;
+  if(id){
+    const options = {
+      method: "get",
+      url: `${URI}/pg/v1/status/${MERCHANTID}/${id}`,
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        "X-MERCHANT-ID": id,
+        "X-VERIFY" : xverify
+      },
+    };
+    axios
+      .request(options)
+          .then(function (response) {
+          console.log(response.data);
+          res.send(response.data)
+      })
+      .catch(function (error) {
+        res.send(error);
+      });
+  }else{
+     res.render("400.ejs", { t: 404, sub: "Not Found" });
+  }
+});
+
 app.use((req, res, next) => {
   res.render("400.ejs", { t: 404, sub: "Not Found" });
 });
+
 
 mongoose.connect(DB_URI).then(() => {
     console.log("DB connected")
