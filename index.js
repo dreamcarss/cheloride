@@ -14,16 +14,17 @@ const sessionModel = require("./models/sessionModel");
 const mail = require("./utils/mailer");
 const userModel = require("./models/userModel");
 const authMiddleware = require("./middlewares/auth");
+const crypto = require('crypto')
 require("dotenv").config();
 
 const axios = require("axios");
 const uniqid = require("uniqid");
 const sha256 = require("sha256");
 
-const MERCHANTID = "M22Z0RAGALB6X";
-const SALT_INDEX = 1;
-const SALT_KEY = "12f15971-0f45-4b63-89e9-65a6304b886d";
-const URI = "https://api.phonepe.com/apis/hermes";
+const MERCHANT_ID = process.env.MERCHANTID;
+const SALT_INDEX = process.env.SALT_INDEX;
+const SALT_KEY = process.env.SALT_KEY;
+const URI = process.env.URI;
 
 
 const PORT = process.env.PORT || 4000;
@@ -364,76 +365,64 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
 app.get("/pay", (req, res) => {
-    const endpoint = "/pg/v1/pay";
-    const trId = uniqid();
-    const muid = "1234";
-    const payload = {
-      merchantId: MERCHANTID,
-      merchantTransactionId: trId,
-      merchantUserId: muid,
-      amount: 100,
-      redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
-      redirectMode: "REDIRECT",
-      mobileNumber: "9999999999",
+  try{
+    const user_id = "1234";
+    const merchantTransactionId = "M" + Date.now();
+    const name = "sidhardh";
+    const data = {
+      merchantId: process.env.MERCHANTID,
+      merchantTransactionId: merchantTransactionId,
+      merchantUserId: "MUID" + user_id,
+      name: name,
+      amount: 1 * 100,
+      redirectUrl: `http://localhost:4000/api/v1/status/${merchantTransactionId}`,
+      redirectMode: "POST",
+      mobileNumber: "8765432113",
       paymentInstrument: {
         type: "PAY_PAGE",
       },
     };
-
-    const buffer = Buffer.from(JSON.stringify(payload), "utf8");
-    const base64Enc = buffer.toString("base64");
-    const xverify =
-      sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
-
+    const payload = JSON.stringify(data);
+    const payloadMain = Buffer.from(payload).toString("base64");
+    const keyIndex = 2;
+    const string = payloadMain + "/pg/v1/pay" + process.env.SALT_KEY;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    const checksum = sha256 + "###" + keyIndex;
+    const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
     const options = {
-      method: "post",
-      url: `${URI}${endpoint}`,
+      method: "POST",
+      url: prod_URL,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
-        "X-VERIFY": xverify,
+        "X-VERIFY": checksum,
       },
       data: {
-        request: base64Enc,
+        request: payloadMain,
       },
     };
+
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
-        res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+        console.log(response)
+        return res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
       })
       .catch(function (error) {
-        res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+        console.error(error);
       });
+
+  } catch(e){ 
+    res.status(500).send({
+      message: e.message,
+      success: false,
+    });
+  }
 })
 
 app.get("/redirect-url/:id", (req, res) => {
   const id = req.params.id; 
-  const xverify = sha256(`/pg/v1/status/${MERCHANTID}/${id}` + SALT_KEY) + "###" + SALT_INDEX;
-  if(id){
-    const options = {
-      method: "get",
-      url: `${URI}/pg/v1/status/${MERCHANTID}/${id}`,
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        "X-MERCHANT-ID": id,
-        "X-VERIFY" : xverify
-      },
-    };
-    axios
-      .request(options)
-          .then(function (response) {
-          console.log(response.data);
-          res.send(response.data)
-      })
-      .catch(function (error) {
-        res.send(error);
-      });
-  }else{
-     res.render("400.ejs", { t: 404, sub: "Not Found" });
-  }
+  
 });
 
 app.use((req, res, next) => {
