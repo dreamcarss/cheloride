@@ -366,47 +366,44 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 app.get("/pay", (req, res) => {
   try{
-    const user_id = "1234";
-    const merchantTransactionId = "M" + Date.now();
-    const name = "sidhardh";
-    const data = {
-      merchantId: process.env.MERCHANTID,
-      merchantTransactionId: merchantTransactionId,
-      merchantUserId: "MUID" + user_id,
-      name: name,
-      amount: 1 * 100,
-      redirectUrl: `http://localhost:4000/api/v1/status/${merchantTransactionId}`,
-      redirectMode: "POST",
-      mobileNumber: "8765432113",
+    const endpoint = "/pg/v1/pay";
+    const trId = uniqid();
+    const muid = "232SdR22@13";
+    const payload = {
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: trId,
+      merchantUserId: muid,
+      amount: 10000,
+      redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
+      redirectMode: "REDIRECT",
+      mobileNumber: "9999999999",
       paymentInstrument: {
         type: "PAY_PAGE",
       },
     };
-    const payload = JSON.stringify(data);
-    const payloadMain = Buffer.from(payload).toString("base64");
-    const keyIndex = 2;
-    const string = payloadMain + "/pg/v1/pay" + process.env.SALT_KEY;
-    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
-    const checksum = sha256 + "###" + keyIndex;
-    const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+
+    const buffer = Buffer.from(JSON.stringify(payload), "utf8");
+    const base64Enc = buffer.toString("base64");
+    const xverify =
+      sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
+
     const options = {
-      method: "POST",
-      url: prod_URL,
+      method: "post",
+      url: `${URI}${endpoint}`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
-        "X-VERIFY": checksum,
+        "X-VERIFY": xverify,
       },
       data: {
-        request: payloadMain,
+        request: base64Enc,
       },
     };
-
     axios
       .request(options)
       .then(function (response) {
-        console.log(response)
-        return res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+        res.send(response.data)
+        console.log(response.data);
       })
       .catch(function (error) {
         console.error(error);
