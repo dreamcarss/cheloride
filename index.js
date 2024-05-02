@@ -364,57 +364,48 @@ app.get("/taxiservices", (req, res) => {
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
-app.get("/pay", (req, res) => {
-  try{
-    const endpoint = "/pg/v1/pay";
-    const trId = uniqid();
-    const muid = "232SdR22@13";
-    const payload = {
-      merchantId: MERCHANT_ID,
-      merchantTransactionId: trId,
-      merchantUserId: muid,
-      amount: 10000,
-      redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
-      redirectMode: "REDIRECT",
-      mobileNumber: "9999999999",
-      paymentInstrument: {
-        type: "PAY_PAGE",
-      },
-    };
+app.get("/pay", async(req, res) => {
+  const transactionId = "MT-" + uniqid();
+  const payload = {
+    merchantId: MERCHANT_ID,
+    merchantTransactionId: transactionId,
+    merchantUserId: "MUID123",
+    amount: 100,
+    redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
+    redirectMode: "REDIRECT",
+    callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
+    mobileNumber: "9999999999",
+    paymentInstrument: {
+      type: "PAY_PAGE",
+    },
+  };
+  const dataPayload = JSON.stringify(payload);
+  const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
+  const fullUrl =
+    base64Enc + "/pg/v1/pay" + SALT_KEY;
+  const dataSha = sha256(fullUrl);
+  const checksum = dataSha + "###" + SALT_INDEX;
+  const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
-    const buffer = Buffer.from(JSON.stringify(payload), "utf8");
-    const base64Enc = buffer.toString("base64");
-    const xverify =
-      sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
+  console.log("payload - " + dataPayload);
+  console.log("base-64-enc - " + base64Enc);
+  console.log("sha256 - " + dataSha)
+  console.log("x-verify - " + checksum);
 
-    const options = {
-      method: "post",
-      url: `${URI}${endpoint}`,
-      headers: {
+  const response = await axios.post(
+    URI_PAY, 
+    {
+      request: base64Enc
+    }, 
+    {
+      headers:{
         accept: "application/json",
         "Content-Type": "application/json",
-        "X-VERIFY": xverify,
-      },
-      data: {
-        request: base64Enc,
-      },
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        res.send(response.data)
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-
-  } catch(e){ 
-    res.status(500).send({
-      message: e.message,
-      success: false,
-    });
-  }
+        "X-VERIFY": checksum
+      }
+    }
+  );
+  res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
 })
 
 app.get("/redirect-url/:id", (req, res) => {
