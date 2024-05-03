@@ -377,7 +377,7 @@ app.get("/pay", async(req, res) => {
     mobileNumber: "9999999999",
     paymentInstrument: {
       type: "PAY_PAGE",
-    },
+    }
   };
   const dataPayload = JSON.stringify(payload);
   const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
