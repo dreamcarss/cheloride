@@ -16,6 +16,7 @@ const userModel = require("./models/userModel");
 const authMiddleware = require("./middlewares/auth");
 const crypto = require('crypto')
 require("dotenv").config();
+const stringify = require("json-stringify-safe");
 
 const axios = require("axios");
 const uniqid = require("uniqid");
@@ -363,20 +364,6 @@ app.get("/taxiservices", (req, res) => {
 
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
-function customStringify(obj) {
-  let str = '';
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key];
-      if (typeof value === 'object') {
-        str += `"${key}":${customStringify(value)},`;
-      } else {
-        str += `"${key}":"${value}",`;
-      }
-    }
-  }
-  return `{${str.slice(0, -1)}}`;
-}
 
 app.get("/pay", async(req, res) => {
   try {
@@ -394,7 +381,7 @@ app.get("/pay", async(req, res) => {
          type: "PAY_PAGE",
        },
      };
-     let dataPayload = customStringify(payload);
+     let dataPayload = stringify(payload);
      const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
      console.log(dataPayload)
     //  const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
