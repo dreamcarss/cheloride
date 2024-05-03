@@ -376,39 +376,41 @@ app.get("/pay", async(req, res) => {
        redirectMode: "REDIRECT",
        callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
        mobileNumber: "9999999999",
-       paymentInstrument: {
-         type: "PAY_PAGE",
-       },
+       paymentInstrument: "hi"
      };
+
+    //  {
+    //      type: "PAY_PAGE",
+    //    },
      let dataPayload = JSON.stringify(payload);
      dataPayload = dataPayload.replace(/;$/, "");
      const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
      console.log(dataPayload)
-     const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
-     const dataSha = sha256(fullUrl);
-     const checksum = dataSha + "###" + SALT_INDEX;
+    //  const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
+    //  const dataSha = sha256(fullUrl);
+    //  const checksum = dataSha + "###" + SALT_INDEX;
 
-     const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+    //  const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
-     console.log("payload - " + dataPayload);
-     console.log("base-64-enc - " + base64Enc);
-     console.log("sha256 - " + dataSha);
-     console.log("x-verify - " + checksum);
+    //  console.log("payload - " + dataPayload);
+    //  console.log("base-64-enc - " + base64Enc);
+    //  console.log("sha256 - " + dataSha);
+    //  console.log("x-verify - " + checksum);
 
-     const response = await axios.post(
-       URI_PAY,
-       {
-         request: base64Enc,
-       },
-       {
-         headers: {
-           accept: "application/json",
-           "Content-Type": "application/json",
-           "X-VERIFY": checksum,
-         },
-       }
-     );
-     res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+    //  const response = await axios.post(
+    //    URI_PAY,
+    //    {
+    //      request: base64Enc,
+    //    },
+    //    {
+    //      headers: {
+    //        accept: "application/json",
+    //        "Content-Type": "application/json",
+    //        "X-VERIFY": checksum,
+    //      },
+    //    }
+    //  );
+    //  res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
   } catch (error) {
     console.log(error)
   }
