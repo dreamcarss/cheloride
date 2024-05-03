@@ -380,34 +380,37 @@ app.get("/pay", async(req, res) => {
     },
   };
   const dataPayload = JSON.stringify(payload);
-  const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
-  const fullUrl =
-    base64Enc + "/pg/v1/pay" + SALT_KEY;
-  const dataSha = sha256(fullUrl);
-  const checksum = dataSha + "###" + SALT_INDEX;
+
+  console.log(payload);
+  console.log(dataPayload)
+  // const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
+  // const fullUrl =
+  //   base64Enc + "/pg/v1/pay" + SALT_KEY;
+  // const dataSha = sha256(fullUrl);
+  // const checksum = dataSha + "###" + SALT_INDEX;
 
 
-  const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+  // const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
-  console.log("payload - " + dataPayload);
-  console.log("base-64-enc - " + base64Enc);
-  console.log("sha256 - " + dataSha)
-  console.log("x-verify - " + checksum);
+  // console.log("payload - " + dataPayload);
+  // console.log("base-64-enc - " + base64Enc);
+  // console.log("sha256 - " + dataSha)
+  // console.log("x-verify - " + checksum);
 
-  const response = await axios.post(
-    URI_PAY, 
-    {
-      request: base64Enc
-    }, 
-    {
-      headers:{
-        accept: "application/json",
-        "Content-Type": "application/json",
-        "X-VERIFY": checksum
-      }
-    }
-  );
-  res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+  // const response = await axios.post(
+  //   URI_PAY, 
+  //   {
+  //     request: base64Enc
+  //   }, 
+  //   {
+  //     headers:{
+  //       accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       "X-VERIFY": checksum
+  //     }
+  //   }
+  // );
+  // res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
 })
 
 app.get("/redirect-url/:id", (req, res) => {
