@@ -365,20 +365,19 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
 app.get("/pay", async(req, res) => {
+  let paymentInstrument = {"type": "PAY_PAGE"}
   try {
      const transactionId = "MT-" + uniqid();
      const payload = {
-       merchantId: MERCHANT_ID,
-       merchantTransactionId: transactionId,
-       merchantUserId: "MUID" + uniqid(),
-       amount: 100,
-       redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
-       redirectMode: "REDIRECT",
-       callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
-       mobileNumber: "9999999999",
-       paymentInstrument: {
-         "type": "PAY_PAGE",
-       }
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: transactionId,
+      merchantUserId: "MUID" + uniqid(),
+      amount: 100,
+      redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
+      redirectMode: "REDIRECT",
+      callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
+      mobileNumber: "9999999999",
+      paymentInstrument
      };
 
     //  {
