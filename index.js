@@ -376,7 +376,9 @@ app.get("/pay", async(req, res) => {
        redirectMode: "REDIRECT",
        callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
        mobileNumber: "9999999999",
-       paymentInstrument: "hi"
+       paymentInstrument: {
+         "type": "PAY_PAGE",
+       }
      };
 
     //  {
