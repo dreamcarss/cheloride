@@ -369,7 +369,7 @@ app.get("/pay", async(req, res) => {
   const payload = {
     merchantId: MERCHANT_ID,
     merchantTransactionId: transactionId,
-    merchantUserId: "MUID123",
+    merchantUserId: "MUID" + uniqid(),
     amount: 100,
     redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
     redirectMode: "REDIRECT",
@@ -385,6 +385,8 @@ app.get("/pay", async(req, res) => {
     base64Enc + "/pg/v1/pay" + SALT_KEY;
   const dataSha = sha256(fullUrl);
   const checksum = dataSha + "###" + SALT_INDEX;
+
+
   const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
   console.log("payload - " + dataPayload);
