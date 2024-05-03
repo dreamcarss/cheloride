@@ -383,9 +383,9 @@ app.get("/pay", async(req, res) => {
     //      type: "PAY_PAGE",
     //    },
      let dataPayload = JSON.stringify(payload);
-     dataPayload = dataPayload.replace(/;$/, "");
+    //  dataPayload = dataPayload.replace(/;$/, "");
      const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
-     console.log(dataPayload)
+     console.log(dataPayload, "payload")
     //  const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
     //  const dataSha = sha256(fullUrl);
     //  const checksum = dataSha + "###" + SALT_INDEX;
