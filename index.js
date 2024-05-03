@@ -376,10 +376,10 @@ app.get("/pay", async(req, res) => {
     callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
     mobileNumber: "9999999999",
     paymentInstrument: {
-      type: "PAY_PAGE",
+      type: "PAY_PAGE"
     }
   };
-  const dataPayload = JSON.stringify(payload);
+  const dataPayload = JSON.parse(JSON.stringify(payload))
   const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
   const fullUrl =
     base64Enc + "/pg/v1/pay" + SALT_KEY;
