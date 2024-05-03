@@ -369,21 +369,23 @@ app.get("/pay", async(req, res) => {
   try {
      const transactionId = "MT-" + uniqid();
      const payload = {
-       merchantId: MERCHANT_ID,
-       merchantTransactionId: transactionId,
-       merchantUserId: "MUID" + uniqid(),
-       amount: 100,
-       redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
-       redirectMode: "REDIRECT",
-       callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
-       mobileNumber: "9999999999",
-       paymentInstrument: {
-         type: "PAY_PAGE",
-       },
+       "merchantId": MERCHANT_ID,
+       "merchantTransactionId": transactionId,
+       "merchantUserId": "MUID" + uniqid(),
+       "amount": 100,
+       "redirectUrl": `https://www.cheloride.com/status/${transactionId}`,
+       "redirectMode": "REDIRECT",
+       "callbackUrl": `https://www.cheloride.com/status/${transactionId}`,
+       "mobileNumber": "9999999999",
+       "paymentInstrument": {
+         "type": "PAY_PAGE",
+       }
      };
-     let dataPayload = stringify(payload);
-     const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
-     console.log(dataPayload)
+     let dataPayload = JSON.stringify(JSON.parse(JSON.stringify(payload)));
+     const base64Enc = Buffer.from(
+       dataPayload,
+       "utf-8"
+     ).toString("base64");
      const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
      const dataSha = sha256(fullUrl);
      const checksum = dataSha + "###" + SALT_INDEX;
