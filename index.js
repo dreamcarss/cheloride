@@ -370,8 +370,8 @@ app.get("/pay", async(req, res) => {
     const transactionId = "MT-" + uniqid()
     const textPay = {
       hello: "hi",
-      testObj: {
-        text: "hello world",
+      paymentInstrument: {
+        type: "PAY_PAGE",
       },
       merchantId: MERCHANT_ID,
       merchantTransactionId: transactionId,
@@ -381,8 +381,8 @@ app.get("/pay", async(req, res) => {
       redirectMode: "REDIRECT",
       callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
       mobileNumber: "9999999999",
-      paymentInstrument: {
-        type: "PAY_PAGE",
+      testObj: {
+        text: "hello world",
       },
     };
 
