@@ -367,28 +367,28 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 app.get("/pay", async(req, res) => {
   try {
-
+    const transactionId = "MT-" + uniqid()
     const textPay = {
-      "hello": "hi",
-      "testObj" : {
-        "text" : "hello world"
+      hello: "hi",
+      testObj: {
+        text: "hello world",
       },
-       "merchantId": MERCHANT_ID,
-       "merchantTransactionId": transactionId,
-       "merchantUserId": "MUID" + uniqid(),
-       "amount": 100,
-       "redirectUrl": `https://www.cheloride.com/status/${transactionId}`,
-       "redirectMode": "REDIRECT",
-       "callbackUrl": `https://www.cheloride.com/status/${transactionId}`,
-       "mobileNumber": "9999999999",
-       "paymentInstrument": {
-         "type": "PAY_PAGE"
-       }
-    }
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: transactionId,
+      merchantUserId: "MUID" + uniqid(),
+      amount: 100,
+      redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
+      redirectMode: "REDIRECT",
+      callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
+      mobileNumber: "9999999999",
+      paymentInstrument: {
+        type: "PAY_PAGE",
+      },
+    };
 
     console.log(textPay, JSON.stringify(textPay));
     const resp = JSON.stringify(textPay);
-    res.send(resp)
+    res.send(resp);
 
     //  const transactionId = "MT-" + uniqid();
     //  const payload = {
