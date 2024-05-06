@@ -381,7 +381,7 @@ app.get("/pay", async(req, res) => {
        "callbackUrl": `https://www.cheloride.com/status/${transactionId}`,
        "mobileNumber": "9999999999"
      };
-     let dataPayload = JSON.stringify(JSON.parse(JSON.stringify(payload)));
+     let dataPayload = JSON.stringify(payload);
      const base64Enc = Buffer.from(
        dataPayload,
        "utf-8"
