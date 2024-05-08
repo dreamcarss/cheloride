@@ -409,8 +409,8 @@ app.get('/pay', async (req, res) => {
         },
       }
     );
-
-    res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+    const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
+    res.json({ tokenUrl });
   } catch (error) {
     console.error('Error creating payment:', error);
     res.status(500).json({ error: 'Failed to create payment' });
