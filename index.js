@@ -25,7 +25,7 @@ const sha256 = require("sha256");
 const MERCHANT_ID = process.env.MERCHANTID;
 const SALT_INDEX = process.env.SALT_INDEX;
 const SALT_KEY = process.env.SALT_KEY;
-const URI = process.env.URI;
+const PHONEPE_API_BASE_URL = process.env.URI;
 
 
 const PORT = process.env.PORT || 4000;
@@ -365,56 +365,65 @@ app.get("/taxiservices", (req, res) => {
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
-app.get("/pay", async(req, res) => {
+const uniqid = () => {
+  return Math.random().toString(36).substr(2, 9);
+};
+
+const sha256 = (data) => {
+  return crypto.createHash('sha256').update(data).digest('hex');
+};
+
+app.get('/pay', async (req, res) => {
   try {
-     const transactionId = "MT-" + uniqid();
-     const payload = {
-       "paymentInstrument": {
-         "type": "PAY_PAGE",
-       },
-       "merchantId": MERCHANT_ID,
-       "merchantTransactionId": transactionId,
-       "merchantUserId": "MUID" + uniqid(),
-       "amount": 100,
-       "redirectUrl": `https://www.cheloride.com/status/${transactionId}`,
-       "redirectMode": "REDIRECT",
-       "callbackUrl": `https://www.cheloride.com/status/${transactionId}`,
-       "mobileNumber": "9999999999"
-     };
-     let dataPayload = JSON.stringify(payload);
-     const base64Enc = Buffer.from(
-       dataPayload,
-       "utf-8"
-     ).toString("base64");
-     const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
-     const dataSha = sha256(fullUrl);
-     const checksum = dataSha + "###" + SALT_INDEX;
+    const transactionId = 'MT-' + uniqid();
 
-     const URI_PAY = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+    const payload = {
+      paymentInstrument: {
+        type: 'PAY_PAGE',
+      },
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: transactionId,
+      merchantUserId: 'MUID' + uniqid(),
+      amount: 100,
+      redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
+      redirectMode: 'REDIRECT',
+      callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
+      mobileNumber: '9999999999',
+    };
 
-     console.log("payload - " + dataPayload);
-     console.log("base-64-enc - " + base64Enc);
-     console.log("sha256 - " + dataSha);
-     console.log("x-verify - " + checksum);
+    let dataPayload = JSON.stringify(payload);
+    const base64Enc = Buffer.from(dataPayload, 'utf-8').toString('base64');
+    const fullUrl = base64Enc + '/pg/v1/pay' + SALT_KEY;
+    const dataSha = sha256(fullUrl);
+    const checksum = dataSha + '###' + SALT_INDEX;
 
-     const response = await axios.post(
-       URI_PAY,
-       {
-         request: base64Enc,
-       },
-       {
-         headers: {
-           accept: "application/json",
-           "Content-Type": "application/json",
-           "X-VERIFY": checksum,
-         },
-       }
-     );
-     res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+    const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/pay`;
+
+    console.log('payload - ' + dataPayload);
+    console.log('base-64-enc - ' + base64Enc);
+    console.log('sha256 - ' + dataSha);
+    console.log('x-verify - ' + checksum);
+
+    const response = await axios.post(
+      URI_PAY,
+      {
+        request: base64Enc,
+      },
+      {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-VERIFY': checksum,
+        },
+      }
+    );
+
+    res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
   } catch (error) {
-    console.log(error)
+    console.error('Error creating payment:', error);
+    res.status(500).json({ error: 'Failed to create payment' });
   }
-})
+});
 
 app.get("/redirect-url/:id", (req, res) => {
   const id = req.params.id; 
