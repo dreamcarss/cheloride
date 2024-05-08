@@ -365,14 +365,6 @@ app.get("/taxiservices", (req, res) => {
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
-const uniqid = () => {
-  return Math.random().toString(36).substr(2, 9);
-};
-
-const sha256 = (data) => {
-  return crypto.createHash('sha256').update(data).digest('hex');
-};
-
 app.get('/pay', async (req, res) => {
   try {
     const transactionId = 'MT-' + uniqid();
