@@ -1,206 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <%- include('./meta.ejs') %>
-
-    <link rel="stylesheet" href="../static/css/home.css">
-    <link rel="stylesheet" href="../static/css/theme.css">
+  <title>PhonePe Checkout Example</title>
+  <!-- Load the checkout.js bundle from PhonePe -->
+  <script src="https://mercury.phonepe.com/web/bundle/checkout.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <%- include('./navbar.ejs') %>
-        <div class="formContainer">
-            <h2 class="title">Car <span style="color: var(--main-color);">Rental</span> Services</h2>
-            <h4 class="sub">Explore limitless possibilities with our comprehensive car rental services! From compact cars to spacious SUVs, we offer a diverse fleet for your every need. Book car by selecting time and date below</h4>
-            <div class="rowt" style="margin: 20px 0; gap: 30px; display: flex;margin-bottom:80px; flex-wrap: wrap; align-items: center;
-            justify-content: center; position: relative; z-index: 3;">
-                <div class="card">
-                    <!-- <p class="sub">Self Drive Cars</p> -->
-                    <img src="../static/assets/8.jpg" alt="" class="cimg">
-                    <button class="sbt spp"  style="background-color: orange; color: black; font-size:15px;">Rent a Car</button>
-                </div>
-                <div class="card">
-                    <!-- <p class="sub">Taxi Service</p> -->
-                    <img src="../static/assets/3.jpg" alt="" class="cimg">
-                    <button class="sbt spp" style="background-color: rgb(229, 229, 0); color: black; border: 2px solid rgb(229, 229, 0); font-size:15px;" >Book a Taxi</button>
-                </div>
-            </div>
-            <div class="opacityMask"></div>
-        </div>
-        <div class="popup" id="popup">
-            <h3 class="title" style="color: white; font-size: 30px; margin-bottom:15px;">Select Location and Service</h3>
-            <form id="form" class="form">
-                <div style="display: flex; gap: 20px;">
-                    <div class="wrap">
-                        <label for="" class="lab">City</label>
-                        <select type="text" name="place" id="place" placeholder="Select location" required>
-                            <% places?.forEach(function(loc, i, entries){ %>
-                                <option class="lelm"><%= loc.toUpperCase() %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                    <div class="wrap" >
-                        <label for="" class="lab">Service</label>
-                        <input type="text" class="inp" style="pointer-events: none; background-color: rgb(225, 225, 225);" name="service" id="service" placeholder="Select Service" required>
-                    </div>
-                </div>
-                <button type="submit" class="sbt"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Proceed</button>
-            </form>
-            <button class="dgr" id="dgr1"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
-        </div>
-        <div class="popup" id="popup2">
-            <h3 class="title" style="color: white; font-size: 30px; margin-bottom:15px;">Taxi Service</h3>
-            <form id="form2" class="form">
-                <div style="display: flex; gap: 20px;">
-                    <div class="wrap">
-                        <label for="" class="lab">Pickup Time</label>
-                        <input type="time" id="time" class="inp time" required>
-                    </div>
-                    <div class="wrap" >
-                        <label for="" class="lab">Location</label>
-                        <input type="text" class="inp" name="service" id="loc" placeholder="Ex: Maddilapalem" required>
-                    </div>
-                </div>
-                <button type="submit" class="sbt" id="sbt2"><ion-icon name="calendar-outline" class="ico" style="font-size: 20px;"></ion-icon><br class="ico" />Book Now</button>
-            </form>
-            <button class="dgr" id="dgr2"><ion-icon name="arrow-back-outline"></ion-icon> Back</button>
-        </div>
-        <div class="icons">
-            <div class="wrap">
-                <h3 class="wtitle">25,000<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Happy Customers</h3>
-                <h6 class="wsub">Our dedicated team is proud to have served over 25,000 happy customers, providing top-notch service and satisfaction.</h6>
-            </div>
-            <div class="wrap">
-                <h3 class="wtitle">150<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Cars</h3>
-                <h6 class="wsub">With a fleet of over 150 cars, we offer a diverse range to meet your transportation needs, ensuring comfort and style.</h6>
-            </div>
-            <div class="wrap">
-                <h3 class="wtitle">10<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Years Experience</h3>
-                <h6 class="wsub">Bringing more than a decade of experience, we take pride in our expertise, providing reliable services since our establishment.</h6>
-            </div>
-            <div class="wrap">
-                <h3 class="wtitle">300<span style="font-family: 'Montserrat'; font-weight: bolder;">+</span> Drivers</h3>
-                <h6 class="wsub">Our team comprises over 300 skilled and licensed drivers, ensuring your safety and a smooth journey every time.</h6>
-            </div>
-        </div>
-        <div class="section" id="about">
-            <h3 class="stitle">About Our Service</h3>
-            <div class="flx">
-                <img src="../static/assets/5.jpg" alt="" class="img">
-                <ul class="wrap">
-                    <li class="lst">
-                        <span style="font-weight: 600; color: yellowgreen;">Trailblazing Transportation:</span> Since 2008, Chelo Ride Rentals has led Vizag's transportation scene from Candolim, near the famous Vizag beach.
-                    </li>
-                    <li class="lst">
-                        <span style="font-weight: 600; color: yellowgreen;">Memorable Journeys:</span> Beyond rides, we offer an unforgettable experience with top-notch service, making us the trusted choice for reliable and comfortable travel.
-                    </li>
-                    <li class="lst">
-                        <span style="font-weight: 600; color: yellowgreen;">Your Convenient Choice:</span> Whether you're a tourist exploring Vizag or a local resident, count on Chelo Ride Rentals for hassle-free and safe transportation. Experience excellence with us!
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="section" id="banners">
-            <h3 class="stitle">Offers and Notices</h3>
-            <div class="flx">
-                <a href="/join-us">
-                    <img src="../static/assets/promot.jpeg" alt="" class="banner">
-                </a>
-            </div>
-        </div>
-        <div class="footer" >
-            <div style="display: flex; gap
-            : 10px; ">
-                <div>
-                    <div class="title">CheloRide.com</div>
-                    <div class="sub">Explore limitless possibilities with our comprehensive car rental services</div>
-                </div>
-                <div class="sub mt">
-                    <a href="/" class="sub">Home</a><br/>
-                    <a href="/#about" class="sub">About Us</a><br/>
-                    <a href="/booking" class="sub">Bookings</a>
-                </div>
-                <div class="sub mt">
-                   <a href="/privacyPolicy" class="sub">Privacy Policy</a><br/>
-                    <a href="/feePolicy" class="sub">Fee Policy</a><br/>
-                    <a href="/terms&conditions" class="sub">Terms and Conditions</a>
-                </div>
-                <div class="sub mt">For any Details or queries <a href="" class="sub">Contact Us - 89196 17664</a></div>
-                <div class="sub mt">
-                    Our Address: 
-                    Shop No: 3, Indian Craft Bazar, Rama Krishna Beach, Panduranga Puram, Visakhapatnam - 530003 (Near Cafe Cofee Day, Aside Kalli Matha Temple)
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        const form = document.getElementById("form");
-        const form2 = document.getElementById("form2");
-        const btns = document.querySelectorAll(".spp");
+  <h1>PhonePe Checkout Example</h1>
+  <button onclick="initiatePayment()">Pay with PhonePe</button>
 
-        btns.forEach((btn, i) => btn.onclick = () => {
-            if(i==0){
-                document.getElementById("service").value = "Self"
-                document.getElementById("popup").style.display = "flex";
-            }else{
-                window.location.href = "/taxiservices"
-            }
-        })
+  <script>
+    async function initiatePayment() {
+  try {
+    // Make a request to your backend to obtain the tokenUrl
+    const response = await fetch('/pay', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-        document.getElementById("dgr1").onclick = () => {
-            document.getElementById("popup").style.display = "none";
-        }
+    if (response.ok) {
+      const { tokenUrl } = await response.json();
 
-        document.getElementById("dgr2").onclick = () => {
-            document.getElementById("popup2").style.display = "none";
+      // Callback function to handle PayPage terminal state
+      const callback = (response) => {
+        if (response === 'USER_CANCEL') {
+          console.log('Payment cancelled by user');
+        } else if (response === 'CONCLUDED') {
+          console.log('Payment process concluded');
         }
+      };
 
-        form.onsubmit = (e) => {
-            form.setAttribute("action", "/cars"); form.setAttribute("method", "post")
-        }
-        
-        window.onload = () => {
-            const date = new Date();
-            const hrs = date.getHours();
-            const mins = date.getMinutes();
-            
-            const sel_time = form2.getElementsByClassName("time")[0];
-            console.log(sel_time)
-            sel_time.setAttribute("min", `${hrs}:${mins}`);
-        }
-        
-        form2.onsubmit = (e) => {
-            e.preventDefault();
-            form2.querySelector("#sbt2").setAttribute("disable", true);
-            const data = {
-                time: form2.querySelector("#time").value,
-                service: form2.querySelector("#loc").value
-            }
-            const token = window.localStorage.getItem("token");
-            fetch("/taxi", {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'token': token
-                },
-                body: JSON.stringify(data)
-            }).then((res) => res.json().then((data) => {
-                const msg = document.createElement("p");
-                msg.setAttribute("id", "msg");
-                form2.querySelector("#sbt2").setAttribute("disable", false);
-                if(res.status == 200){
-                    msg.textContent = data.msg;
-                    document.getElementsByClassName("container")[0].appendChild(msg);
-                    setTimeout(() => {
-                        window.location.href = "/"
-                    }, 2000)
-                }else{
-                    msg.textContent = "Unable to book right now, please try again";
-                    document.getElementsByClassName("container")[0].appendChild(msg);
-                }
-            }))
-        }
-    </script>
+      // Invoke PayPage in iFrame mode
+      window.PhonePeCheckout.transact({ tokenUrl, callback, type: 'IFRAME' });
+    } else {
+      console.error('Error obtaining tokenUrl:', response.status);
+    }
+  } catch (error) {
+    console.error('Error initiating payment:', error);
+  }
+}
+  </script>
 </body>
 </html>
