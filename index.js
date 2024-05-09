@@ -488,6 +488,33 @@ app.post("/refund", async (req, res) => {
   }
 });
 
+app.get("/check-status/:transactionId", async(req, res) => {
+  try {
+    const trId = req.params.transactionId
+    const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/status/${MERCHANT_ID}/${trId}`;
+
+    const fullUrl = `/pg/v1/status/${MERCHANT_ID}/${trId}` + SALT_KEY;
+    const dataSha = sha256(fullUrl);
+    const checksum = dataSha + "###" + SALT_INDEX;
+
+     const response = await axios.post(
+       URI_PAY,
+       {
+         headers: {
+           accept: "application/json",
+           "Content-Type": "application/json",
+           "X-VERIFY": checksum,
+           "X-MERCHANT-ID": MERCHANT_ID
+         },
+       }
+     );
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({"msg": "Server error"})
+  }
+})
+
 
 app.use((req, res, next) => {
   res.render("400.ejs", { t: 404, sub: "Not Found" });
