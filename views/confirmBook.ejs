@@ -146,8 +146,8 @@
                         'token': localStorage.getItem("token"),
                         'tempid': id
                     },
-                    });
-
+                });
+                
                     if (response.ok) {
                         const { tokenUrl, trId } = await response.json();
                         let data = {tempid: id, trId: trId}
@@ -165,33 +165,58 @@
                                     window.location.href = "/"
                                 }, 2500);
                             } else if (response === 'CONCLUDED') {
-                                fetch("/booking/book", {
-                                    method: 'POST',
+                                fetch(`/chech-status/${trId}`, {
+                                    method: "GET", 
                                     headers: {
-                                    'Accept': 'application/json',
-                                    'token': localStorage.getItem("token"),
-                                    'Content-Type': 'application/json',
+                                        'Content-Type': 'application/json',
+                                        'token': localStorage.getItem("token"),
                                     },
-                                    body: JSON.stringify(data)
-                                }).then((res => {
-                                    btn.removeAttribute("disabled")
-                                    res.json().then(data => {
-                                    btn.innerHTML = "Checkout"
-                                    const msg = document.createElement("div");
-                                    msg.classList.add("msg");
-                                    msg.innerHTML = `
-                                    <div class="bgcircle">
-                                    <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
-                                    </div>
-                                    ${data.msg}
-                                    <a href="/booking" style="margin-top: 20px;">
-                                        <button class="btn" style=" font-size: 10px;">Your Bookings</button>
-                                    </a>`;
-                                    document.getElementsByTagName("body")[0].appendChild(msg);
-                                    setTimeout(() => {
-                                        window.location.href = "/booking"
-                                    }, 3000);
-                                })}))
+                                }).then(res => res.json().then(rsp => {
+                                    console.log(data);
+                                    if(rsp.success){
+                                        fetch("/booking/book", {
+                                            method: 'POST',
+                                            headers: {
+                                            'Accept': 'application/json',
+                                            'token': localStorage.getItem("token"),
+                                            'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(data)
+                                        }).then((res => {
+                                            btn.removeAttribute("disabled")
+                                            res.json().then(data => {
+                                            btn.innerHTML = "Checkout"
+                                            const msg = document.createElement("div");
+                                            msg.classList.add("msg");
+                                            msg.innerHTML = `
+                                            <div class="bgcircle">
+                                            <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
+                                            </div>
+                                            ${data.msg}
+                                            <a href="/booking" style="margin-top: 20px;">
+                                                <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                                            </a>`;
+                                            document.getElementsByTagName("body")[0].appendChild(msg);
+                                            setTimeout(() => {
+                                                window.location.href = "/booking"
+                                            }, 3000);
+                                        })}))
+                                    }else{
+                                        btn.removeAttribute("disabled")
+                                        btn.innerHTML = "Checkout"
+                                        const msg = document.createElement("div");
+                                        msg.classList.add("msg");
+                                        msg.innerHTML = `
+                                        <div class="bgcircle">
+                                        <ion-icon name="close" style="color:white; font-size:70px"></ion-icon>
+                                        </div>
+                                        Payment Failed!
+                                        <a href="/booking" style="margin-top: 20px;">
+                                            <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                                        </a>`;
+                                        document.getElementsByTagName("body")[0].appendChild(msg);
+                                    }
+                                }))
                             }
                         };
 
