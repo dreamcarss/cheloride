@@ -391,10 +391,10 @@ app.get("/pay", async (req, res) => {
 
     const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/pay`;
 
-    // console.log("payload - " + dataPayload);
-    // console.log("base-64-enc - " + base64Enc);
-    // console.log("sha256 - " + dataSha);
-    // console.log("x-verify - " + checksum);
+    console.log("payload - " + dataPayload);
+    console.log("base-64-enc - " + base64Enc);
+    console.log("sha256 - " + dataSha);
+    console.log("x-verify - " + checksum);
 
     const response = await axios.post(
       URI_PAY,
