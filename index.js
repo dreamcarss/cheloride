@@ -368,7 +368,27 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 app.get("/pay", async (req, res) => {
   try {
     const transactionId = "MT-" + uniqid();
-    console.log(req.headers.tempid)
+    console.log(req.headers.tempid);
+    const booking = await tempBooking.findById(req.headers.tempid);
+          console.log(booking)
+          if (booking != null) {
+            const car = await carModel.findById(booking.carId);
+            const stDt = new Date(
+              booking.date + "T" + booking.time + "Z"
+            );
+            const edDt = new Date(
+              booking.ddate + "T" + booking.dtime + "Z"
+            );
+            let diff = Math.abs(edDt - stDt);
+            let data = {};
+            let hrs = diff / 3.6e6;
+            let hrlyCharges = parseInt(car.amount) / 24;
+            let totalAmount = Math.round(hrlyCharges * hrs);
+            let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
+            console.log(totalAmount + gst)
+          }else{
+            console.log("no booking")
+          }
     const payload = {
       paymentInstrument: {
         type: "PAY_PAGE",
