@@ -432,7 +432,8 @@ app.get("/pay", async (req, res) => {
       console.log(tokenUrl);
       res.json({ tokenUrl: tokenUrl, trId: transactionId });
     }else{
-      console.log("no booking")
+      console.log("no booking");
+      res.status(400).json({ error: "Failed to create payment" });
     }
   } catch (error) {
     console.error("Error creating payment:", error);

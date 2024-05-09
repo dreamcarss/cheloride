@@ -150,10 +150,8 @@
 
                     if (response.ok) {
                         const { tokenUrl, trId } = await response.json();
-                        console.log(tokenUrl, trId);
                         let data = {tempid: id, trId: trId}
                         const callback = (response) => {
-                            console.log(response, "resp pay")
                             if (response === 'USER_CANCEL') {
                                 const msg = document.createElement("div");
                                 msg.classList.add("msg");
