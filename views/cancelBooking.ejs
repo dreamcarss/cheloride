@@ -408,7 +408,7 @@
       console.log(id);
       document.getElementById("trid").textContent = id
 
-      formElm.onsubmit = (e) => {
+      formElm.onsubmit = (e) => { 
         e.preventDefault();
         let data = {
             transactionId : document.getElementById("trid").textContent,
@@ -436,7 +436,17 @@
                         "token": window.localStorage.getItem("token")
                     }
                 }).then(resp => resp.json().then((dat) => {
-                    console.log(dat)
+                    if(dat.status){
+                        btn.textContent = "Booking Cancelled";
+                        setTimeout(() => {
+                            window.location.href = "/"
+                        }, 2000);
+                    }else{
+                        btn.textContent = "Something went wrong";
+                        setTimeout(() => {
+                            btn.textContent = "Submit"
+                        }, 3000);
+                    }
                 }))
               }
           });

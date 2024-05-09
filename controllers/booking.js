@@ -421,6 +421,7 @@ const deleteBooking = async (req, res) => {
       const user = await userModel.findOne({ email: booking.userId });
       if (user) {
         booking.paymentStatus = "Cancelled";
+        booking.bookingStatus = false;
         await booking.save()
         const mailContent = `
           <p>Dear ${user.email},</p>
@@ -430,19 +431,16 @@ const deleteBooking = async (req, res) => {
           <p>Your Car Rental Service</p>
         `;
         await mail("Booking Canceled", mailContent, user.email);
-        res.redirect("/");
+        res.status(200).json({status: true})
       } else {
-        res.redirect("/");
+        res.status(404).json({status: false})
       }
     } else {
-      res.redirect("/");
+      res.status(404).json({status: false})
     }
   } catch (error) {
     console.error(error);
-    res.render("400.ejs", {
-      t: "500",
-      sub: "Server Error",
-    });
+    res.status(500).json({status: false})
   }
 };
 
