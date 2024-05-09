@@ -21,6 +21,7 @@ const stringify = require("json-stringify-safe");
 const axios = require("axios");
 const uniqid = require("uniqid");
 const sha256 = require("sha256");
+const tempBooking = require("./models/tempbooking");
 
 const MERCHANT_ID = process.env.MERCHANTID;
 const SALT_INDEX = process.env.SALT_INDEX;
