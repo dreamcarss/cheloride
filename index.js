@@ -368,7 +368,7 @@ app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 app.get("/pay", async (req, res) => {
   try {
     const transactionId = "MT-" + uniqid();
-
+    console.log(req.headers.tempid)
     const payload = {
       paymentInstrument: {
         type: "PAY_PAGE",
