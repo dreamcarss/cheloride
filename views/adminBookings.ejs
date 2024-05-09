@@ -36,6 +36,7 @@
                 <th class="th">Amount</th>
                 <th class="th">Payment Status</th>
                 <th class="th">Booking Status</th>
+                <th class="th" style="width: 200px;">Transaction Id</th>
                 <th class="th">Action</th>
             </tr>
         </table>
@@ -143,6 +144,9 @@
                                             
                                         }
                                     </select>    
+                                </td>
+                                <td class="td">
+                                    ${booking.transactionID == "" ? "null" : booking.transactionID}
                                 </td>
                                 <td class="td">
                                     <button class="del upd ${booking._id}" onclick="showModal(${i})">Update</button>
