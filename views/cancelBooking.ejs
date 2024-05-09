@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./meta.ejs') %>
+
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Pixelify+Sans&family=Poppins&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap");
+      :root {
+        --main-color: #e8a22d;
+        --bg-color: #0f0f0f;
+        --sec-bg: rgb(22, 22, 22);
+        --txt: #fff;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @font-face {
+        font-family: "integral";
+        src: url("../static/fonts/integral.ttf");
+      }
+
+      .navbar {
+        width: 100%;
+        height: 50px;
+        background: rgb(18, 18, 18);
+        display: flex;
+        z-index: 4;
+        color: white;
+        display: flex;
+        padding: 0 30px;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "poppins";
+        font-size: 12px;
+        position: fixed;
+        top: 0;
+      }
+
+      .navbar .logo {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .navbar .links {
+        width: max-content;
+        display: flex;
+        gap: 30px;
+      }
+
+      .navbar .links .link {
+        color: white;
+        text-decoration: none;
+      }
+
+      .navbar.mb {
+        display: none;
+      }
+
+      .floating {
+        width: max-content;
+        height: max-content;
+        padding: 15px 22px;
+        background: #ffa500;
+        position: fixed;
+        right: 2%;
+        bottom: 5%;
+        z-index: 3;
+        text-decoration: none;
+        color: white;
+        font-family: integral;
+        font-size: 15px;
+        box-shadow: 11px 12px 16px #4545453d;
+        border-radius: 11px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .navbar {
+          display: none;
+        }
+
+        .navbar.mb {
+          display: flex;
+        }
+
+        .floating {
+          display: none;
+        }
+
+        .floating.mb {
+          display: block;
+          position: absolute;
+          bottom: 10%;
+          left: 10px;
+        }
+        .navbar.mb .sidemenu {
+          width: 100%;
+          height: 100vh;
+          background-color: rgb(18, 18, 18);
+          position: absolute;
+          top: 0;
+          left: -100%;
+          padding: 20px;
+          transition: all 0.3s ease;
+        }
+        .navbar.mb .sidemenu .logo {
+          font-size: 17px;
+          font-weight: bolder;
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .navbar.mb .sidemenu .links {
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 14px;
+          font-size: 14px;
+          margin-top: 30px;
+        }
+
+        .navbar.mb .sidemenu .links.lg {
+          width: 100%;
+          height: max-content;
+          display: flex;
+          gap: 15px;
+          flex-direction: row;
+        }
+
+        #close {
+          color: white;
+          font-size: 20px;
+          cursor: pointer;
+        }
+
+        .navbar.mb .sidemenu .links.lg .link {
+          border-radius: 20px;
+          background-color: var(--main-color);
+          color: white;
+          text-align: center;
+          padding: 6px 20px;
+          cursor: pointer;
+          font-size: 12px;
+        }
+        .navbar.mb .sidemenu .links.lg .link:nth-child(even) {
+          border: 2px solid var(--main-color);
+          background-color: transparent;
+        }
+      }
+
+      .container {
+        width: 100%;
+        height: 100vh;
+        padding: 30px;
+        padding-top: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: url("../assets/6.jpg") center;
+        background: rgb(17, 17, 17);
+        background-size: cover;
+        position: relative;
+      }
+
+      .opWrap {
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.364);
+        backdrop-filter: blur(10px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      .title {
+        margin-bottom: 10px;
+        font-family: "Montserrat";
+        color: white;
+        font-size: 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .form {
+        width: 25%;
+        height: max-content;
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+        border-radius: 10px;
+        background-color: rgb(39, 39, 39);
+      }
+
+      .form .wrap {
+        width: 100%;
+        height: max-content;
+        display: flex;
+        flex-direction: column;
+        color: rgb(230, 230, 230);
+        font-family: "Poppins";
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .lab {
+        margin-right: 10px;
+      }
+      .white {
+        color: #111;
+      }
+
+      .wrap .inp {
+        width: 100%;
+        height: 30px;
+        border: none;
+        background-color: rgb(233, 233, 233);
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 4px;
+      }
+
+      .wrap .inp.second {
+        white-space: nowrap;
+        word-wrap: nowrap;
+        overflow: hidden;
+      }
+
+      .form .btn {
+        width: 100%;
+        height: 35px;
+        background-color: var(--main-color);
+        margin-top: 10px;
+        font-family: "integral";
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .msg {
+        width: max-content;
+        height: max-content;
+        color: rgb(255, 96, 96);
+        font-family: "Poppins";
+        z-index: 6;
+        width: 100%;
+        word-wrap: break-word;
+        margin-top: 10px;
+        font-size: 12px;
+      }
+      .wrap .inp.warn {
+        border: 2px solid red;
+        background-color: rgba(255, 104, 104, 0.333);
+        color: rgb(255, 190, 190);
+      }
+
+      .link {
+        margin-top: 15px;
+        display: block;
+        font-family: "Poppins";
+        color: var(--main-color);
+        text-decoration: none;
+        font-size: 11px;
+      }
+
+      .circle {
+        width: 25px;
+        height: 25px;
+        border-radius: 100%;
+        position: relative;
+        background: conic-gradient(
+          white 0deg,
+          white 270deg,
+          transparent 270deg,
+          transparent 360deg
+        );
+        animation: loading 0.3s ease infinite;
+      }
+
+      @keyframes loading {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .circle::before {
+        content: "";
+        width: 18px;
+        height: 18px;
+        background-color: var(--main-color);
+        position: absolute;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .none {
+        display: none;
+      }
+
+      .steps {
+        width: 25%;
+        height: max-content;
+        position: relative;
+        z-index: 2;
+        border-radius: 25px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        color: rgba(255, 255, 255, 0.944);
+        font-family: "Poppins";
+        background-color: rgb(39, 39, 39);
+      }
+
+      .steps .load {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        border-radius: 20px;
+        height: 100%;
+        transition: all 0.3s ease;
+        background-color: rgb(78, 117, 0);
+      }
+
+      .wrap .wrap {
+        width: 100%;
+        display: flex;
+      }
+
+      .steps .txt {
+        width: 50%;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        position: relative;
+        z-index: 3;
+        text-align: center;
+      }
+
+      .steps .txt.b1 {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 1px solid rgb(39, 39, 39);
+      }
+
+      .wrap .inp.sub {
+        background-color: rgb(162, 255, 167);
+        border: 2px solid rgb(0, 218, 0);
+      }
+
+      @media only screen and (max-width: 600px) {
+        .form,
+        .steps {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./navbar.ejs') %>
+    <div class="container">
+      <div class="opWrap"></div>
+      <h3 class="title">CHELORIDE - Cancel Booking</h3>
+
+      <form id="formElm" class="form">
+        <div class="wrap">
+          <label for="">Transaction Id</label>
+          <div type="text" class="inp" id="trid" style="color: black; display: flex; align-items: center; background-color: #c4c4c4;"></div>
+        </div>
+        <div class="wrap">
+          <label for="">Amount</label>
+          <div type="text" class="inp" id="amount" style="color: black; display: flex; align-items: center; background-color: #c4c4c4;"><%= amount %></div>
+        </div>
+        <div class="wrap">
+          <label for="">Reason</label>
+          <input type="text" class="inp" name="reason" placeholder="Reason for cancellation. (Optional)" required />
+        </div>
+        <p class="msg" id="note"></p>
+        <button class="btn" id="submit" type="submit">Submit</button>
+        <a href="/auth/login" class="link">Already having account? Login</a>
+      </form>
+    </div>
+    <script>
+      const formElm = document.getElementById("formElm");
+      const chng = document.getElementById("change");
+      const btn = document.getElementById("submit");
+
+      const id = window.location.href.split("/").pop();
+      console.log(id);
+      document.getElementById("trid").textContent = id
+
+      formElm.onsubmit = (e) => {
+        e.preventDefault();
+        let data = {
+            transactionId : document.getElementById("trid").textContent,
+            amount: "<%- amount %>",
+            reason: formElm["reason"].value
+        };
+        console.log(data)
+        fetch("/refund", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }).then((res) => {
+          btn.removeAttribute("disabled");
+          btn.style.background = "orange";
+          res.json().then(async(d) => {
+              if(d.success){
+                await fetch(`/booking/delete/${id}`, {
+                    method: "DELETE", 
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "token": window.localStorage.getItem("token")
+                    }
+                }).then(resp => resp.json().then((dat) => {
+                    console.log(dat)
+                }))
+              }
+          });
+        });
+      };
+    </script>
+  </body>
+</html>
