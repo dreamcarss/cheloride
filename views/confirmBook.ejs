@@ -138,7 +138,6 @@
             if(checkH2.checked && checkH.checked){
                 btn.innerHTML = "<div class='circle'></div>";
                 btn.setAttribute("disabled", true);
-                let data = {tempid: id}
                  try {
                     const response = await fetch('/pay', {
                     method: 'GET',
@@ -151,7 +150,8 @@
 
                     if (response.ok) {
                         const { tokenUrl, trId } = await response.json();
-                        console.log(tokenUrl, trId)
+                        console.log(tokenUrl, trId);
+                        let data = {tempid: id, trId: trId}
                         const callback = (response) => {
                             console.log(response, "resp pay")
                             if (response === 'USER_CANCEL') {
@@ -173,7 +173,6 @@
                                     'Accept': 'application/json',
                                     'token': localStorage.getItem("token"),
                                     'Content-Type': 'application/json',
-                                    'trId': trId
                                     },
                                     body: JSON.stringify(data)
                                 }).then((res => {
