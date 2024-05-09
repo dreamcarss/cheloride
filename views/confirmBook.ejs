@@ -184,7 +184,7 @@
                                             body: JSON.stringify(data)
                                         }).then((res => {
                                             btn.removeAttribute("disabled")
-                                            res.json().then(data => {
+                                            res.json().then(dat => {
                                             btn.innerHTML = "Checkout"
                                             const msg = document.createElement("div");
                                             msg.classList.add("msg");
@@ -192,7 +192,7 @@
                                             <div class="bgcircle">
                                             <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
                                             </div>
-                                            ${data.msg}
+                                            Booking Confirmed
                                             <a href="/booking" style="margin-top: 20px;">
                                                 <button class="btn" style=" font-size: 10px;">Your Bookings</button>
                                             </a>`;
