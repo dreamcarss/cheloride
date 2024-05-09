@@ -365,36 +365,36 @@ app.get("/taxiservices", (req, res) => {
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
 
 
-app.get('/pay', async (req, res) => {
+app.get("/pay", async (req, res) => {
   try {
-    const transactionId = 'MT-' + uniqid();
+    const transactionId = "MT-" + uniqid();
 
     const payload = {
       paymentInstrument: {
-        type: 'PAY_PAGE',
+        type: "PAY_PAGE",
       },
       merchantId: MERCHANT_ID,
       merchantTransactionId: transactionId,
-      merchantUserId: 'MUID' + uniqid(),
+      merchantUserId: "MUID" + uniqid(),
       amount: 100,
       redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
-      redirectMode: 'REDIRECT',
+      redirectMode: "REDIRECT",
       callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
-      mobileNumber: '9999999999',
+      mobileNumber: "9999999999",
     };
 
     let dataPayload = JSON.stringify(payload);
-    const base64Enc = Buffer.from(dataPayload, 'utf-8').toString('base64');
-    const fullUrl = base64Enc + '/pg/v1/pay' + SALT_KEY;
+    const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
+    const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
     const dataSha = sha256(fullUrl);
-    const checksum = dataSha + '###' + SALT_INDEX;
+    const checksum = dataSha + "###" + SALT_INDEX;
 
     const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/pay`;
 
-    console.log('payload - ' + dataPayload);
-    console.log('base-64-enc - ' + base64Enc);
-    console.log('sha256 - ' + dataSha);
-    console.log('x-verify - ' + checksum);
+    // console.log("payload - " + dataPayload);
+    // console.log("base-64-enc - " + base64Enc);
+    // console.log("sha256 - " + dataSha);
+    // console.log("x-verify - " + checksum);
 
     const response = await axios.post(
       URI_PAY,
@@ -403,17 +403,19 @@ app.get('/pay', async (req, res) => {
       },
       {
         headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-VERIFY': checksum,
+          accept: "application/json",
+          "Content-Type": "application/json",
+          "X-VERIFY": checksum,
         },
       }
     );
+
     const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
+    console.log(tokenUrl)
     res.json({ tokenUrl });
   } catch (error) {
-    console.error('Error creating payment:', error);
-    res.status(500).json({ error: 'Failed to create payment' });
+    console.error("Error creating payment:", error);
+    res.status(500).json({ error: "Failed to create payment" });
   }
 });
 

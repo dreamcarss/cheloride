@@ -183,52 +183,7 @@ const bookCar = async(req, res) => {
         }
     }else if(req.method == "POST"){
         try {
-          // const endpoint = "/pg/v1/pay";
-          // const trId = uniqid();
-          // const muid = "232SdR22@13"
-          // const payload = {
-          //   merchantId: MERCHANTID,
-          //   merchantTransactionId: trId,
-          //   merchantUserId: muid,
-          //   amount: 10000,
-          //   redirectUrl: `https://${process.env.DOMAIN}/redirect-url/${trId}`,
-          //   redirectMode: "REDIRECT",
-          //   mobileNumber: "9999999999",
-          //   paymentInstrument: {
-          //     type: "PAY_PAGE",
-          //   },
-          // };
-
-          // const buffer = Buffer.from(JSON.stringify(payload), "utf8");
-          // const base64Enc = buffer.toString("base64");
-          // const xverify = sha256(base64Enc + endpoint + SALT_KEY) + "###" + SALT_INDEX;
-
-
-
-          // const options = {
-          //   method: "post",
-          //   url: `${URI}${endpoint}`,
-          //   headers: {
-          //     accept: "application/json",
-          //     "Content-Type": "application/json",
-          //     "X-VERIFY" : xverify
-          //   },
-          //   data: {
-          //     request: base64Enc
-          //   },
-          // };
-          // axios
-          //   .request(options)
-          //   .then(function (response) {
-          //     console.log(response.data);
-          //   })
-          //   .catch(function (error) {
-          //     console.error(error);
-          //   });
-
-
           const body = req.body;
-          console.log(body)
           const booking = await tempBooking.findById(body.tempid);
           console.log(booking)
           if (booking != null) {
@@ -250,11 +205,12 @@ const bookCar = async(req, res) => {
               time: booking.time,
               dtime: timeObj.time,
               userId: body.email,
-              service : booking.service,
+              service: booking.service,
               carId: car._id,
               price: totalAmount + gst,
               startDate: booking.date,
               dropDate: booking.ddate,
+              transactionID: body.trId
             });
             await tempBooking.findOneAndDelete({ carId: car._id });
             await newBooking.save().then(async () => {
