@@ -154,7 +154,8 @@
                         console.log(tokenUrl)
                         const callback = (response) => {
                             btn.innerHTML = "Checkout";
-                            btn.setAttribute("disabled", false)
+                            btn.setAttribute("disabled", false);
+                            console.log(response, "resp pay")
                             if (response === 'USER_CANCEL') {
                                 const msg = document.createElement("div");
                                 msg.classList.add("msg");
