@@ -430,7 +430,7 @@ app.get("/pay", async (req, res) => {
 
       const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
       console.log(tokenUrl);
-      res.json({ tokenUrl });
+      res.json({ tokenUrl: tokenUrl, trId: transactionId });
     }else{
       console.log("no booking")
     }

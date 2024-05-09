@@ -150,30 +150,56 @@
                     });
 
                     if (response.ok) {
-                        const { tokenUrl } = await response.json();
-                        console.log(tokenUrl)
-                        const callback = (response) => {
-                            btn.innerHTML = "Checkout";
-                            btn.setAttribute("disabled", false);
-                            console.log(response, "resp pay")
-                            if (response === 'USER_CANCEL') {
-                                const msg = document.createElement("div");
-                                msg.classList.add("msg");
-                                msg.innerHTML = `
-                                <div class="bgcircle">
-                                <ion-icon name="close" style="color: white; font-size:70px"></ion-icon>
-                                </div>
-                                <p>Booking Cancelled</p>`;
-                                document.getElementsByTagName("body")[0].appendChild(msg);
-                                setTimeout(() => {
-                                    window.location.href = "/"
-                                }, 2500);
-                            } else if (response === 'CONCLUDED') {
-                                console.log("concluded")
-                            }
-                        };
+                        const { tokenUrl, trId } = await response.json();
+                        console.log(tokenUrl, trId)
+                        // const callback = (response) => {
+                        //     btn.innerHTML = "Checkout";
+                        //     btn.setAttribute("disabled", false);
+                        //     console.log(response, "resp pay")
+                        //     if (response === 'USER_CANCEL') {
+                        //         const msg = document.createElement("div");
+                        //         msg.classList.add("msg");
+                        //         msg.innerHTML = `
+                        //         <div class="bgcircle">
+                        //         <ion-icon name="close" style="color: white; font-size:70px"></ion-icon>
+                        //         </div>
+                        //         <p>Booking Cancelled</p>`;
+                        //         document.getElementsByTagName("body")[0].appendChild(msg);
+                        //         setTimeout(() => {
+                        //             window.location.href = "/"
+                        //         }, 2500);
+                        //     } else if (response === 'CONCLUDED') {
+                        //         fetch("/booking/book", {
+                        //             method: 'POST',
+                        //             headers: {
+                        //             'Accept': 'application/json',
+                        //             'token': localStorage.getItem("token"),
+                        //             'Content-Type': 'application/json'
+                        //             },
+                        //             body: JSON.stringify(data)
+                        //         }).then((res => {
+                        //             btn.removeAttribute("disabled")
+                        //             res.json().then(data => {
+                        //             btn.innerHTML = "Checkout"
+                        //             const msg = document.createElement("div");
+                        //             msg.classList.add("msg");
+                        //             msg.innerHTML = `
+                        //             <div class="bgcircle">
+                        //             <ion-icon name=${res.status === 200 ? "checkmark" : "close"} style="color:${res.status === 200 ? " rgb(255, 255, 255)" : "red"}; font-size:70px"></ion-icon>
+                        //             </div>
+                        //             ${data.msg}
+                        //             <a href="/booking" style="margin-top: 20px;">
+                        //                 <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                        //             </a>`;
+                        //             document.getElementsByTagName("body")[0].appendChild(msg);
+                        //             setTimeout(() => {
+                        //                 window.location.href = "/booking"
+                        //             }, 3000);
+                        //         })}))
+                        //     }
+                        // };
 
-                        window.PhonePeCheckout.transact({ tokenUrl, callback, type: 'IFRAME' });
+                        // window.PhonePeCheckout.transact({ tokenUrl, callback, type: 'IFRAME' });
                     } else {
                     console.error('Error obtaining tokenUrl:', response.status);
                     }
