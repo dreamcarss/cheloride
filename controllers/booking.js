@@ -209,6 +209,7 @@ const bookCar = async(req, res) => {
               carId: car._id,
               price: totalAmount + gst,
               startDate: booking.date,
+              paymentStatus: body.trId ? "Paid Online" : null,
               dropDate: booking.ddate,
               transactionID: body.trId
             });
