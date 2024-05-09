@@ -211,7 +211,7 @@ const bookCar = async(req, res) => {
               startDate: booking.date,
               paymentStatus: "Paid",
               dropDate: booking.ddate,
-              transactionID: body.trId
+              transactionID: req.headers.trId
             });
             await tempBooking.findOneAndDelete({ carId: car._id });
             await newBooking.save().then(async () => {
