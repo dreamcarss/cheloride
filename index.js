@@ -371,69 +371,69 @@ app.get("/pay", async (req, res) => {
     const transactionId = "MT-" + uniqid();
     console.log(req.headers.tempid);
     const booking = await tempBooking.findById(req.headers.tempid);
-          console.log(booking)
-          if (booking != null) {
-            const car = await carModel.findById(booking.carId);
-            const stDt = new Date(
-              booking.date + "T" + booking.time + "Z"
-            );
-            const edDt = new Date(
-              booking.ddate + "T" + booking.dtime + "Z"
-            );
-            let diff = Math.abs(edDt - stDt);
-            let data = {};
-            let hrs = diff / 3.6e6;
-            let hrlyCharges = parseInt(car.amount) / 24;
-            let totalAmount = Math.round(hrlyCharges * hrs);
-            let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
-            console.log(totalAmount + gst)
-          }else{
-            console.log("no booking")
-          }
-    const payload = {
-      paymentInstrument: {
-        type: "PAY_PAGE",
-      },
-      merchantId: MERCHANT_ID,
-      merchantTransactionId: transactionId,
-      merchantUserId: "MUID" + uniqid(),
-      amount: 100,
-      redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
-      redirectMode: "REDIRECT",
-      callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
-      mobileNumber: "9999999999",
-    };
-
-    let dataPayload = JSON.stringify(payload);
-    const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
-    const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
-    const dataSha = sha256(fullUrl);
-    const checksum = dataSha + "###" + SALT_INDEX;
-
-    const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/pay`;
-
-    console.log("payload - " + dataPayload);
-    console.log("base-64-enc - " + base64Enc);
-    console.log("sha256 - " + dataSha);
-    console.log("x-verify - " + checksum);
-
-    const response = await axios.post(
-      URI_PAY,
-      {
-        request: base64Enc,
-      },
-      {
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-          "X-VERIFY": checksum,
+    console.log(booking)
+    if (booking != null) {
+      const car = await carModel.findById(booking.carId);
+      const stDt = new Date(
+        booking.date + "T" + booking.time + "Z"
+      );
+      const edDt = new Date(
+        booking.ddate + "T" + booking.dtime + "Z"
+      );
+      let diff = Math.abs(edDt - stDt);
+      let data = {};
+      let hrs = diff / 3.6e6;
+      let hrlyCharges = parseInt(car.amount) / 24;
+      let totalAmount = Math.round(hrlyCharges * hrs);
+      let gst = Math.round(parseFloat(process.env.GST) * totalAmount);
+      console.log(totalAmount + gst);
+      const payload = {
+        paymentInstrument: {
+          type: "PAY_PAGE",
         },
-      }
-    );
+        merchantId: MERCHANT_ID,
+        merchantTransactionId: transactionId,
+        merchantUserId: "MUID" + uniqid(),
+        amount: Math.floor((totalAmount + gst) * 100),
+        redirectUrl: `https://www.cheloride.com/status/${transactionId}`,
+        redirectMode: "REDIRECT",
+        callbackUrl: `https://www.cheloride.com/status/${transactionId}`,
+        mobileNumber: "9999999999",
+      };
 
-    const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
-    console.log(tokenUrl)
-    res.json({ tokenUrl });
+      let dataPayload = JSON.stringify(payload);
+      const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
+      const fullUrl = base64Enc + "/pg/v1/pay" + SALT_KEY;
+      const dataSha = sha256(fullUrl);
+      const checksum = dataSha + "###" + SALT_INDEX;
+
+      const URI_PAY = `${PHONEPE_API_BASE_URL}/pg/v1/pay`;
+
+      console.log("payload - " + dataPayload);
+      console.log("base-64-enc - " + base64Enc);
+      console.log("sha256 - " + dataSha);
+      console.log("x-verify - " + checksum);
+
+      const response = await axios.post(
+        URI_PAY,
+        {
+          request: base64Enc,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            "X-VERIFY": checksum,
+          },
+        }
+      );
+
+      const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
+      console.log(tokenUrl);
+      res.json({ tokenUrl });
+    }else{
+      console.log("no booking")
+    }
   } catch (error) {
     console.error("Error creating payment:", error);
     res.status(500).json({ error: "Failed to create payment" });
