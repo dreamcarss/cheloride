@@ -441,10 +441,53 @@ app.get("/pay", async (req, res) => {
   }
 });
 
-app.get("/redirect-url/:id", (req, res) => {
-  const id = req.params.id; 
-  
+app.post("/refund", async (req, res) => {
+  try {
+    const { transactionId, amount, reason } = req.body;
+
+    const payload = {
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: "MT" + uniqid(),
+      originalTransactionId: transactionId,
+      amount: amount*100,
+      reason: reason != "" ? reason : "none",
+    };
+
+    let dataPayload = JSON.stringify(payload);
+    const base64Enc = Buffer.from(dataPayload, "utf-8").toString("base64");
+    const fullUrl = base64Enc + "/pg/v1/refund" + SALT_KEY;
+    const dataSha = sha256(fullUrl);
+    const checksum = dataSha + "###" + SALT_INDEX;
+
+    const URI_REFUND = `${PHONEPE_API_BASE_URL}/pg/v1/refund`;
+
+    console.log("payload - " + dataPayload);
+    console.log("base-64-enc - " + base64Enc);
+    console.log("sha256 - " + dataSha);
+    console.log("x-verify - " + checksum);
+
+    const response = await axios.post(
+      URI_REFUND,
+      {
+        request: base64Enc,
+      },
+      {
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+          "X-VERIFY": checksum,
+        },
+      }
+    );
+
+    console.log("Refund response:", response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error processing refund:", error);
+    res.status(500).json({ error: "Failed to process refund" });
+  }
 });
+
 
 app.use((req, res, next) => {
   res.render("400.ejs", { t: 404, sub: "Not Found" });

@@ -260,7 +260,7 @@ const bookCar = async(req, res) => {
               let user = await userModel.findOne({ email: body.email });
               await mail("New Booking", html, executiveMail).catch();
               let msg;
-              const token = newBooking._id;
+              const token = req.body.trId;
               if (user.kycStatus) {
                 msg = `<p> Your booking has been placed. Our executive will be shortly calling you about the payment and other details</p></br><b style="display: inline-block;">Total Amount: ₹${
                   totalAmount + gst
@@ -416,11 +416,12 @@ const autoDelete = async(req, res) => {
 const deleteBooking = async (req, res) => {
   try {
     let id = req.params.id;
-    const booking = await bookingModel.findByIdAndDelete(id);
-
+    const booking = await bookingModel.findOne({transactionID: id});
     if (booking) {
       const user = await userModel.findOne({ email: booking.userId });
       if (user) {
+        booking.paymentStatus = "Cancelled";
+        await booking.save()
         const mailContent = `
           <p>Dear ${user.email},</p>
           <p>Your booking with booking ID ${booking._id} has been canceled successfully.</p>

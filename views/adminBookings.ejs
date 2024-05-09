@@ -130,12 +130,7 @@
                                 <td class="td"><input class="inp" value="${booking.dtime}" type="time" /></td>
                                 <td class="td inp">${booking.price}</td>
                                 <td class="td">
-                                    <select id="status" class="inp">
-                                        ${
-                                            booking.paymentStatus == "paid" ? '<option value="unpaid">Unpaid</option> <option value="paid" selected="selected">Paid</option>' : '<option value="unpaid" selected="selected">Unpaid</option> <option value="paid">Paid</option>'
-                                            
-                                        }
-                                    </select>    
+                                    <input id="status" class="inp" value=${booking.paymentStatus} style="width: 150px">
                                 </td>
                                 <td class="td">
                                     <select id="bookingStatus" class="inp">
