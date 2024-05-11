@@ -158,14 +158,40 @@
         // Handle dtime blur
         formD['dtime'].addEventListener("blur", debounce(handleDtimeBlur, 500));
         function handleDtimeBlur() {
-            if (isValidTime(formD['dtime'].value, formD['dtime'].min, formD['dtime'].max)) {
-                let dateTime = new Date(formD['date'].value + "T" + formD['time'].value + "Z");
-                let dropDateTime = new Date(formD['ddate'].value);
-                let diff = Math.abs(dropDateTime - dateTime) - 8.64e+7;
-                if (diff <= 1.0) {
-                    formD['dtime'].min = formD['time'].value;
-                    formD['dtime'].value = formD['time'].value;
+            const selectedDdate = new Date(formD['ddate'].value);
+            const selectedPdate = new Date(formD['date'].value);
+            const selectedDropTime = new Date(`${formD['ddate'].value}T${formD['dtime'].value}`);
+            const selectedPickupTime = new Date(`${formD['date'].value}T${formD['time'].value}`);
+
+            const timeDiff = selectedDropTime.getTime() - selectedPickupTime.getTime();
+            const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
+
+            if (selectedDdate.getTime() === selectedPdate.getTime() + oneDay) {
+                if (timeDiff >= oneDay) {
+                    formD['searchbt'].disabled = false;
+                } else {
+                    formD['searchbt'].disabled = true;
+                    const msg = document.createElement("div");
+                    const body = document.getElementsByTagName("body")[0];
+                    msg.classList.add("msg");
+                    msg.textContent = "Drop time should be at least 24 hours after pickup time.";
+                    body.appendChild(msg);
+                    setTimeout(() => {
+                        body.removeChild(msg);
+                    }, 2500);
                 }
+            } else if (selectedDdate.getTime() > selectedPdate.getTime() + oneDay) {
+                formD['searchbt'].disabled = false;
+            } else {
+                formD['searchbt'].disabled = true;
+                const msg = document.createElement("div");
+                const body = document.getElementsByTagName("body")[0];
+                msg.classList.add("msg");
+                msg.textContent = "Invalid date/time combination.";
+                body.appendChild(msg);
+                setTimeout(() => {
+                    body.removeChild(msg);
+                }, 2500);
             }
         }
 
