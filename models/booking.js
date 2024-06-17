@@ -8,7 +8,7 @@ const bookingSchema = mongoose.Schema({
   time: { type: String, require: true },
   dtime: { type: String, require: true },
   price: { type: Number, require: true },
-  paymentStatus: { type: String, default: "unpaid" },
+  paymentStatus: { type: String, default: "paid" },
   startDate: { type: String, require: true },
   dropDate: { type: String, require: true },
   bookingStatus: { type: Boolean, default: true },
