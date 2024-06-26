@@ -7,7 +7,7 @@ const SALT = process.env.SALT;
 
 const authMiddleware = async(req, res, next) => {
   try {
-    const token = req.headers?.token;
+    const token = req.headers?.token || req.body.Authorization;
     let status = req.body;
     const email = jwt.decode(token, SALT);
     if (email != null) {

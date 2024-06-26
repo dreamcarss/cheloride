@@ -29,7 +29,11 @@
 
 .navbar .links .link {
     color: white;
+    font-family: "poppins";
     text-decoration: none;
+    border: none;
+    background: transparent;
+    font-size: 12px;
 }
 
 .navbar.mb{

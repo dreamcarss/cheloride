@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./meta.ejs') %>
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/data.css">
+
+</head>
+<body>
+    <%- include('./adminNavbar.ejs') %>
+    
+    <div class="container">
+        <div class="title">
+            <p>Data Monitoring System</p>
+        </div>
+        <div class="console">
+            <p id="code" style="margin-bottom: 5px;">Broker Url: "mqtts://uf1116d5.ala.eu-central-1.emqxsl.com:8883"</p>
+            <p id="code" style="margin-bottom: 5px;">Broker Username: Client</p>
+            <p id="code" style="margin-bottom: 5px;">Broker Password: Cheloride@1412</p>
+            <p id="code" style="margin-bottom: 5px;">Topic Name: data</p>
+            <p id="code" style="margin-bottom: 5px;">Listening for Data...</p>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+        var socket = io();
+        console.log(socket)
+        socket.on("data", (data) => {
+            console.log(data)
+            const dat = document.createElement("p");
+            dat.id = "code";
+            const date = (new Date()).toString().split(" ").splice(0, 5).join(" ")
+            dat.textContent = `❯ ${date} : ${data.msg}`
+            let consoleElm = document.getElementsByClassName("console")[0]
+            consoleElm.appendChild(dat);
+            consoleElm.scrollTop = consoleElm.scrollHeight;
+        })
+    </script> 
+</body>
+</html>

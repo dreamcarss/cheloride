@@ -7,7 +7,10 @@ const SALT = process.env.SALT;
 const execAuth = async(req, res, next) => {
     try {
 
-        const email = jwt.decode(req.headers.token, SALT);
+        const email = jwt.decode(
+          req.headers.token || req.body.Authorization,
+          SALT
+        );
         await userModel.findOne({email}).then((user) => {
             if(user != null && user?.role === "Executive" || user?.role === "Admin"){
                 console.log(user.role, "hi")

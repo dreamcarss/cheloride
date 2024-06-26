@@ -1,9 +1,10 @@
-const express  = require("express");
+const client = require("./utils/mqttConnection");
+const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const authRoutes = require("./routes/auth");
-const cloudinary = require("cloudinary").v2
+const cloudinary = require("cloudinary").v2;
 const carRoutes = require("./routes/cars.js");
 const bookingRouter = require("./routes/booking");
 const adminRoutes = require("./routes/admin");
@@ -14,9 +15,9 @@ const sessionModel = require("./models/sessionModel");
 const mail = require("./utils/mailer");
 const userModel = require("./models/userModel");
 const authMiddleware = require("./middlewares/auth");
-const crypto = require('crypto')
+const crypto = require("crypto");
 require("dotenv").config();
-const stringify = require("json-stringify-safe");
+const http = require("http");
 
 const axios = require("axios");
 const uniqid = require("uniqid");
@@ -28,10 +29,11 @@ const SALT_INDEX = process.env.SALT_INDEX;
 const SALT_KEY = process.env.SALT_KEY;
 const PHONEPE_API_BASE_URL = process.env.URI;
 
-
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.DB;
 const app = express();
+const socket_server = http.createServer(app);
+const io = require("socket.io")(socket_server);
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -39,8 +41,8 @@ cloudinary.config({
   api_secret: process.env.CLOUD_SECRET,
 });
 
-app.use(cors())
-app.use(express.urlencoded({limit: '50mb', extended: false }));
+app.use(cors());
+app.use(express.urlencoded({ limit: "50mb", extended: false }));
 app.use(express.json({ limit: "50mb" }));
 app.use(
   "/static",
@@ -53,16 +55,16 @@ app.use(
   })
 );
 
-app.use("/auth", authRoutes)
-app.use("/admin", carRoutes)
+app.use("/auth", authRoutes);
+app.use("/admin", carRoutes);
 app.use("/adminpanel", adminRoutes);
-app.use("/booking", bookingRouter)
+app.use("/booking", bookingRouter);
 app.use("/terms&conditions", (req, res) => res.render("terms.ejs"));
 app.use("/privacyPolicy", (req, res) => res.render("privacypolicy.ejs"));
 app.get("/join-us", (req, res) => res.render("join.ejs"));
-app.post("/join-request", async(req, res) => {
+app.post("/join-request", async (req, res) => {
   const email = req.body.email;
-  await mail("New Vendor Join Request", `<b>${email}</b>`, process.env.MAIL)
+  await mail("New Vendor Join Request", `<b>${email}</b>`, process.env.MAIL);
   await mail(
     "Request regarding joining CheloRide community",
     `<!DOCTYPE html>
@@ -144,15 +146,20 @@ app.post("/join-request", async(req, res) => {
     `,
     email
   );
-  res.status(200).render("400.ejs", { t: "Join Request", sub: "Join request has been sent, Our executive will contact you shortly mean whil you can check our cars and services" });
-})
+  res
+    .status(200)
+    .render("400.ejs", {
+      t: "Join Request",
+      sub: "Join request has been sent, Our executive will contact you shortly mean whil you can check our cars and services",
+    });
+});
 
 app.post("/taxi", authMiddleware, async (req, res) => {
   const email = req.body.email;
   const time = req.body.time;
   const location = req.body.location;
-  const user = await userModel.findOne({email});
-  if(user != null){
+  const user = await userModel.findOne({ email });
+  if (user != null) {
     await mail(
       "New Taxi Booking",
       `<html>
@@ -242,112 +249,122 @@ app.post("/taxi", authMiddleware, async (req, res) => {
       `,
       process.env.MAIL
     );
-    res
-      .status(200)
-      .json({
-        msg: "Taxi Booked! Your taxi will arrive shortly.",
-      });
+    res.status(200).json({
+      msg: "Taxi Booked! Your taxi will arrive shortly.",
+    });
   }
 });
 
-
 function remDups(arr) {
   return arr.filter((item, index) => arr.indexOf(item) === index);
-} 
+}
 
-app.get("/", async(req, res) => {
+app.get("/", async (req, res) => {
   try {
-    await carModel.find().then(cars => {
-      if(cars.length > 0){
+    await carModel.find().then((cars) => {
+      if (cars.length > 0) {
         let locations = cars
-          .filter(
-            (car) => car.place?.toLowerCase() === "Vizag".toLowerCase()
-          )
+          .filter((car) => car.place?.toLowerCase() === "Vizag".toLowerCase())
           .map((car) => {
             return car.location?.toLowerCase();
           });
         let places = cars.map((car) => {
           return car.place?.toLowerCase();
         });
-        locations.push("Any")
-        res.render("index.ejs", { locations: remDups(locations), places: remDups(places)});
-      }else{
-        res.render("index.ejs", {locations: "pm palem"});
+        locations.push("Any");
+        res.render("index.ejs", {
+          locations: remDups(locations),
+          places: remDups(places),
+        });
+      } else {
+        res.render("index.ejs", { locations: "pm palem" });
       }
-    })
+    });
   } catch (error) {
-      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
-})
+});
 
-app.get("/locations/:place", async(req, res) => {
+app.get("/locations/:place", async (req, res) => {
   try {
-    let cars = await carModel.find({place: req.params.place});
-    if(cars.length <= 0){ 
-      const locations = ["No cars found"]
+    let cars = await carModel.find({ place: req.params.place });
+    if (cars.length <= 0) {
+      const locations = ["No cars found"];
       res.status(400).json({ locs: locations });
-    }else{
+    } else {
       const locations = remDups(
         cars.map((car) => {
           return car.location?.toLowerCase();
         })
       );
-      res.status(200).json({"locs": locations})
+      res.status(200).json({ locs: locations });
     }
   } catch (error) {
-      res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
-})
+});
 
-app.post("/cars", async(req, res) => {
-    try {
-      const data = req.body;
-      let cars = await carModel.find({ place: data.place.toLowerCase() });
-      const locations = remDups(
-        cars.map((car) => {
-          return car.location?.toLowerCase();
-        })
-      );
-      console.log(cars);
-      res.render("cars.ejs", {
-        locations: locations,
-        service: data.service,
-        city: data.place.toLowerCase(),
-      });
-    } catch (error) {
-        console.log(error)
-        res.render("400.ejs", { t: 500, sub: "Something went wronggg" });
-    }
+app.post("/cars", async (req, res) => {
+  try {
+    const data = req.body;
+    let cars = await carModel.find({ place: data.place.toLowerCase() });
+    const locations = remDups(
+      cars.map((car) => {
+        return car.location?.toLowerCase();
+      })
+    );
+    console.log(cars);
+    res.render("cars.ejs", {
+      locations: locations,
+      service: data.service,
+      city: data.place.toLowerCase(),
+    });
+  } catch (error) {
+    console.log(error);
+    res.render("400.ejs", { t: 500, sub: "Something went wronggg" });
+  }
 });
 
 app.get("/adminlogin", (req, res) => {
-  res.render("adminlogin.ejs")
+  res.render("adminlogin.ejs");
 });
 
 app.get("/quickbooking", (req, res) => {
-  res.render("quickbooking.ejs")
-})
+  res.render("quickbooking.ejs");
+});
 
-
-
-app.post("/quickbook", async(req, res) => {
-  const {name, phone} = req.body;
+app.post("/quickbook", async (req, res) => {
+  const { name, phone, id_proof } = req.body;
+  
   try {
-    if(name != null || phone != null){
-      await mail(
-        "Request for QUICK BOOKING",
-        `<b>Name : ${name}</b> <br/> <b> Phone : ${phone}</b>`,
-        process.env.MAIL
-      );
-      res.render("400.ejs", { t: "Quick booking", sub: `Hi ${name}, Request sent successfully, our executive will contact you within few minutes. Thankyou!` });
-    }else{
-      console.log(name, phone)
+    if (name && phone) {
+      let idProofs;
+      
+      if (Array.isArray(id_proof)) {
+        idProofs = id_proof.join(', ');
+      } else {
+        idProofs = id_proof;
+      }
+
+      const emailContent = `
+        <b>Name : ${name}</b> <br/> 
+        <b>Phone : ${phone}</b> <br/> 
+        <b>Id Proof: ${idProofs}</b>
+      `;
+      await mail("Request for QUICK BOOKING", emailContent, process.env.MAIL);
+
+      res.render("400.ejs", {
+        t: "Quick booking",
+        sub: `Hi ${name}, Request sent successfully, our executive will contact you within few minutes. Thank you!`,
+      });
+    } else {
+      console.log(name, phone);
       res.render("400.ejs", { t: 400, sub: "Invalid Details" });
     }
   } catch (error) {
-    res.render("400.ejs", { t: 500, sub: "Something went wronggg" });
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
-})
+});
 
 
 const interval = 24 * 60 * 60 * 1000;
@@ -360,26 +377,21 @@ setInterval(autoDelete, interval);
 // })
 
 app.get("/taxiservices", (req, res) => {
-  res.render("taxi.ejs")
-})
+  res.render("taxi.ejs");
+});
 
 app.use("/feePolicy", (req, res) => res.render("cancelPolicy.ejs"));
-
 
 app.get("/pay", async (req, res) => {
   try {
     const transactionId = "MT-" + uniqid();
     console.log(req.headers.tempid);
     const booking = await tempBooking.findById(req.headers.tempid);
-    console.log(booking)
+    console.log(booking);
     if (booking != null) {
       const car = await carModel.findById(booking.carId);
-      const stDt = new Date(
-        booking.date + "T" + booking.time + "Z"
-      );
-      const edDt = new Date(
-        booking.ddate + "T" + booking.dtime + "Z"
-      );
+      const stDt = new Date(booking.date + "T" + booking.time + "Z");
+      const edDt = new Date(booking.ddate + "T" + booking.dtime + "Z");
       let diff = Math.abs(edDt - stDt);
       let data = {};
       let hrs = diff / 3.6e6;
@@ -431,7 +443,7 @@ app.get("/pay", async (req, res) => {
       const tokenUrl = response.data.data.instrumentResponse.redirectInfo.url;
       console.log(tokenUrl);
       res.json({ tokenUrl: tokenUrl, trId: transactionId });
-    }else{
+    } else {
       console.log("no booking");
       res.status(400).json({ error: "Failed to create payment" });
     }
@@ -449,7 +461,7 @@ app.post("/refund", async (req, res) => {
       merchantId: MERCHANT_ID,
       merchantTransactionId: "MT" + uniqid(),
       originalTransactionId: transactionId,
-      amount: amount*100,
+      amount: amount * 100,
       reason: reason != "" ? reason : "none",
     };
 
@@ -522,10 +534,19 @@ app.use((req, res, next) => {
 
 
 mongoose.connect(DB_URI).then(() => {
-    console.log("DB connected")
-    app.listen(PORT, () => {
-      console.log("server started");
-      console.log(`http://localhost:${PORT}/`)
+  console.log("DB connected");
+  socket_server.listen(PORT, () => {
+    console.log("server started");
+    console.log(`http://localhost:${PORT}/`);
+    io.on("connection", (socket) => {
+      console.log("Socket Connected");
+      client.on("message", (topic, message) => {
+        console.log(message.toString());
+        socket.emit("data", {msg: message.toString()})
+      });
     });
-})
+  })
+});
 
+
+module.exports = io

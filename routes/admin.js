@@ -14,6 +14,11 @@ adminRoutes.get("/", (req, res) => {
     res.render("admin.ejs");
 })
 
+adminRoutes.post("/monitor" , authMiddleware, execAuth, (req, res) => {
+    console.log(req.body.Authorization);
+    res.render("adminMqtt.ejs");
+})
+
 adminRoutes.get("/bookings", (req, res) => {
   res.render("adminBookings.ejs");
 });

@@ -16,6 +16,7 @@
             <a href="/adminpanel/bookings" class="link">Bookings</a>
             <a href="/adminpanel/users" class="link">Users</a>
             <a href="/adminpanel/executives" class="link">Executives Logs</a>
+            <button onclick="monitor()" class="link">Car Monitor</button>
             <a href="/adminpanel/trash" class="link">Trash Bin</a>
         </div>
         <div class="links">
@@ -38,6 +39,7 @@
                 <a href="/adminpanel/bookings" class="link">Bookings</a>
                 <a href="/adminpanel/users" class="link">Users</a>
                 <a href="/adminpanel/executives" class="link">Executives Logs</a>
+                <a href="/adminpanel/trash" class="link">Car Monitor</a>
                 <a href="/adminpanel/trash" class="link">Trash Bin</a>
             </div>
         </div>
@@ -78,6 +80,24 @@
             setTimeout(() => {
                 window.location.href = "/auth/login"
             }, 1000)
+        }
+
+        const monitor = () => {
+            console.log("monitor");
+            const token = window.localStorage.getItem("token");
+
+            const form = document.createElement("form");
+            form.method = "POST"
+            form.action = "/adminpanel/monitor";
+
+            const tokenInp = document.createElement("input");
+            tokenInp.type =  "hidden";
+            tokenInp.name = "Authorization";
+            tokenInp.value = token;
+            form.appendChild(tokenInp);
+
+            document.body.appendChild(form);
+            form.submit()
         }
     </script>
 </body>

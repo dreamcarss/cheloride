@@ -1,11 +1,10 @@
-2<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('./meta.ejs') %>
 
     <link rel="stylesheet" href="../static/css/register.css">
     <link rel="stylesheet" href="../static/css/theme.css">
-
 </head>
 <body>
     <%- include('./navbar.ejs') %>
@@ -22,11 +21,25 @@
                 <label for="">Phone</label>
                 <input type="text" class="inp" name="phone" placeholder="Enter your Phone number" required>
             </div>
+            <div class="wrap" style="margin-top: 10px;
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;">
+                <label>
+                    <input type="checkbox" name="id_proof" value="aadhaar"> Aadhaar Card
+                </label>
+                <label>
+                    <input type="checkbox" name="id_proof" value="driving_licence"> Driving Licence
+                </label>
+                <label>
+                    <input type="checkbox" name="id_proof" value="student_job_id"> Student/Job ID
+                </label>
+            </div>
             <button class="btn" id="submit" type="submit">Book now</button>
             <a href="/auth/register" class="link">Not having an account? Register</a>
         </form>
     </div>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6RF5QPQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    
 </body>
 </html>

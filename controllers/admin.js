@@ -95,7 +95,7 @@ const executive_data = async (req, res) => {
             obj.username = user.username;
             let cars = {};
             allCars.forEach((car) => {
-              cars[car.brand] = 0; // Initialize all car counts to 0
+              cars[car.brand] = 0;
             });
             const bookings = await bookingModel.find({ userId: user.email });
             obj.bookingcount = bookings.length;
@@ -112,6 +112,7 @@ const executive_data = async (req, res) => {
             data.push(obj);
           })
         );
+        console.log(data)
         res.status(200).json({"data": data})
       } catch (error) {
         console.error(error);
