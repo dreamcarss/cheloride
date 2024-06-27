@@ -541,8 +541,8 @@ mongoose.connect(DB_URI).then(() => {
     io.on("connection", (socket) => {
       console.log("Socket Connected");
       client.on("message", (topic, message) => {
-        console.log(message.toString());
-        socket.emit("data", {msg: message.toString()})
+        console.log(message.toString(), topic);
+        socket.emit("data", {msg: message.toString(), topic})
       });
     });
   })

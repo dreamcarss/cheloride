@@ -15,7 +15,7 @@ const client = mqtt.connect(MQTT_URI, {
 
 client.on("connect", () => {
   console.log("MQTT connected");
-  client.subscribe("data", (err) => {
+  client.subscribe("/data/#", (err) => {
     if (err) {
       console.error("Subscription error:", err);
     } else {

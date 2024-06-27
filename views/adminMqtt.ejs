@@ -31,7 +31,7 @@
             const dat = document.createElement("p");
             dat.id = "code";
             const date = (new Date()).toString().split(" ").splice(0, 5).join(" ")
-            dat.textContent = `❯ ${date} : ${data.msg}`
+            dat.innerHTML = `❯ ${date} : topic ${data.topic} : <span style="color: white">${data.msg}</span>`
             let consoleElm = document.getElementsByClassName("console")[0]
             consoleElm.appendChild(dat);
             consoleElm.scrollTop = consoleElm.scrollHeight;
