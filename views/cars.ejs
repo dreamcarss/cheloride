@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <%- include('./meta.ejs') %>
-
     <link rel="stylesheet" href="../static/css/cars.css">
     <link rel="stylesheet" href="../static/css/theme.css">
-
 </head>
 <body>
     <%- include('./navbar.ejs') %>
@@ -27,7 +25,7 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Pickup Time</h6>
-                    <input type="time" name="time" id="time"  min="4:59" max="22:01" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="time" id="time" placeholder="10:10 am" required class="wsub">
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Date</h6>
@@ -35,10 +33,10 @@
                 </div>
                 <div class="wrap">
                     <h6 class="wtitle">Drop Time</h6>
-                    <input type="time" name="dtime" id="dtime" min="4:59" max="22:01" placeholder="10:10 am" required class="wsub" disabled>
+                    <input type="time" name="dtime" id="dtime" placeholder="10:10 am" required class="wsub" disabled>
                 </div>
                 <div class="wrap " id="loader">
-                    <button type="submit" class="bbtn idbtn sbt" id="searchbt" name="searchbt">
+                    <button type="submit" class="bbtn idbtn sbt" id="searchbt" name="searchbt" disabled>
                         <div class="circle" id="load" style="display: none;"></div>
                         <p class="hide">Search</p>
                         <ion-icon name="search" id="search" style="font-size:19px"></ion-icon>
@@ -47,223 +45,122 @@
             </form>
             <div class="slider">
                 <p class="ssub" style="color: rgba(255, 45, 45, 0.763); font-size: 13px;">Note: Any Midnight booking services, contact customer care. Terms and Conditions applicable</p>
-                <div class="carcard">
-                    <img src="../static/assets/eonblue.jpg" alt="" class="img">
-                    <div class="twrap">
-                        <div class="col">
-                            <h3 class="title">Hyundai Eon Blue</h3>
-                            <p class="ssub">Eon 2018 model petrol 5 speed gear transmission manual 5 seater</p>
-                            <div class="row">
-                                <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">105rs/hr</p>
-                                <p class="price">Petrol</p>
-                                <p class="price">Rk Beach</p>
-                            </div>
-                        </div>
-                        <div class="price pmb">
-                            <div style="text-align: right">
-                                <p class="cost">2800</p>
-                                <p class="label">Total Estimated <br />Amount</p>
-                            </div>
-                            <div class="wrapRow">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="ssub" id="note" style="color: rgba(255, 233, 233, 0.763); font-size: 13px;">** Please select fill the above dates and times to get all available Cars **</p>
             </div>
             <div class="slider slider2">
                 <p class="title otitle" style="text-align: center; margin-top:30px; display:none">Other Locations</p>
             </div>
         </div>
     </div>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6RF5QPQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <script>
         const slider = document.getElementsByClassName("slider")[0];
         const slider2 = document.getElementsByClassName("slider2")[0];
         const container = document.getElementsByClassName("container")[0];
         const formD = document.getElementById("form");
-        const pdate = document.getElementById("pdate");
-        const ddate = document.getElementById("ddate");
+        const startDate = document.getElementById('pdate');
+        const startTime = document.getElementById('time');
+        const dropDate = document.getElementById('ddate');
+        const dropTime = document.getElementById('dtime');
+        const searchButton = document.getElementById('searchbt');
 
-        // Debounce function
-        function debounce(func, delay) {
-            let timeoutId;
-            return (...args) => {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func.apply(null, args);
-                }, delay);
-            };
+        // Set minimum date for start date to today
+        startDate.min = new Date().toISOString().split("T")[0];
+
+        // Function to validate dates and times
+        function validateDatesAndTimes() {
+            const start = new Date(startDate.value + 'T' + startTime.value);
+            const drop = new Date(dropDate.value + 'T' + dropTime.value);
+            const now = new Date();
+            const minDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+            if (start <= now) {
+                showError("Start date and time must be in the future");
+                return false;
+            }
+
+            if (drop <= start) {
+                showError("Drop date and time must be after start date and time");
+                return false;
+            }
+
+            if (drop - start < minDuration) {
+                showError("Booking duration must be at least 24 hours");
+                return false;
+            }
+
+            return true;
         }
 
-        // Set initial values
-        window.onload = () => {
-            formD['date'].value = sessionStorage.getItem("date") || "";
-            formD['ddate'].value = sessionStorage.getItem("ddate") || "";
-            formD['time'].value = sessionStorage.getItem("time") || "";
-            formD['dtime'].value = sessionStorage.getItem("dtime") || "";
-            formD['searchbt'].click();
-            document.querySelectorAll(".wsub").forEach(sub => {
-                sub.removeAttribute("disabled");
+        // Function to show error messages
+        function showError(message) {
+            const msg = document.createElement("div");
+            const body = document.getElementsByTagName("body")[0];
+            msg.classList.add("msg");
+            msg.textContent = message + ", kindly adjust time to continue searching..";
+            msg.style.color = "red"
+            body.appendChild(msg);
+            setTimeout(() => msg.remove(), 8000);
+        }
+
+        // Event listeners for date and time inputs
+        [startDate, startTime, dropDate, dropTime].forEach(input => {
+            input.addEventListener('change', () => {
+                if (startDate.value && startTime.value) {
+                    dropDate.disabled = false;
+                    dropTime.disabled = false;
+                }
+
+                if (startDate.value) {
+                    dropDate.min = startDate.value;
+                }
+
+                if (startDate.value && startTime.value && dropDate.value && dropTime.value) {
+                    searchButton.disabled = !validateDatesAndTimes();
+                }
             });
-        };
-
-        // Set minimum date for pdate
-        pdate.min = new Date().toISOString().split("T")[0];
-
-        // Handle pdate blur
-        pdate.addEventListener("blur", debounce(handlePdateBlur, 500));
-        function handlePdateBlur() {
-            var now = new Date();
-            if (now.toISOString().split('T')[0] === formD['date'].value) {
-                var hours = now.getHours();
-                var minutes = now.getMinutes();
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                formD['time'].min = hours + ':' + minutes;
-                if (formD['time'].min > "22:01") {
-                    formD['time'].max = hours + ':' + minutes;
-                }
-            } else {
-                formD['time'].min = "04:59";
-                formD['time'].max = "22:01";
-                formD['time'].removeAttribute("min");
-            }
-            formD['time'].disabled = false;
-        }
-
-        // Handle time blur
-        formD['time'].addEventListener("blur", debounce(handleTimeBlur, 500));
-        function handleTimeBlur() {
-            if (isValidTime(formD['time'].value, formD['time'].min, formD['time'].max)) {
-                formD['ddate'].disabled = false;
-            }
-        }
-
-        // Handle ddate blur
-        ddate.addEventListener("blur", debounce(handleDdateBlur, 500));
-        function handleDdateBlur() {
-            let dates = pdate.value.split("-");
-            let dateObj = new Date(dates[0], dates[1] - 1, dates[2]); // months are 0-indexed in JS
-            dateObj.setDate(dateObj.getDate() + 1);
-            let newDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-            ddate.min = newDate;
-
-            if (isValidDate(ddate.value, ddate.min)) {
-                formD['dtime'].disabled = false;
-            }
-        }
-
-        // Handle dtime blur
-        formD['dtime'].addEventListener("blur", debounce(handleDtimeBlur, 500));
-        function handleDtimeBlur() {
-            const selectedDdate = new Date(formD['ddate'].value);
-            const selectedPdate = new Date(formD['date'].value);
-            const selectedDropTime = new Date(`${formD['ddate'].value}T${formD['dtime'].value}`);
-            const selectedPickupTime = new Date(`${formD['date'].value}T${formD['time'].value}`);
-
-            const timeDiff = selectedDropTime.getTime() - selectedPickupTime.getTime();
-            const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
-
-            if (selectedDdate.getTime() === selectedPdate.getTime() + oneDay) {
-                if (timeDiff >= oneDay) {
-                    formD['searchbt'].disabled = false;
-                } else {
-                    formD['searchbt'].disabled = true;
-                    const msg = document.createElement("div");
-                    const body = document.getElementsByTagName("body")[0];
-                    msg.classList.add("msg");
-                    msg.textContent = "Drop time should be at least 24 hours after pickup time.";
-                    body.appendChild(msg);
-                    setTimeout(() => {
-                        body.removeChild(msg);
-                    }, 2500);
-                }
-            } else if (selectedDdate.getTime() > selectedPdate.getTime() + oneDay) {
-                formD['searchbt'].disabled = false;
-            } else {
-                formD['searchbt'].disabled = true;
-                const msg = document.createElement("div");
-                const body = document.getElementsByTagName("body")[0];
-                msg.classList.add("msg");
-                msg.textContent = "Invalid date/time combination.";
-                body.appendChild(msg);
-                setTimeout(() => {
-                    body.removeChild(msg);
-                }, 2500);
-            }
-        }
-
-        // Input validation functions
-        function isValidDate(date, minDate) {
-            if (date === "") return false;
-            if (new Date(date) < new Date(minDate)) return false;
-            return true;
-        }
-
-        function isValidTime(time, minTime, maxTime) {
-            if (time === "") return false;
-            const [hours, minutes] = time.split(":");
-            const timeNum = parseInt(hours) * 60 + parseInt(minutes);
-            const minTimeNum = minTime ? parseInt(minTime.split(":")[0]) * 60 + parseInt(minTime.split(":")[1]) : 0;
-            const maxTimeNum = maxTime ? parseInt(maxTime.split(":")[0]) * 60 + parseInt(maxTime.split(":")[1]) : 1440;
-            if (timeNum < minTimeNum || timeNum >= maxTimeNum) return false;
-            return true;
-        }
+        });
 
         // Form submission
         formD.addEventListener("submit", (e) => {
             e.preventDefault();
-            document.getElementById("note").style.display = "none";
-            if (
-                formD['date'].value !== "" &&
-                formD['ddate'].value !== "" &&
-                formD['time'].value !== "" &&
-                formD['dtime'].value !== "" &&
-                isValidDate(formD['date'].value, formD['date'].min) &&
-                isValidDate(formD['ddate'].value, formD['ddate'].min) &&
-                isValidTime(formD['time'].value, formD['time'].min, formD['time'].max) &&
-                isValidTime(formD['dtime'].value, formD['dtime'].min, formD['dtime'].max)
-            ) {
-                if (formD['time'].value > "04:59" && formD['dtime'].value > "04:59") {
-                    document.getElementById("load").style.display = "flex";
-                    document.getElementById("searchbt").setAttribute("disabled", true);
-                    document.getElementById("search").style.display = "none";
-                    let start = formD["date"].value;
-                    let end = formD["ddate"].value;
-                    let loc = formD["location"].value;
-                    let time = formD["time"].value;
-                    let dtime = formD["dtime"].value;
+            if (validateDatesAndTimes()) {
+                document.getElementById("load").style.display = "flex";
+                document.getElementById("searchbt").setAttribute("disabled", true);
+                document.getElementById("search").style.display = "none";
+                
+                let start = formD["date"].value;
+                let end = formD["ddate"].value;
+                let loc = formD["location"].value;
+                let time = formD["time"].value;
+                let dtime = formD["dtime"].value;
 
-                    const carsCards = document.querySelectorAll(".carcard");
-                    if (carsCards.length > 0) {
-                        carsCards.forEach((card) => {
-                            card.remove();
-                        });
+                const carsCards = document.querySelectorAll(".carcard");
+                if (carsCards.length > 0) {
+                    carsCards.forEach((card) => {
+                        card.remove();
+                    });
+                }
+
+                fetch(`/admin/allCars`, {
+                    headers: {
+                        startDate: start,
+                        endDate: end,
+                        time: time,
+                        dtime: dtime,
+                        loc: loc,
+                        city: "<%- city %>"
                     }
-
-                    fetch(`/admin/allCars`, {
-                        headers: {
-                            startDate: start,
-                            endDate: end,
-                            time: time,
-                            dtime: dtime,
-                            loc: loc,
-                            city: "<%- city %>"
-                        }
-                    }).then(res => res.json().then(data => {
-                        document.getElementsByClassName("otitle")[0].style.display = "none";
-                        if (res.status === 404) {
-                            document.getElementsByClassName("otitle")[0].textContent = "No Cars Available";
-                            document.getElementsByClassName("otitle")[0].style.display = "flex";
-                        }
-                        document.getElementById("load").style.display = "none";
-                        document.getElementById("searchbt").removeAttribute("disabled");
-                        document.getElementById("search").style.display = "flex";
-                        let diff = data?.diff;
-                        data?.cars.forEach((car, i) => {
+                }).then(res => res.json().then(data => {
+                    document.getElementsByClassName("otitle")[0].style.display = "none";
+                    if (res.status === 404) {
+                        document.getElementsByClassName("otitle")[0].textContent = "No Cars Available";
+                        document.getElementsByClassName("otitle")[0].style.display = "flex";
+                    }
+                    document.getElementById("load").style.display = "none";
+                    document.getElementById("searchbt").removeAttribute("disabled");
+                    document.getElementById("search").style.display = "flex";
+                    let diff = data?.diff;
+                    data?.cars.forEach((car, i) => {
                             const newCar = document.createElement("div");
                             newCar.classList.add("carcard");
                             let carData = `
@@ -300,23 +197,7 @@
                                 document.getElementsByClassName("otitle")[0].style.display = "block";
                             }
                         });
-                    }));
-                } else {
-                    const msg = document.createElement("div");
-                    const body = document.getElementsByTagName("body")[0];
-                    msg.classList.add("msg");
-                    msg.textContent = "Please adjust the time-zone to after 9:00am";
-                    body.appendChild(msg);
-                    setTimeout(() => {
-                        body.removeChild(msg);
-                    }, 2500);
-                }
-            } else {
-                const msg = document.createElement("div");
-                const body = document.getElementsByTagName("body")[0];
-                msg.classList.add("msg");
-                msg.textContent = "Please fill all the details correctly";
-                body.appendChild(msg);
+                }));
             }
         });
 

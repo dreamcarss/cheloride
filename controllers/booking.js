@@ -211,7 +211,8 @@ const bookCar = async(req, res) => {
               startDate: booking.date,
               paymentStatus: "Paid",
               dropDate: booking.ddate,
-              transactionID: req.body.trId
+              transactionID: req.body.trId,
+              documents: req.body.documents
             });
             await tempBooking.findOneAndDelete({ carId: car._id });
             await newBooking.save().then(async () => {
@@ -247,6 +248,22 @@ const bookCar = async(req, res) => {
                       <div>
                         <b style="display: inline-block;">Car brand:</b> <p>${
                           car.brand
+                        }</p> 
+                      </div>
+                    </br> 
+                      <div>
+                        <b style="display: inline-block;">Doucments:</b> <p>${
+                          req.body.documents.aadhaar ? "checked" : "unchecked"
+                        }</p> 
+                        <b style="display: inline-block;">Doucments:</b> <p>${
+                          req.body.documents.drivingLicense
+                            ? "checked"
+                            : "unchecked"
+                        }</p> 
+                        <b style="display: inline-block;">Doucments:</b> <p>${
+                          req.body.documents.idDocument
+                            ? "checked"
+                            : "unchecked"
                         }</p> 
                       </div>
                     </br> 

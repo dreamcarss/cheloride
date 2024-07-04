@@ -87,10 +87,34 @@
                     </div>
                     <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">I accept the <a class="status" style="color: rgb(110, 110, 255); font-weight: bolder;" href="/privacyPolicy">Privacy Policy and Fee Policy</a></h2>
                 </div>
-
+                
                 <h2 class="stit" style="margin-top: 40px; ">Required Documents</h2>
-                <div class="row" style="margin-top: 0;">
-                    <div class="sub" style="text-align:left;">Aadhar, Driving license, Student id (or) job id (or) business gst</div>
+                <div class="row" style="margin-top:0px;">
+                    <input type="checkbox" id="aadharCheck" name="accept" value="yes" hidden>
+                    <div id="aadharCheckbox" class="custom-checkbox">
+                        <div id="aadharChecked" class="checked-indicator">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </div>
+                    </div>
+                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Aadhaar</h2>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <input type="checkbox" id="licenseCheck" name="accept" value="yes" hidden>
+                    <div id="licenseCheckbox" class="custom-checkbox">
+                        <div id="licenseChecked" class="checked-indicator">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </div>
+                    </div>
+                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Driving License</h2>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <input type="checkbox" id="idCheck" name="accept" value="yes" hidden>
+                    <div id="idCheckbox" class="custom-checkbox">
+                        <div id="idChecked" class="checked-indicator">
+                            <ion-icon name="checkmark"></ion-icon>
+                        </div>
+                    </div>
+                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Student Id (or) Job Id (or) Business GST </h2>
                 </div>
             </div>
             <div class="gt">
@@ -134,23 +158,59 @@
             }
         }
 
+        const setupCheckbox = (checkboxId, checkedId, hiddenInputId) => {
+            const checkbox = document.getElementById(checkboxId);
+            const checked = document.getElementById(checkedId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+
+            checkbox.onclick = () => {
+                hiddenInput.click();
+                checked.classList.toggle("checked");
+            };
+        };
+
+        // Set up the new checkboxes
+        setupCheckbox("aadharCheckbox", "aadharChecked", "aadharCheck");
+        setupCheckbox("licenseCheckbox", "licenseChecked", "licenseCheck");
+        setupCheckbox("idCheckbox", "idChecked", "idCheck");
+        window.onload = () => {
+            checkH.checked = false;
+            checkH2.checked = false;
+            document.getElementById("aadharCheck").checked = false;
+            document.getElementById("licenseCheck").checked = false;
+            document.getElementById("idCheck").checked = false;
+        };
+
+        // Update the bookingHandler function to include new checkboxes
         const bookingHandler = async() => {
-            if(checkH2.checked && checkH.checked){
+            const aadharChecked = document.getElementById("aadharCheck").checked;
+            const licenseChecked = document.getElementById("licenseCheck").checked;
+            const idChecked = document.getElementById("idCheck").checked;
+
+            if(checkH2.checked && checkH.checked && aadharChecked && licenseChecked && idChecked) {
                 btn.innerHTML = "<div class='circle'></div>";
                 btn.setAttribute("disabled", true);
-                 try {
+                try {
                     const response = await fetch('/pay', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'token': localStorage.getItem("token"),
-                        'tempid': id
-                    },
-                });
-                
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'token': localStorage.getItem("token"),
+                            'tempid': id
+                        },
+                    });
+                    
                     if (response.ok) {
                         const { tokenUrl, trId } = await response.json();
-                        let data = {tempid: id, trId: trId}
+                        let data = {
+                            tempid: id, 
+                            trId: trId,
+                            documents: {
+                                aadhaar: aadharChecked,
+                                drivingLicense: licenseChecked,
+                                idDocument: idChecked
+                            }
+                        }
                         const callback = (response) => {
                             if (response === 'USER_CANCEL') {
                                 const msg = document.createElement("div");
@@ -222,16 +282,24 @@
 
                         window.PhonePeCheckout.transact({ tokenUrl, callback, type: 'IFRAME' });
                     } else {
-                    console.error('Error obtaining tokenUrl:', response.status);
+                        console.error('Error obtaining tokenUrl:', response.status);
                     }
                 } catch (error) {
                     console.error('Error initiating payment:', error);
                 }
-            }else{
-                check.style.border = "2px solid red";
-                check.style.background = "rgba(255, 0, 0, 0.279)";
-                check2.style.border = "2px solid red";
-                check2.style.background = "rgba(255, 0, 0, 0.279)";
+            } else {
+                // Show error for unchecked boxes
+                const checkboxes = [check, check2, 
+                    document.getElementById("aadharCheckbox"), 
+                    document.getElementById("licenseCheckbox"), 
+                    document.getElementById("idCheckbox")];
+                
+                checkboxes.forEach(cb => {
+                    if (!cb.querySelector('input').checked) {
+                        cb.style.border = "2px solid red";
+                        cb.style.background = "rgba(255, 0, 0, 0.279)";
+                    }
+                });
             }
         }
     </script>

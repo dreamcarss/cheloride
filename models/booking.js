@@ -13,6 +13,7 @@ const bookingSchema = mongoose.Schema({
   dropDate: { type: String, require: true },
   bookingStatus: { type: Boolean, default: true },
   transactionID: { type: String, default: "offline" },
+  documents: {type: Object}
 });
 
 

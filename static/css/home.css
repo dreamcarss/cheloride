@@ -366,10 +366,10 @@
 }
 
 .footer .sub{
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 5px;
     text-align: left;
-    width: 260px;
+    width: 100%;
     font-family: "Poppins";
 }
 
@@ -424,6 +424,14 @@
     }
 }
 
+.footer .sub-footer{
+    display: grid;
+    grid-template-columns: 250px max-content max-content max-content 250px;
+    gap: 70px;
+    width: 100%;
+}
+
+
 @media only screen and (max-width: 600px){
     .ico{
         display: none;
@@ -435,7 +443,9 @@
     .footer{
         grid-template-columns: repeat(1, 1fr);
     }
-    .footer div{
+    .footer .sub-footer{
+        display: flex;
+        gap: 20px;
         flex-direction: column;
     }
     .footer .sub.mt {
