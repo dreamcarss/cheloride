@@ -1,320 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <%- include('./meta.ejs') %>
-    <link rel="stylesheet" href="../static/css/cars.css">
-    <link rel="stylesheet" href="../static/css/theme.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../static/css/cars.css" />
+    <link rel="stylesheet" href="../static/css/theme.css" />
+  </head>
+  <body>
     <%- include('./navbar.ejs') %>
     <div class="container">
-        <div class="bg">
-            <h3 class="title">Select Car</h3>
-            <form class="card" id="form">
-                <div class="wrap">
-                    <h6 class="wtitle">Place</h6>
-                    <select type="text" class="wsub" name="location" id="location" placeholder="Select location" required>
-                        <% locations?.forEach(function(loc, i, entries){ %>
-                            <option class="lelm"><%= loc.toUpperCase() %></option>
-                        <% }) %>
-                    </select>
+      <div class="bg">
+        <h3 class="title">Select Car</h3>
+        <form class="card" id="form">
+          <div class="wrap">
+            <h6 class="wtitle">Place</h6>
+            <select
+              type="text"
+              class="wsub"
+              name="location"
+              id="location"
+              placeholder="Select location"
+              required
+            >
+              <% locations?.forEach(function(loc, i, entries){ %>
+              <option class="lelm"><%= loc.toUpperCase() %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="wrap">
+            <h6 class="wtitle">Pickup Date</h6>
+            <input type="date" name="date" id="pdate" required class="wsub" />
+          </div>
+          <div class="wrap">
+            <h6 class="wtitle">Pickup Time</h6>
+            <input
+              type="time"
+              name="time"
+              id="time"
+              placeholder="10:10 am"
+              required
+              class="wsub"
+            />
+          </div>
+          <div class="wrap">
+            <h6 class="wtitle">Drop Date</h6>
+            <input
+              type="date"
+              name="ddate"
+              id="ddate"
+              required
+              class="wsub"
+              disabled
+            />
+          </div>
+          <div class="wrap">
+            <h6 class="wtitle">Drop Time</h6>
+            <input
+              type="time"
+              name="dtime"
+              id="dtime"
+              placeholder="10:10 am"
+              required
+              class="wsub"
+              disabled
+            />
+          </div>
+          <div class="wrap" id="loader">
+            <button
+              type="submit"
+              class="bbtn idbtn sbt"
+              id="searchbt"
+              name="searchbt"
+              disabled
+            >
+              <div class="circle" id="load" style="display: none"></div>
+              <p class="hide">Search</p>
+              <ion-icon
+                name="search"
+                id="search"
+                style="font-size: 19px"
+              ></ion-icon>
+            </button>
+          </div>
+        </form>
+        <div class="slider">
+          <p
+            class="ssub"
+            style="color: rgba(255, 45, 45, 0.763); font-size: 13px"
+          >
+            Note: Any Midnight booking services, contact customer care. Terms
+            and Conditions applicable
+          </p>
+          <div class="carcard">
+            <img src="../static/assets/thar.jpg" alt="" class="img" />
+            <div class="twrap">
+              <div class="col">
+                <h3 class="title">Mahindra Thar</h3>
+                <p class="ssub">
+                  Thar features a robust design inspired by classic Jeep models
+                  and popular for its 4x4 capabilities.
+                </p>
+                <div class="row">
+                  <p
+                    class="price bold"
+                    style="
+                      color: white;
+                      background: #ffa50036;
+                      border: 2px solid orange;
+                    "
+                  >
+                    270rs/hr
+                  </p>
+                  <p class="price">Petrol</p>
+                  <p class="price">Rk Beach</p>
                 </div>
-                <div class="wrap">
-                    <h6 class="wtitle">Pickup Date</h6>
-                    <input type="date" name="date" id="pdate" required class="wsub">
+              </div>
+              <div class="price pmb">
+                <div style="text-align: right">
+                  <p class="cost">6500</p>
+                  <p class="label">Total Estimated <br />Amount</p>
                 </div>
-                <div class="wrap">
-                    <h6 class="wtitle">Pickup Time</h6>
-                    <input type="time" name="time" id="time" placeholder="10:10 am" required class="wsub">
-                </div>
-                <div class="wrap">
-                    <h6 class="wtitle">Drop Date</h6>
-                    <input type="date" name="ddate" id="ddate" required class="wsub" disabled>
-                </div>
-                <div class="wrap">
-                    <h6 class="wtitle">Drop Time</h6>
-                    <input type="time" name="dtime" id="dtime" placeholder="10:10 am" required class="wsub" disabled>
-                </div>
-                <div class="wrap " id="loader">
-                    <button type="submit" class="bbtn idbtn sbt" id="searchbt" name="searchbt" disabled>
-                        <div class="circle" id="load" style="display: none;"></div>
-                        <p class="hide">Search</p>
-                        <ion-icon name="search" id="search" style="font-size:19px"></ion-icon>
-                    </button>
-                </div>
-            </form>
-            <div class="slider">
-                <p class="ssub" style="color: rgba(255, 45, 45, 0.763); font-size: 13px;">Note: Any Midnight booking services, contact customer care. Terms and Conditions applicable</p>
-                <div class="carcard">
-                    <img src="../static/assets/thar.jpg" alt="" class="img">
-                    <div class="twrap">
-                        <div class="col">
-                            <h3 class="title">Mahindra Thar</h3>
-                            <p class="ssub">Thar features a robust design inspired by classic Jeep models and popular for its 4x4 capabilities.</p>
-                            <div class="row">
-                                <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">270rs/hr</p>
-                                <p class="price">Petrol</p>
-                                <p class="price">Rk Beach</p>
-                            </div>
-                        </div>
-                        <div class="price pmb">
-                            <div style="text-align: right">
-                                <p class="cost">6500</p>
-                                <p class="label">Total Estimated <br />Amount</p>
-                            </div>
-                            <div class="wrapRow">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="ssub" id="note" style="color: rgba(255, 233, 233, 0.763); font-size: 13px;">** Please select fill the above dates and times to get all available Cars **</p>
+                <div class="wrapRow"></div>
+              </div>
             </div>
-            <div class="slider slider2">
-                <p class="title otitle" style="text-align: center; margin-top:30px; display:none">Other Locations</p>
-            </div>
+          </div>
+          <p
+            class="ssub"
+            id="note"
+            style="color: rgba(255, 233, 233, 0.763); font-size: 13px"
+          >
+            ** Please select fill the above dates and times to get all available
+            Cars **
+          </p>
         </div>
+        <div class="slider slider2">
+          <p
+            class="title otitle"
+            style="text-align: center; margin-top: 30px; display: none"
+          >
+            Other Locations
+          </p>
+        </div>
+      </div>
     </div>
 
     <script>
-        const slider = document.getElementsByClassName("slider")[0];
-        const slider2 = document.getElementsByClassName("slider2")[0];
-        const container = document.getElementsByClassName("container")[0];
-        const formD = document.getElementById("form");
-        const startDate = document.getElementById('pdate');
-        const startTime = document.getElementById('time');
-        const dropDate = document.getElementById('ddate');
-        const dropTime = document.getElementById('dtime');
-        const searchButton = document.getElementById('searchbt');
+      const slider = document.getElementsByClassName("slider")[0];
+      const slider2 = document.getElementsByClassName("slider2")[0];
+      const container = document.getElementsByClassName("container")[0];
+      const formD = document.getElementById("form");
+      const startDate = document.getElementById("pdate");
+      const startTime = document.getElementById("time");
+      const dropDate = document.getElementById("ddate");
+      const dropTime = document.getElementById("dtime");
+      const searchButton = document.getElementById("searchbt");
 
-        // Set minimum date for start date to today
-        startDate.min = new Date().toISOString().split("T")[0];
+      // Set minimum date for start date to today
+      startDate.min = new Date().toISOString().split("T")[0];
 
-        // Function to validate dates and times
-        function validateDatesAndTimes() {
-            const start = new Date(startDate.value + 'T' + startTime.value);
-            const drop = new Date(dropDate.value + 'T' + dropTime.value);
-            const now = new Date();
-            const minDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      // Function to validate dates and times
+      function validateDatesAndTimes() {
+        const start = new Date(startDate.value + "T" + startTime.value);
+        const drop = new Date(dropDate.value + "T" + dropTime.value);
+        const now = new Date();
+        const minDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-            if (start <= now) {
-                showError("Start date and time must be in the future");
-                return false;
-            }
-
-            if (drop <= start) {
-                showError("Drop date and time must be after start date and time");
-                return false;
-            }
-
-            if (drop - start < minDuration) {
-                showError("Booking duration must be at least 24 hours");
-                return false;
-            }
-
-            return true;
+        if (start <= now) {
+          showError("Start date and time must be in the future");
+          return false;
         }
 
-        // Function to show error messages
-        function showError(message) {
-            const msg = document.createElement("div");
-            const body = document.getElementsByTagName("body")[0];
-            msg.classList.add("msg");
-            msg.textContent = message + ", kindly adjust time to continue searching..";
-            msg.style.color = "red"
-            body.appendChild(msg);
-            setTimeout(() => msg.remove(), 8000);
+        if (drop <= start) {
+          showError("Drop date and time must be after start date and time");
+          return false;
         }
 
-        // Event listeners for date and time inputs
-        [startDate, startTime, dropDate, dropTime].forEach(input => {
-            input.addEventListener('change', () => {
-                if (startDate.value && startTime.value) {
-                    dropDate.disabled = false;
-                    dropTime.disabled = false;
-                }
+        if (drop - start < minDuration) {
+          showError("Booking duration must be at least 24 hours");
+          return false;
+        }
 
-                if (startDate.value) {
-                    dropDate.min = startDate.value;
-                }
+        return true;
+      }
 
-                if (startDate.value && startTime.value && dropDate.value && dropTime.value) {
-                    searchButton.disabled = !validateDatesAndTimes();
-                }
+      // Function to show error messages
+      function showError(message) {
+        const msg = document.createElement("div");
+        const body = document.getElementsByTagName("body")[0];
+        msg.classList.add("msg");
+        msg.textContent =
+          message + ", kindly adjust time to continue searching..";
+        msg.style.color = "red";
+        body.appendChild(msg);
+        setTimeout(() => msg.remove(), 8000);
+      }
+
+      // Event listeners for date and time inputs
+      [startDate, startTime, dropDate, dropTime].forEach((input) => {
+        input.addEventListener("change", () => {
+          if (startDate.value && startTime.value) {
+            dropDate.disabled = false;
+            dropTime.disabled = false;
+          }
+
+          if (startDate.value) {
+            dropDate.min = startDate.value;
+          }
+
+          if (
+            startDate.value &&
+            startTime.value &&
+            dropDate.value &&
+            dropTime.value
+          ) {
+            searchButton.disabled = !validateDatesAndTimes();
+          }
+
+          // Trigger a new search if all fields are filled and valid
+          if (
+            startDate.value &&
+            startTime.value &&
+            dropDate.value &&
+            dropTime.value &&
+            validateDatesAndTimes()
+          ) {
+            document.getElementById("searchbt").click();
+          }
+        });
+      });
+
+      // Form submission
+      formD.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (validateDatesAndTimes()) {
+          document.getElementById("load").style.display = "flex";
+          document.getElementById("searchbt").setAttribute("disabled", true);
+          document.getElementById("search").style.display = "none";
+
+          let start = formD["date"].value;
+          let end = formD["ddate"].value;
+          let loc = formD["location"].value;
+          let time = formD["time"].value;
+          let dtime = formD["dtime"].value;
+
+          const carsCards = document.querySelectorAll(".carcard");
+          if (carsCards.length > 0) {
+            carsCards.forEach((card) => {
+              card.remove();
             });
-        });
+          }
 
-        // Form submission
-        formD.addEventListener("submit", (e) => {
-            e.preventDefault();
-            if (validateDatesAndTimes()) {
-                document.getElementById("load").style.display = "flex";
-                document.getElementById("searchbt").setAttribute("disabled", true);
-                document.getElementById("search").style.display = "none";
-                
-                let start = formD["date"].value;
-                let end = formD["ddate"].value;
-                let loc = formD["location"].value;
-                let time = formD["time"].value;
-                let dtime = formD["dtime"].value;
-
-                const carsCards = document.querySelectorAll(".carcard");
-                if (carsCards.length > 0) {
-                    carsCards.forEach((card) => {
-                        card.remove();
-                    });
-                }
-
-                fetch(`/admin/allCars`, {
-                    headers: {
-                        startDate: start,
-                        endDate: end,
-                        time: time,
-                        dtime: dtime,
-                        loc: loc,
-                        city: "<%- city %>"
-                    }
-                }).then(res => res.json().then(data => {
-                    document.getElementsByClassName("otitle")[0].style.display = "none";
-                    if (res.status === 404) {
-                        document.getElementsByClassName("otitle")[0].textContent = "No Cars Available";
-                        document.getElementsByClassName("otitle")[0].style.display = "flex";
-                    }
-                    document.getElementById("load").style.display = "none";
-                    document.getElementById("searchbt").removeAttribute("disabled");
-                    document.getElementById("search").style.display = "flex";
-                    let diff = data?.diff;
-                    data?.cars.forEach((car, i) => {
-                            const newCar = document.createElement("div");
-                            newCar.classList.add("carcard");
-                            let carData = `
-                                <img onclick="showPopup(${i})" src="${car.image}" alt="" class="img">
-                                <div class="twrap">
-                                    <div class="col" onclick="showPopup(${i})">
-                                        <h3 class="title">${car.brand}</h3>
-                                        <p class="ssub">${car.desc}</p>
-                                        <div class="row">
-                                            <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(car.amount / 24)}rs/hr</p>
-                                            <p class="price">${car.fueltype}</p>
-                                            <p class="price">${car.location}</p>
-                                        </div>
-                                        ${car.timeLeft != undefined ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>' : ""}
-                                    </div>
-                                    <div class="price pmb">
-                                        <div onclick="showPopup(${i})" style="text-align: right">
-                                            <p class="cost">${car.amount * diff}/-</p>
-                                            <p class="label">Total Estimated <br />Amount</p>
-                                        </div>
-                                        <div class="wrapRow">
-                                            ${car.timeLeft != undefined ? `<button class="bbtn outer">Will be Available</button>` : `<button class="bbtn mb" onclick="bookHandler(${i})">Book Now</button>
-                                            <button class="bbtn outer ${car._id} ${i}" onclick="showPopup(${i})">View more</button>`}
-                                        </div>
-                                    </div>
+          fetch(`/admin/allCars`, {
+            headers: {
+              startDate: start,
+              endDate: end,
+              time: time,
+              dtime: dtime,
+              loc: loc,
+              city: "<%- city %>",
+            },
+          }).then((res) =>
+            res.json().then((data) => {
+              document.getElementsByClassName("otitle")[0].style.display =
+                "none";
+              if (res.status === 404) {
+                document.getElementsByClassName("otitle")[0].textContent =
+                  "No Cars Available";
+                document.getElementsByClassName("otitle")[0].style.display =
+                  "flex";
+              }
+              document.getElementById("load").style.display = "none";
+              document.getElementById("searchbt").removeAttribute("disabled");
+              document.getElementById("search").style.display = "flex";
+              let diff = data?.diff;
+              data?.cars.forEach((car, i) => {
+                const newCar = document.createElement("div");
+                newCar.classList.add("carcard");
+                let carData = `
+                        <img onclick="showPopup(${i})" src="${
+                  car.image
+                }" alt="" class="img">
+                        <div class="twrap">
+                            <div class="col" onclick="showPopup(${i})">
+                                <h3 class="title">${car.brand}</h3>
+                                <p class="ssub">${car.desc}</p>
+                                <div class="row">
+                                    <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(
+                                      car.amount / 24
+                                    )}rs/hr</p>
+                                    <p class="price">${car.fueltype}</p>
+                                    <p class="price">${car.location}</p>
                                 </div>
-                            `;
-                            newCar.innerHTML = carData;
-                            if (loc.toLowerCase() == car.location.toLowerCase()) {
-                                slider.appendChild(newCar);
-                            } else {
-                                slider2.appendChild(newCar);
-                                document.getElementsByClassName("otitle")[0].textContent = "Other Locations";
-                                document.getElementsByClassName("otitle")[0].style.display = "block";
-                            }
-                        });
-                }));
-            }
-        });
-
-        const closePopup = () => {
-            const popup = document.getElementsByClassName("popup")[0];
-            container.removeChild(popup);
-        };
-
-        const showPopup = (id) => {
-            const car_id = document.getElementsByClassName(id)[0].classList[2];
-            fetch(`/admin/getCar/${car_id}`).then(res => res.json().then((data) => {
-                const popup = document.createElement("div");
-                popup.classList.add("popup");
-                popup.onclick = () => closePopup();
-                const pdata = `
-                    <div class="inner">
-                        <div class="title">${data.brand}</div>
-                        <div style="display: flex; gap: 20px; flex-direction: column;">
-                            <img src="${data.image}" alt="" class="img">
-                            <div class="wrap">
-                                <div class="grid">
-                                    <div class="subwrap">
-                                        <p class="sub">${data.geartype}</p>
-                                        <div class="tit">gear type</div>
-                                    </div>
-                                    <div class="subwrap">
-                                        <p class="sub">${data.fuelcap}</p>
-                                        <div class="tit">fuel capacity</div>
-                                    </div>
-                                    <div class="subwrap nob">
-                                        <p class="sub">${data.seating}</p>
-                                        <div class="tit">seating capacity</div>
-                                    </div>
-                                    <div class="subwrap">
-                                        <p class="sub">${data.luggage}</p>
-                                        <div class="tit">luggage</div>
-                                    </div>
-                                    <div class="subwrap">
-                                        <p class="sub">${data.mileage}</p>
-                                        <div class="tit">milage</div>
-                                    </div>
-                                    <div class="subwrap nob">
-                                        <p class="sub">${data.fueltype}</p>
-                                        <div class="tit">Fuel Type</div>
-                                    </div>
+                                ${
+                                  car.timeLeft != undefined
+                                    ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>'
+                                    : ""
+                                }
+                            </div>
+                            <div class="price pmb">
+                                <div onclick="showPopup(${i})" style="text-align: right">
+                                    <p class="cost">${car.amount * diff}/-</p>
+                                    <p class="label">Total Estimated <br />Amount</p>
                                 </div>
-                                <div class="btnWrap">
-                                    <button class="bbtn cbtn" onclick="closePopup()">Cancel</button>
-                                    <button class="bbtn idbtn ${car_id}" id="idbtn" onclick="bookHandler()">Book Now</button>
+                                <div class="wrapRow">
+                                    ${
+                                      car.timeLeft != undefined
+                                        ? `<button class="bbtn outer">Will be Available</button>`
+                                        : `<button class="bbtn mb" onclick="bookHandler(${i})">Book Now</button>
+                                    <button class="bbtn outer ${car._id} ${i}" onclick="showPopup(${i})">View more</button>`
+                                    }
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                popup.innerHTML = pdata;
-                container.appendChild(popup);
-            }));
-        };
+                    `;
+                newCar.innerHTML = carData;
+                if (loc.toLowerCase() == car.location.toLowerCase()) {
+                  slider.appendChild(newCar);
+                } else {
+                  slider2.appendChild(newCar);
+                  document.getElementsByClassName("otitle")[0].textContent =
+                    "Other Locations";
+                  document.getElementsByClassName("otitle")[0].style.display =
+                    "block";
+                }
+              });
+            })
+          );
+        }
+      });
 
-        const bookHandler = async(i) => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                const id = document.getElementById("idbtn") || document.getElementsByClassName(i)[0];
-                const subs = document.querySelectorAll(".wsub");
-                let d = { city: "<%- city %>", carid: id.classList[2] || sessionStorage.getItem("carid"), service: "<%- service %>" || sessionStorage.getItem("service") };
-                subs.forEach((s) => {
-                    d[s.name] = s.value;
-                });
-                fetch("/booking/confirmBooking", {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'token': token,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(d)
-                }).then(res => res.json().then(data => {
-                    if (res.status == 400) {
-                        sessionStorage.setItem("sessionToken", data.sid);
-                        window.location.href = `/auth/register`;
-                    } else {
-                        window.location.href = `/booking/book?id=${data.msg}`;
-                    }
-                }));
-            } else {
-                sessionStorage.setItem("service", "<%- service %>");
-                sessionStorage.setItem("place", "<%- city %>");
-                sessionStorage.setItem("date", formD["date"].value);
-                sessionStorage.setItem("ddate", formD["ddate"].value);
-                sessionStorage.setItem("time", formD["time"].value);
-                sessionStorage.setItem("dtime", formD["dtime"].value);
-                window.location.href = "/auth/login";
-            }
-        };
+      const closePopup = () => {
+        const popup = document.getElementsByClassName("popup")[0];
+        container.removeChild(popup);
+      };
+
+      const showPopup = (id) => {
+        const car_id = document.getElementsByClassName(id)[0].classList[2];
+        fetch(`/admin/getCar/${car_id}`).then((res) =>
+          res.json().then((data) => {
+            const popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.onclick = () => closePopup();
+            const pdata = `
+            <div class="inner">
+                <div class="title">${data.brand}</div>
+                <div style="display: flex; gap: 20px; flex-direction: column;">
+                    <img src="${data.image}" alt="" class="img">
+                    <div class="wrap">
+                        <div class="grid">
+                            <div class="subwrap">
+                                <p class="sub">${data.geartype}</p>
+                                <div class="tit">gear type</div>
+                            </div>
+                            <div class="subwrap">
+                                <p class="sub">${data.fuelcap}</p>
+                                <div class="tit">fuel capacity</div>
+                            </div>
+                            <div class="subwrap nob">
+                                <p class="sub">${data.seating}</p>
+                                <div class="tit">seating capacity</div>
+                            </div>
+                            <div class="subwrap">
+                                <p class="sub">${data.luggage}</p>
+                                <div class="tit">luggage</div>
+                            </div>
+                            <div class="subwrap">
+                                <p class="sub">${data.mileage}</p>
+                                <div class="tit">milage</div>
+                            </div>
+                            <div class="subwrap nob">
+                                <p class="sub">${data.fueltype}</p>
+                                <div class="tit">Fuel Type</div>
+                            </div>
+                        </div>
+                        <div class="btnWrap">
+                            <button class="bbtn cbtn" onclick="closePopup()">Cancel</button>
+                            <button class="bbtn idbtn ${car_id}" id="idbtn" onclick="bookHandler()">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+            popup.innerHTML = pdata;
+            container.appendChild(popup);
+          })
+        );
+      };
+
+      const bookHandler = async (i) => {
+        // First, validate dates and times again
+        if (!validateDatesAndTimes()) {
+          showError(
+            "Invalid date or time selection. Please adjust and search again."
+          );
+          return;
+        }
+
+        const token = localStorage.getItem("token");
+        if (token) {
+          const id =
+            document.getElementById("idbtn") ||
+            document.getElementsByClassName(i)[0];
+          const subs = document.querySelectorAll(".wsub");
+          let d = {
+            city: "<%- city %>",
+            carid: id.classList[2] || sessionStorage.getItem("carid"),
+            service: "<%- service %>" || sessionStorage.getItem("service"),
+          };
+          subs.forEach((s) => {
+            d[s.name] = s.value;
+          });
+          fetch("/booking/confirmBooking", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              token: token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(d),
+          }).then((res) =>
+            res.json().then((data) => {
+              if (res.status == 400) {
+                sessionStorage.setItem("sessionToken", data.sid);
+                window.location.href = `/auth/register`;
+              } else {
+                window.location.href = `/booking/book?id=${data.msg}`;
+              }
+            })
+          );
+        } else {
+          sessionStorage.setItem("service", "<%- service %>");
+          sessionStorage.setItem("place", "<%- city %>");
+          sessionStorage.setItem("date", formD["date"].value);
+          sessionStorage.setItem("ddate", formD["ddate"].value);
+          sessionStorage.setItem("time", formD["time"].value);
+          sessionStorage.setItem("dtime", formD["dtime"].value);
+          window.location.href = "/auth/login";
+        }
+      };
     </script>
-</body>
+  </body>
 </html>
