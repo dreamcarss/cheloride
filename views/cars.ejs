@@ -275,44 +275,47 @@
               data?.cars.forEach((car, i) => {
                 const newCar = document.createElement("div");
                 newCar.classList.add("carcard");
+                newCar.style.opacity = "0";
+                newCar.style.transform = "translateY(20px)";
+
                 let carData = `
-                        <img onclick="showPopup(${i})" src="${
-                  car.image
-                }" alt="" class="img">
-                        <div class="twrap">
-                            <div class="col" onclick="showPopup(${i})">
-                                <h3 class="title">${car.brand}</h3>
-                                <p class="ssub">${car.desc}</p>
-                                <div class="row">
-                                    <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(
-                                      car.amount / 24
-                                    )}rs/hr</p>
-                                    <p class="price">${car.fueltype}</p>
-                                    <p class="price">${car.location}</p>
-                                </div>
-                                ${
-                                  car.timeLeft != undefined
-                                    ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>'
-                                    : ""
-                                }
-                            </div>
-                            <div class="price pmb">
-                                <div onclick="showPopup(${i})" style="text-align: right">
-                                    <p class="cost">${car.amount * diff}/-</p>
-                                    <p class="label">Total Estimated <br />Amount</p>
-                                </div>
-                                <div class="wrapRow">
-                                    ${
-                                      car.timeLeft != undefined
-                                        ? `<button class="bbtn outer">Will be Available</button>`
-                                        : `<button class="bbtn mb" onclick="bookHandler(${i})">Book Now</button>
-                                    <button class="bbtn outer ${car._id} ${i}" onclick="showPopup(${i})">View more</button>`
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                  <img onclick="showPopup(${i})" src="${car.image}" alt="" class="img">
+                  <div class="twrap">
+                    <div class="col" onclick="showPopup(${i})">
+                      <h3 class="title">${car.brand}</h3>
+                      <p class="ssub">${car.desc}</p>
+                      <div class="row">
+                        <p class="price bold" style="color: white; background: #ffa50036; border: 2px solid orange;">${Math.ceil(
+                          car.amount / 24
+                        )}rs/hr</p>
+                        <p class="price">${car.fueltype}</p>
+                        <p class="price">${car.location}</p>
+                      </div>
+                      ${
+                        car.timeLeft != undefined
+                          ? '<p class="ssub" style="color: red">Note: This Car is not available for the pickup time you have selected. Please change the time to book this car</p>'
+                          : ""
+                      }
+                    </div>
+                    <div class="price pmb">
+                      <div onclick="showPopup(${i})" style="text-align: right">
+                        <p class="cost">${car.amount * diff}/-</p>
+                        <p class="label">Total Estimated <br />Amount</p>
+                      </div>
+                      <div class="wrapRow">
+                        ${
+                          car.timeLeft != undefined
+                            ? `<button class="bbtn outer">Will be Available</button>`
+                            : `<button class="bbtn mb" onclick="bookHandler(${i})">Book Now</button>
+                            <button class="bbtn outer ${car._id} ${i}" onclick="showPopup(${i})">View more</button>`
+                        }
+                      </div>
+                    </div>
+                  </div>
+                `;
+
                 newCar.innerHTML = carData;
+
                 if (loc.toLowerCase() == car.location.toLowerCase()) {
                   slider.appendChild(newCar);
                 } else {
@@ -322,6 +325,15 @@
                   document.getElementsByClassName("otitle")[0].style.display =
                     "block";
                 }
+
+                // Trigger reflow to ensure the animation works
+                newCar.offsetHeight;
+
+                // Add animation
+                setTimeout(() => {
+                  newCar.style.opacity = "1";
+                  newCar.style.transform = "translateY(0)";
+                }, i * 100); // Stagger the animations
               });
             })
           );

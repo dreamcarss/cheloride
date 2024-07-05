@@ -474,3 +474,37 @@
         flex-direction: row;
     }
 }
+
+.carcard {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@media (max-width: 768px) {
+    .carcard {
+        flex-direction: column;
+    }
+
+    .carcard .img {
+        width: 100%;
+        height: auto;
+    }
+
+    .carcard .twrap {
+        flex-direction: column;
+    }
+
+    .carcard .twrap .col,
+    .carcard .twrap .price.pmb {
+        width: 100%;
+    }
+
+    .carcard .twrap .price.pmb div {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .carcard .twrap .price.pmb .wrapRow {
+        margin-top: 10px;
+    }
+}
