@@ -87,42 +87,64 @@ const executive_data = async (req, res) => {
     const users = await userModel.find({ role: "Executive" });
     const allCars = await carModel.find();
     const data = [];
+
     if (users.length > 0) {
-      try {
-        await Promise.all(
-          users.map(async (user) => {
-            const obj = {};
-            obj.username = user.username;
-            let cars = {};
-            allCars.forEach((car) => {
+      await Promise.all(
+        users.map(async (user) => {
+          const obj = {};
+          obj.username = user.username;
+          let cars = {};
+          allCars.forEach((car) => {
+            if (car && car.brand) {
               cars[car.brand] = 0;
-            });
-            const bookings = await bookingModel.find({ userId: user.email });
-            obj.bookingcount = bookings.length;
-            await Promise.all(
-              bookings.map(async (booking) => {
+            }
+          });
+
+          const bookings = await bookingModel.find({ userId: user.email });
+          let validBookingsCount = 0;
+
+          await Promise.all(
+            bookings.map(async (booking) => {
+              try {
                 const car = await carModel.findById(booking.carId);
-                cars[car.brand] = (cars[car.brand] || 0) + 1;
-              })
-            );
-            obj.cars = Object.keys(cars).map((brand) => ({
-              carname: brand,
-              count: cars[brand],
-            }));
-            data.push(obj);
-          })
-        );
-        console.log(data)
-        res.status(200).json({"data": data})
-      } catch (error) {
-        console.error(error);
-      }
+                if (car && car.brand) {
+                  cars[car.brand] = (cars[car.brand] || 0) + 1;
+                  validBookingsCount++;
+                } else {
+                  console.log(
+                    `Skipping count for booking ID: ${booking._id}, Car ID: ${booking.carId} - Car not found or missing brand`
+                  );
+                }
+              } catch (error) {
+                console.error(
+                  `Error processing booking ID: ${booking._id}, Car ID: ${booking.carId}:`,
+                  error
+                );
+              }
+            })
+          );
+
+          obj.bookingcount = validBookingsCount;
+          obj.cars = Object.keys(cars).map((brand) => ({
+            carname: brand,
+            count: cars[brand],
+          }));
+          data.push(obj);
+        })
+      );
+
+      console.log(data);
+      res.status(200).json({ data: data });
+    } else {
+      res.status(404).json({ message: "No executive users found" });
     }
   } catch (error) {
-    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
+    console.error("Error in executive_data:", error);
+    res
+      .status(500)
+      .json({ error: "Something went wrong", details: error.message });
   }
 };
-
 
 
 
