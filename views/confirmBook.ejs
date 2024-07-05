@@ -13,9 +13,13 @@
         <p id="id" hidden><%= id %></p>
         <h2 class="title">Checkout</h2>
         <h5 class="sub">Please make sure to check all your details, terms and conditions before payment.</h5>
+        <h5 class="sub">Note: Do not reload the page.</h5>
+        <h2 class="sub" style="text-align: right; color: white; font-weight: 600; font-size: 16px; margin-top: 10px;">Booking Expires in: <span id="timer">10:00</span></h2>
         <div class="details">
             <div class="bx1">
-                <h2 class="stit"><%=data.brand %></h2>
+                <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between;">
+                    <h2 class="stit"><%=data.brand %></h2>
+                </div>
                 <div class="flx">
                     <p class="data bg"><span class="span">Booking Date:</span> <%=data.date %></p>
                     <div class="line"></div>
@@ -139,7 +143,30 @@
         const checkH = document.getElementById("hcheck");
         const checkH2 = document.getElementById("h2check");
 
-        window.onload = () => {checkH.checked = false; checkH2.checked = false}
+        const timer = document.getElementById("timer");
+        (() => {
+            let duration_seconds = 600;
+            const timerInterval = setInterval(() => {
+                const mins = Math.floor(duration_seconds / 60);
+                const secs = duration_seconds % 60;
+                const display = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                timer.textContent = display;
+                duration_seconds -= 1;
+                if (duration_seconds < 0) {
+                    clearInterval(timerInterval);
+                    timer.textContent = "00:00";
+                    window.location.reload();
+                }
+            }, 1000);
+        })();
+
+        window.onload = () => {
+            checkH.checked = false;
+            checkH2.checked = false;
+            document.getElementById("aadharCheck").checked = false;
+            document.getElementById("licenseCheck").checked = false;
+            document.getElementById("idCheck").checked = false;
+        };
 
         check.onclick = () => {
             checkH.click()
@@ -252,7 +279,8 @@
                                             <div class="bgcircle">
                                             <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
                                             </div>
-                                            Booking Confirmed
+                                            Thankyou, Booking Confirmed!
+                                            <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center">Your Transaction ID: ${trId}</p>
                                             <a href="/booking" style="margin-top: 20px;">
                                                 <button class="btn" style=" font-size: 10px;">Your Bookings</button>
                                             </a>`;
