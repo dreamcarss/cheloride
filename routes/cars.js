@@ -19,7 +19,7 @@ carRoutes.get("/allCars",  getALlCars);
 carRoutes.delete("/delete/:id", authMiddleware, adminAuth, deleteCar);
 carRoutes.get("/allCarsAdmin", authMiddleware, execAuth, getALlCarsAdmin);
 carRoutes.get("/getCar/:id", getCar);
-carRoutes.patch("/updateCar/:id", authMiddleware, adminAuth, updateCar);
+carRoutes.patch("/updateCar/:id", authMiddleware, execAuth, adminAuth, updateCar);
 carRoutes.patch("/updateImg/:id", authMiddleware, adminAuth, handleUpload);
 
 module.exports = carRoutes;
