@@ -40,15 +40,26 @@
     display: none;
 }
 
-.floating{
-    width: max-content;
-    height: max-content;
-    padding: 15px 22px;
-    background: #ffa500;
+.btnWrap{
+    display: flex;
+    gap: 10px;
     position: fixed;
     right: 2%;
     bottom: 5%;
     z-index: 3;
+}
+
+.floating{
+    width: max-content;
+    padding: 0 15px;
+    text-align: center;
+    display: block;
+    height: 40px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    background: #ffa500;
     text-decoration: none;
     color: white;
     font-family: integral;
