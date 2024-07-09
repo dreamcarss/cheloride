@@ -273,6 +273,7 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.348);
     display: flex;
+    backdrop-filter: blur(8px);
     justify-content: center;
     align-items: center;
 }

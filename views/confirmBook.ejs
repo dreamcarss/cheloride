@@ -214,7 +214,7 @@
             const licenseChecked = document.getElementById("licenseCheck").checked;
             const idChecked = document.getElementById("idCheck").checked;
 
-            if(checkH2.checked && checkH.checked) {
+            if((checkH2.checked && checkH.checked) && (aadharChecked || licenseChecked || idChecked)) {
                 btn.innerHTML = "<div class='circle'></div>";
                 btn.setAttribute("disabled", true);
                 try {
@@ -281,7 +281,7 @@
                                             </div>
                                             Thankyou, Booking Confirmed!
                                             <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center">Your Transaction ID: ${trId}</p>
-                                            <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center">Note: Kindly bring the selected documents.</p>
+                                            <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center, font-style: italic">Note: Bring the ORIGINAL DOCUMENTS and a CHEQUE (returnable upon trip completion).</p>
                                             <a href="/booking" style="margin-top: 20px;">
                                                 <button class="btn" style=" font-size: 10px;">Your Bookings</button>
                                             </a>`;

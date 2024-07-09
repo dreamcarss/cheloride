@@ -122,6 +122,7 @@
             }
             document.getElementById("tcars").textContent = data.cars.length;
             data?.cars.forEach((car, i) => {
+                console.log(car.brand)
                 const row = document.createElement("tr");
                 row.classList.add("row");
                 row.classList.add(i);

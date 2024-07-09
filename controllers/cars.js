@@ -49,10 +49,11 @@ const getALlCars = async (req, res) => {
     let carsList = [];
     let loc = req.headers.loc;
     console.log(req.headers.city)
-    let cars = await carModel.find({place: req.headers.city});
+    let cars = await carModel.find();
     let diff;
     let promises = cars.map(async (car) => {
       diff = Math.abs(dDate - sDate) / 8.64e7;
+      // console.log(car.brand, "top")
       await bookingModel
         .findOne({ carId: car._id, bookingStatus: true })
         .then((booking) => {
@@ -65,7 +66,6 @@ const getALlCars = async (req, res) => {
               ) {
               let stDate = new Date(sDate).toISOString().split("T")[0];
               let dropDate = new Date(endDate).toISOString().split("T")[0];
-              console.log(startDate, endDate, stDate, dropDate)
               if (stDate == dropDate) {
                 let timeDiff = Math.round(
                   (
@@ -73,21 +73,24 @@ const getALlCars = async (req, res) => {
                       new Date(`${stDate} ${booking.dtime}`)
                   ) / 3600000
                 );
-                console.log(timeDiff)
                 if(timeDiff <= 0){
                   let carObj = { ...car }._doc;
                   carObj.timeLeft = timeDiff;
                   carsList.push(car);
+                  console.log(car.brand)
                 }else{
                   carsList.push(car)
+                  console.log(car.brand)
                 }
               }
               null;
             } else {
               carsList.push(car);
+              console.log(car.brand)
             }
           } else {
             carsList.push(car);
+            console.log(car.brand)
           }
         });
     });
