@@ -275,20 +275,22 @@
                                             btn.innerHTML = "Checkout"
                                             const msg = document.createElement("div");
                                             msg.classList.add("msg");
-                                            msg.innerHTML = `
-                                            <div class="bgcircle">
+                                            msg.innerHTML = `<div class="bgcircle">
                                             <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
                                             </div>
-                                            Thankyou, Booking Confirmed!
-                                            <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center">Your Transaction ID: ${trId}</p>
-                                            <p style="font-size:13px; color: "white"; font-family: Poppins; text-align: center, font-style: italic">Note: Bring the ORIGINAL DOCUMENTS and a CHEQUE (returnable upon trip completion).</p>
+                                            <p style="font-size:28px">
+                                                Thankyou
+                                                <p>Booking Confirmed<span style="font-family: poppins; font-weight: 800;"> !</span></p>
+                                            </p>
+                                            <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; margin-top: 10px; font-weight: 600;">Your Transaction ID: ${trId}</p>
+                                            <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; font-style: italic; color: #cacaca; margin-top: 10px;">Note: Bring the selected ORIGINAL DOCUMENTS </br> and a CHEQUE (returnable upon trip completion).</p>
                                             <a href="/booking" style="margin-top: 20px;">
                                                 <button class="btn" style=" font-size: 10px;">Your Bookings</button>
                                             </a>`;
                                             document.getElementsByTagName("body")[0].appendChild(msg);
                                             setTimeout(() => {
                                                 window.location.href = "/booking"
-                                            }, 3000);
+                                            }, 6000);
                                         })}))
                                     }else{
                                         btn.removeAttribute("disabled")
@@ -322,13 +324,20 @@
                     document.getElementById("aadharCheckbox"), 
                     document.getElementById("licenseCheckbox"), 
                     document.getElementById("idCheckbox")];
-                
-                checkboxes.forEach(cb => {
-                    if (!cb.querySelector('input').checked) {
-                        cb.style.border = "2px solid red";
-                        cb.style.background = "rgba(255, 0, 0, 0.279)";
+
+                const status = [
+                    checkH.checked, checkH2.checked, aadharChecked, licenseChecked, idChecked
+                ]
+
+                status.map((cb, i) => {
+                    if (!cb) {
+                        checkboxes[i].style.border = "2px solid red";
+                        checkboxes[i].style.background = "rgba(255, 0, 0, 0.279)";
                     }
-                });
+                })
+                
+                // checkboxes.forEach(cb => {
+                // });
             }
         }
     </script>

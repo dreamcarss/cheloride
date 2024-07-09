@@ -40,7 +40,7 @@
     display: none;
 }
 
-.btnWrap{
+.fbtnWrap{
     display: flex;
     gap: 10px;
     position: fixed;
