@@ -262,8 +262,6 @@ const bookCar = async(req, res) => {
                         }</p> 
                         <b style="display: inline-block;">Doucments:</b> <p>${
                           req.body.documents.idDocument
-                            ? "checked"
-                            : "unchecked"
                         }</p> 
                       </div>
                     </br> 

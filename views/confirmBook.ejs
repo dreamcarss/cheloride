@@ -112,15 +112,21 @@
                     <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Driving License</h2>
                 </div>
 
-                <!-- here instead of a single checkbox make 3 radio buttons each for student, job id and bussiness gst and make a condition at the bottom that on submit atleast one should be checked or else make one checked by default -->
-                <div class="row" style="margin-top:10px;">
-                    <input type="checkbox" id="idCheck" name="accept" value="yes" hidden>
-                    <div id="idCheckbox" class="custom-checkbox">
-                        <div id="idChecked" class="checked-indicator">
-                            <ion-icon name="checkmark"></ion-icon>
-                        </div>
+                <div class="row" style="margin-top:10px; flex-direction: row; justify-content: center;">
+                    <div class="row wrap" style="gap: 10px;">
+                        <input type="radio" id="student-id" name="idproof" style="width:20px; height:20px;" value="yes" checked>
+                        <label for="student-id" class="status stit" style="margin-bottom: 0; font-weight: normal;">Student Id</label>
                     </div>
-                    <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Student Id (or) Job Id (or) Business GST </h2>
+                    <p style="margin-top: 20px; margin-right: 10px;">(or)</p>
+                    <div class="row wrap" style="gap: 10px;">
+                        <input type="radio" id="job-id" name="idproof" style="width:20px; height:20px;" value="yes">
+                        <label for="job-id" class="status stit" style="margin-bottom: 0; font-weight: normal;"> Job Id </label>
+                    </div>
+                    <p style="margin-top: 20px; margin-right: 10px;">(or)</p>
+                    <div class="row wrap" style="gap: 10px;">
+                        <input type="radio" id="business-gst" name="idproof" style="width:20px; height:20px;" value="yes">
+                        <label for="business-gst" class="status stit" style="margin-bottom: 0; font-weight: normal;">Business GST </label>
+                    </div>
                 </div>
             </div>
             <div class="gt">
@@ -167,7 +173,6 @@
             checkH2.checked = false;
             document.getElementById("aadharCheck").checked = false;
             document.getElementById("licenseCheck").checked = false;
-            document.getElementById("idCheck").checked = false;
         };
 
         check.onclick = () => {
@@ -200,21 +205,25 @@
 
         setupCheckbox("aadharCheckbox", "aadharChecked", "aadharCheck");
         setupCheckbox("licenseCheckbox", "licenseChecked", "licenseCheck");
-        setupCheckbox("idCheckbox", "idChecked", "idCheck");
         window.onload = () => {
             checkH.checked = false;
             checkH2.checked = false;
             document.getElementById("aadharCheck").checked = false;
             document.getElementById("licenseCheck").checked = false;
-            document.getElementById("idCheck").checked = false;
         };
 
         const bookingHandler = async() => {
             const aadharChecked = document.getElementById("aadharCheck").checked;
             const licenseChecked = document.getElementById("licenseCheck").checked;
-            const idChecked = document.getElementById("idCheck").checked;
+            const radios = document.getElementsByName("idproof");
+            let idCheck = "";
+            radios.forEach((radio) => {
+                if(radio.checked){
+                    idCheck = radio.id;
+                }
+            });
 
-            if((checkH2.checked && checkH.checked) && (aadharChecked || licenseChecked || idChecked)) {
+            if((checkH2.checked && checkH.checked) && (aadharChecked || licenseChecked)) {
                 btn.innerHTML = "<div class='circle'></div>";
                 btn.setAttribute("disabled", true);
                 try {
@@ -235,7 +244,7 @@
                             documents: {
                                 aadhaar: aadharChecked,
                                 drivingLicense: licenseChecked,
-                                idDocument: idChecked
+                                idDocument: idCheck
                             }
                         }
                         const callback = (response) => {
@@ -259,7 +268,6 @@
                                         'token': localStorage.getItem("token"),
                                     },
                                 }).then(res => res.json().then(rsp => {
-                                    console.log(data);
                                     if(rsp.success){
                                         fetch("/booking/book", {
                                             method: 'POST',
@@ -313,10 +321,10 @@
 
                         window.PhonePeCheckout.transact({ tokenUrl, callback, type: 'IFRAME' });
                     } else {
-                        console.error('Error obtaining tokenUrl:', response.status);
+                        // console.error('Error obtaining tokenUrl:', response.status);
                     }
                 } catch (error) {
-                    console.error('Error initiating payment:', error);
+                    // console.error('Error initiating payment:', error);
                 }
             } else {
                 const checkboxes = [check, check2, 
@@ -325,7 +333,7 @@
                     document.getElementById("idCheckbox")];
 
                 const status = [
-                    checkH.checked, checkH2.checked, aadharChecked, licenseChecked, idChecked
+                    checkH.checked, checkH2.checked, aadharChecked, licenseChecked
                 ]
 
                 status.map((cb, i) => {
