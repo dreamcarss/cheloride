@@ -48,13 +48,16 @@ const getALlCars = async (req, res) => {
     let dtime = req.headers.time;
     let carsList = [];
     let loc = req.headers.loc;
-    console.log(req.headers.city)
+    console.log(req.headers.city);
     let cars = await carModel.find();
-    let diff;
+    let diff = Math.abs(dDate - sDate) / 8.64e7;
+
+    const tempBookedCarIds = await tempBooking.distinct("carId");
+
+    cars = cars.filter((car) => !tempBookedCarIds.includes(car._id.toString()));
+
     let promises = cars.map(async (car) => {
-      diff = Math.abs(dDate - sDate) / 8.64e7;
-      // console.log(car.brand, "top")
-      await bookingModel
+      return bookingModel
         .findOne({ carId: car._id, bookingStatus: true })
         .then((booking) => {
           if (booking != null) {
@@ -63,46 +66,45 @@ const getALlCars = async (req, res) => {
             if (
               (sDate >= startDate && sDate <= endDate) ||
               (dDate > startDate && dDate <= endDate)
-              ) {
+            ) {
               let stDate = new Date(sDate).toISOString().split("T")[0];
               let dropDate = new Date(endDate).toISOString().split("T")[0];
               if (stDate == dropDate) {
                 let timeDiff = Math.round(
-                  (
-                    new Date(`${stDate} ${dtime}`) -
-                      new Date(`${stDate} ${booking.dtime}`)
-                  ) / 3600000
+                  (new Date(`${stDate} ${dtime}`) -
+                    new Date(`${stDate} ${booking.dtime}`)) /
+                    3600000
                 );
-                if(timeDiff <= 0){
+                if (timeDiff <= 0) {
                   let carObj = { ...car }._doc;
                   carObj.timeLeft = timeDiff;
                   carsList.push(car);
-                  console.log(car.brand)
-                }else{
-                  carsList.push(car)
-                  console.log(car.brand)
+                  console.log(car.brand);
+                } else {
+                  carsList.push(car);
+                  console.log(car.brand);
                 }
               }
-              null;
             } else {
               carsList.push(car);
-              console.log(car.brand)
+              console.log(car.brand);
             }
           } else {
             carsList.push(car);
-            console.log(car.brand)
+            console.log(car.brand);
           }
         });
     });
-    Promise.all(promises).then(() => {
-      if (carsList.length > 0) {
-        res.status(200).json({ cars: carsList, diff: diff });
-      } else {
-        res.status(404).json({ msg: "no cars available" });
-      }
-    });
+
+    await Promise.all(promises);
+
+    if (carsList.length > 0) {
+      res.status(200).json({ cars: carsList, diff: diff });
+    } else {
+      res.status(404).json({ msg: "no cars available" });
+    }
   } catch (error) {
-    res.render("400.ejs", { t: 500, sub: "Something went wrong" });;
+    res.render("400.ejs", { t: 500, sub: "Something went wrong" });
   }
 };
 
