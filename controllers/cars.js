@@ -3,6 +3,7 @@ const trashModel = require("../models/trashbin");
 const cloudinary = require("cloudinary");
 const bookingModel = require("../models/booking.js");
 const userModel = require("../models/userModel.js");
+const tempBooking = require("../models/tempbooking.js")
 
 async function handleFileUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -52,8 +53,10 @@ const getALlCars = async (req, res) => {
     let cars = await carModel.find();
     let diff = Math.abs(dDate - sDate) / 8.64e7;
 
+    // Get all carIds in tempBooking
     const tempBookedCarIds = await tempBooking.distinct("carId");
 
+    // Filter out cars that are in tempBooking
     cars = cars.filter((car) => !tempBookedCarIds.includes(car._id.toString()));
 
     let promises = cars.map(async (car) => {

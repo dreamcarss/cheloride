@@ -111,6 +111,8 @@
                     </div>
                     <h2 class="status stit" style="margin-bottom: 0; font-weight: normal;">Driving License</h2>
                 </div>
+
+                <!-- here instead of a single checkbox make 3 radio buttons each for student, job id and bussiness gst and make a condition at the bottom that on submit atleast one should be checked or else make one checked by default -->
                 <div class="row" style="margin-top:10px;">
                     <input type="checkbox" id="idCheck" name="accept" value="yes" hidden>
                     <div id="idCheckbox" class="custom-checkbox">
@@ -196,7 +198,6 @@
             };
         };
 
-        // Set up the new checkboxes
         setupCheckbox("aadharCheckbox", "aadharChecked", "aadharCheck");
         setupCheckbox("licenseCheckbox", "licenseChecked", "licenseCheck");
         setupCheckbox("idCheckbox", "idChecked", "idCheck");
@@ -208,7 +209,6 @@
             document.getElementById("idCheck").checked = false;
         };
 
-        // Update the bookingHandler function to include new checkboxes
         const bookingHandler = async() => {
             const aadharChecked = document.getElementById("aadharCheck").checked;
             const licenseChecked = document.getElementById("licenseCheck").checked;
@@ -319,7 +319,6 @@
                     console.error('Error initiating payment:', error);
                 }
             } else {
-                // Show error for unchecked boxes
                 const checkboxes = [check, check2, 
                     document.getElementById("aadharCheckbox"), 
                     document.getElementById("licenseCheckbox"), 
@@ -336,8 +335,6 @@
                     }
                 })
                 
-                // checkboxes.forEach(cb => {
-                // });
             }
         }
     </script>
