@@ -154,8 +154,22 @@
       const dropTime = document.getElementById("dtime");
       const searchButton = document.getElementById("searchbt");
 
-      // Set minimum date for start date to today
-      startDate.min = new Date().toISOString().split("T")[0];
+      // Function to set date restrictions
+      function setDateRestrictions() {
+        const today = new Date();
+        const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+        
+        // Set minimum date for start date to today
+        startDate.min = today.toISOString().split("T")[0];
+        
+        // Set maximum date for both start and drop date to the end of next month
+        const maxDate = nextMonth.toISOString().split("T")[0];
+        startDate.max = maxDate;
+        dropDate.max = maxDate;
+      }
+
+      // Call the function to set date restrictions
+      setDateRestrictions();
 
       // Function to validate dates and times
       function validateDatesAndTimes() {
@@ -179,6 +193,22 @@
           return false;
         }
 
+        // Check if start and drop times are between 6:00 AM and 11:00 PM
+        const startHour = start.getHours();
+        const startMinute = start.getMinutes();
+        const dropHour = drop.getHours();
+        const dropMinute = drop.getMinutes();
+
+        if (
+          startHour < 6 || 
+          (startHour === 23 && startMinute > 0) || 
+          dropHour < 6 || 
+          (dropHour === 23 && dropMinute > 0)
+        ) {
+          showError("Bookings are only allowed between 6:00 AM and 11:00 PM");
+          return false;
+        }
+
         return true;
       }
 
@@ -187,8 +217,7 @@
         const msg = document.createElement("div");
         const body = document.getElementsByTagName("body")[0];
         msg.classList.add("msg");
-        msg.textContent =
-          message + ", kindly adjust time to continue searching..";
+        msg.textContent = message + ", kindly adjust time to continue searching..";
         msg.style.color = "red";
         body.appendChild(msg);
         setTimeout(() => msg.remove(), 8000);
@@ -397,6 +426,7 @@
           })
         );
       };
+
 
       const bookHandler = async (i) => {
         // First, validate dates and times again
