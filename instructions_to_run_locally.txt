@@ -1,0 +1,4 @@
+1. install nodejs from nodejs downloads website
+2. cd into project file or open cmd from the current directory
+3. run - "npm install" in cmd
+4. run - "npm run dev" in cmd to start the server 
