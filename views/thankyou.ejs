@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./meta.ejs') %>
+
+    <link rel="stylesheet" href="../static/css/booking.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
+</head>
+<body>
+    <%- include('./navbar.ejs') %>
+    <div class="msg" style="background: 
+      linear-gradient(135deg,#0000 20.5%,#0f0f0f 0 29.5%,#0000 0) 0 11.5px,
+      linear-gradient( 45deg,#0000 8%,#0f0f0f 0 17%, #0000 0 58%) 23px 0,
+      linear-gradient(135deg,#0000 8%,#0f0f0f 0 17%, #0000 0 58%,#0f0f0f 0 67%,#0000 0),        
+      linear-gradient( 45deg,#0000 8%,#0f0f0f 0 17%, #0000 0 58%,#0f0f0f 0 67%,#0000 0 83%,#0f0f0f 0 92%,#0000 0),
+      #000000;
+      background-size: 46px 46px;">
+        <div class="bgcircle">
+        <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
+        </div>
+        <p style="font-size:28px">
+            Thankyou
+            <p>Booking Confirmed<span style="font-family: poppins; font-weight: 800;"> !</span></p>
+        </p>
+        <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; margin-top: 10px; font-weight: 600;">Your Transaction ID: <%= trId %></p>
+        <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; font-style: italic; color: #cacaca; margin-top: 10px;">Note: Bring the selected ORIGINAL DOCUMENTS </br> and a CHEQUE (returnable upon trip completion).</p>
+        <a href="/booking" style="margin-top: 20px;">
+            <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+        </a>
+    </div>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-722484073"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-722484073');
+    </script>
+    <script>
+        gtag('config', 'AW-722484073/X6FcCN6S38MZEOn2wNgC', {
+            'phone_conversion_number': '8919617664'
+        });
+    </script>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "/booking"
+        }, 6000);
+    </script>
+</body>
+</html>

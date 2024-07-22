@@ -528,9 +528,14 @@ app.get("/check-status/:transactionId", async (req, res) => {
   }
 });
 
+app.get("/thankyou/:id", (req, res) => {
+  res.render("thankyou.ejs", {trId: req.params.id})
+})
+
 app.use((req, res, next) => {
   res.render("400.ejs", { t: 404, sub: "Not Found" });
 });
+
 
 
 mongoose.connect(DB_URI).then(() => {

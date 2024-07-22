@@ -138,19 +138,6 @@
             </div>
         </div>
     </div>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-722484073"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-722484073');
-    </script>
-    <script>
-        gtag('config', 'AW-722484073/X6FcCN6S38MZEOn2wNgC', {
-            'phone_conversion_number': '8919617664'
-        });
-    </script>
 
     <script src="https://mercury.phonepe.com/web/bundle/checkout.js" defer></script>
     <script>
@@ -295,24 +282,22 @@
                                             btn.removeAttribute("disabled")
                                             res.json().then(dat => {
                                             btn.innerHTML = "Checkout"
-                                            const msg = document.createElement("div");
-                                            msg.classList.add("msg");
-                                            msg.innerHTML = `<div class="bgcircle">
-                                            <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
-                                            </div>
-                                            <p style="font-size:28px">
-                                                Thankyou
-                                                <p>Booking Confirmed<span style="font-family: poppins; font-weight: 800;"> !</span></p>
-                                            </p>
-                                            <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; margin-top: 10px; font-weight: 600;">Your Transaction ID: ${trId}</p>
-                                            <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; font-style: italic; color: #cacaca; margin-top: 10px;">Note: Bring the selected ORIGINAL DOCUMENTS </br> and a CHEQUE (returnable upon trip completion).</p>
-                                            <a href="/booking" style="margin-top: 20px;">
-                                                <button class="btn" style=" font-size: 10px;">Your Bookings</button>
-                                            </a>`;
-                                            document.getElementsByTagName("body")[0].appendChild(msg);
-                                            setTimeout(() => {
-                                                window.location.href = "/booking"
-                                            }, 6000);
+                                            // const msg = document.createElement("div");
+                                            // msg.classList.add("msg");
+                                            // msg.innerHTML = `<div class="bgcircle">
+                                            // <ion-icon name='checkmark' style="color:white; font-size:70px"></ion-icon>
+                                            // </div>
+                                            // <p style="font-size:28px">
+                                            //     Thankyou
+                                            //     <p>Booking Confirmed<span style="font-family: poppins; font-weight: 800;"> !</span></p>
+                                            // </p>
+                                            // <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; margin-top: 10px; font-weight: 600;">Your Transaction ID: ${trId}</p>
+                                            // <p style="font-size:13px; color: 'white'; font-family: Poppins; text-align: center; font-style: italic; color: #cacaca; margin-top: 10px;">Note: Bring the selected ORIGINAL DOCUMENTS </br> and a CHEQUE (returnable upon trip completion).</p>
+                                            // <a href="/booking" style="margin-top: 20px;">
+                                            //     <button class="btn" style=" font-size: 10px;">Your Bookings</button>
+                                            // </a>`;
+                                            // document.getElementsByTagName("body")[0].appendChild(msg);
+                                            window.location.href = `/thankyou/${trId}`;
                                         })}))
                                     }else{
                                         btn.removeAttribute("disabled")
